@@ -51,6 +51,10 @@ class PagesController extends AppController {
  * @param mixed What page to display
  * @return void
  */
+        public function beforeFilter() {
+           $this->Auth->allow();
+        }
+            
 	public function display() {
 		$path = func_get_args();
 
@@ -72,4 +76,12 @@ class PagesController extends AppController {
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
 		$this->render(implode('/', $path));
 	}
+
+        public function about() {
+           
+        }
+
+         public function privacy() {
+           
+        }
 }
