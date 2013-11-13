@@ -10,6 +10,7 @@
             </ul>
         </li>
         <li><a href="<?php echo $this->webroot; ?>contact">Contact</a></li>
+        <li><a href="<?php echo $this->webroot; ?>advertisements/advertise">Advertise</a></li>
         <?php if ($access->isLoggedin()) { ?>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Control Panel <b class="caret"></b></a>
