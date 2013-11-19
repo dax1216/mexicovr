@@ -1,5 +1,6 @@
 <?php
 App::uses('AppModel', 'Model');
+App::uses('AttachmentBehavior', 'Uploader.Model/Behavior');
 /**
  * Advertisement Model
  *
@@ -22,7 +23,7 @@ class Advertisement extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'image' => array(
+		/*'image' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
 				//'message' => 'Your custom message here',
@@ -31,7 +32,7 @@ class Advertisement extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-		),
+		),*/
 		'description1' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
@@ -73,4 +74,65 @@ class Advertisement extends AppModel {
 			),
 		),
 	);
+        
+        
+        public $actsAs = array(
+                'Uploader.Attachment' => array(
+                        // Do not copy all these settings, it's merely an example
+                        'image' => array(
+                                'tempDir' => TMP,
+                                //'uploadDir' => '/var/www/app/webroot/img/uploads/',
+                                //'finalPath' => '/img/uploads/'
+//                                'nameCallback' => '',
+//                                'append' => '',
+//                                'prepend' => '',
+//                                'tempDir' => TMP,
+//                                'uploadDir' => '',
+//                                'transportDir' => '',
+//                                'finalPath' => '',
+//                                'dbColumn' => '',
+//                                'metaColumns' => array(),
+//                                'defaultPath' => '',
+//                                'overwrite' => false,
+//                                'stopSave' => true,
+                                'allowEmpty' => false,
+//                                'transforms' => array(),
+//                                'transformers' => array(),
+//                                'transport' => array(),
+//                                'transporters' => array(),
+//                                'curl' => array()
+                            
+                                'overwrite' => true,
+                                'transforms' => array(
+                                        'image_small' => array(
+                                                'method' => 'resize',
+                                                'append' => '-small',
+                                                'overwrite' => true,
+                                                'self' => false,
+                                                'width' => 215,
+                                                'height' => 115
+                                        ),
+//                                        'imageMedium' => array(
+//                                                'class' => 'resize',
+//                                                'append' => '-medium',
+//                                                'width' => 800,
+//                                                'height' => 600,
+//                                                'aspect' => false
+//                                        )
+                                )
+                        )
+                ),
+                'Uploader.FileValidation' => array(
+                        'image' => array(
+                                'extension' => array('gif', 'jpg', 'png', 'jpeg'),
+                                'required' => array(
+                                        'value' => true,
+                                        'error' => 'File required'
+                                )
+                        ),
+                        'thumbnail' => array(
+                                'required' => false
+                        )
+                )
+        );
 }

@@ -1,6 +1,7 @@
 <?php
 
 App::uses('AppController', 'Controller');
+App::uses('AttachmentBehavior', 'Uploader.Model/Behavior');
 
 /**
  * Advertisements Controller
@@ -107,7 +108,23 @@ class AdvertisementsController extends AppController {
     
     
     public function advertise(){
-        
+        if ($this->request->is('post')) {
+            $this->Advertisement->create();
+            if ($this->Advertisement->save($this->request->data,true)) {
+                $this->Session->setFlash(__('The advertisement has been saved'));
+                $this->redirect(array('action' => 'preview/'.$this->Advertisement->getLastInsertID()));
+            } else {
+                $this->Session->setFlash(__('The advertisement could not be saved. Please, try again.'));
+            }
+        }
+    }
+    
+    public function preview($id = null) {
+        $this->Advertisement->id = $id;
+        if (!$this->Advertisement->exists()) {
+            throw new NotFoundException(__('Invalid advertisement'));
+        }
+        $this->set('advertisement', $this->Advertisement->read(null, $id));
     }
 
 }

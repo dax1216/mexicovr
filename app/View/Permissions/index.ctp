@@ -7,7 +7,7 @@
 </div>
 <div class="row">
     <div class="span3">        
-        <form action="/permissions/aco_sync" method="POST">
+        <form action="<?php echo $this->webroot; ?>permissions/aco_sync" method="POST">
             <button class="btn btn-danger">Re-sync permissions</button>
         </form>
 

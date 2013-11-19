@@ -111,3 +111,5 @@ CakeLog::config('error', array(
 ));
 
 CakePlugin::load('Blog', array('bootstrap' => false, 'routes' => false));
+CakePlugin::load('Composer', array('bootstrap' => true));
+CakePlugin::load('Uploader');
