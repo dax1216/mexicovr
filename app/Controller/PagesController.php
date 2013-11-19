@@ -17,6 +17,18 @@ class PagesController extends AppController {
 		$this->set('pages', $this->paginate());
 	}
 
+       public function about() {
+		$slug = 'about';
+                $content = $this->Page->find('first', array('conditions'=>array('Page.slug'=>$slug)));
+                $this->set('content', $content);
+        }
+
+          public function privacy() {
+		$slug = 'privacy';
+                $content = $this->Page->find('first', array('conditions'=>array('Page.slug'=>$slug)));
+                $this->set('content', $content);
+        }
+
 /**
  * view method
  *
