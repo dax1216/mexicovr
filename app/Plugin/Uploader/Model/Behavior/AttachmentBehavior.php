@@ -1,371 +1,633 @@
 <?php
 /**
- * AttachmentBehavior
- *
- * A CakePHP Behavior that attaches a file to a model, and uploads automatically, then stores a value in the database.
- *
- * @author      Miles Johnson - http://milesj.me
- * @copyright   Copyright 2006-2011, Miles Johnson, Inc.
- * @license     http://opensource.org/licenses/mit-license.php - Licensed under The MIT License
- * @link        http://milesj.me/code/cakephp/uploader
+ * @copyright	Copyright 2006-2013, Miles Johnson - http://milesj.me
+ * @license		http://opensource.org/licenses/mit-license.php - Licensed under the MIT License
+ * @link		http://milesj.me/code/cakephp/uploader
  */
 
 App::uses('Set', 'Utility');
-App::import('Vendor', 'Uploader.S3');
-App::import('Vendor', 'Uploader.Uploader');
+App::uses('ModelBehavior', 'Model');
 
+use Transit\Transit;
+use Transit\File;
+use Transit\Exception\ValidationException;
+use Transit\Transformer\Image\CropTransformer;
+use Transit\Transformer\Image\FlipTransformer;
+use Transit\Transformer\Image\ResizeTransformer;
+use Transit\Transformer\Image\ScaleTransformer;
+use Transit\Transporter\Aws\S3Transporter;
+use Transit\Transporter\Aws\GlacierTransporter;
+
+/**
+ * A CakePHP Behavior that attaches a file to a model, uploads automatically,
+ * and then stores a value in the database.
+ */
 class AttachmentBehavior extends ModelBehavior {
 
 	/**
-	 * AS3 domain snippet.
+	 * Transformation types.
 	 */
-	const AS3_DOMAIN = 's3.amazonaws.com';
+	const CROP = 'crop';
+	const FLIP = 'flip';
+	const RESIZE = 'resize';
+	const SCALE = 'scale';
 
 	/**
-	 * Uploader instance.
-	 *
-	 * @access public
-	 * @var Uploader
+	 * Transportation types.
 	 */
-	public $uploader = null;
+	const S3 = 's3';
+	const GLACIER = 'glacier';
 
 	/**
-	 * S3 instance.
+	 * Transit instances indexed by model alias.
 	 *
-	 * @access public
-	 * @var S3
+	 * @var \Transit\Transit[]
 	 */
-	public $s3 = null;
+	protected $_uploads = array();
 
 	/**
-	 * All user defined attachments; images => model.
+	 * Mapping of database columns to attachment fields.
 	 *
-	 * @access protected
-	 * @var array
-	 */
-	protected $_attachments = array();
-
-	/**
-	 * Mapping of database columns to form fields.
-	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_columns = array();
 
 	/**
-	 * The default settings for attachments.
+	 * Default attachment settings.
 	 *
-	 * @access protected
+	 * 		nameCallback	- Method to format filename with
+	 * 		append			- What to append to the end of the filename
+	 * 		prepend			- What to prepend to the beginning of the filename
+	 * 		tempDir			- Directory to upload files to temporarily
+	 * 		uploadDir		- Directory to move file to after upload to make it publicly accessible
+	 * 		finalPath		- The final path to prepend to file names (like a domain)
+	 * 		dbColumn		- Database column to write file path to
+	 * 		metaColumns		- Database columns to write meta data to
+	 * 		defaultPath		- Default image if no file is uploaded
+	 * 		overwrite		- Overwrite a file with the same name if it exists
+	 * 		stopSave		- Stop save() if error exists during upload
+	 * 		allowEmpty		- Allow an empty file upload to continue
+	 * 		transforms		- List of transforms to apply to the image
+	 * 		transport		- Settings for file transportation
+	 *
 	 * @var array
 	 */
-	protected $_defaults = array(
-		'name' => '',
-		'baseDir' => '',
-		'uploadDir' => '',
+	protected $_defaultSettings = array(
+		'nameCallback' => '',
 		'append' => '',
 		'prepend' => '',
-		'dbColumn' => 'uploadPath',
-		'importFrom' => '',
+		'tempDir' => TMP,
+		'uploadDir' => '',
+		'finalPath' => '',
+		'dbColumn' => '',
+		'metaColumns' => array(),
 		'defaultPath' => '',
-		'maxNameLength' => null,
-		'overwrite' => false,			// Overwrite a file with the same name if it exists
-		'stopSave' => true,				// Stop model save() on form upload error
-		'allowEmpty' => true,			// Allow an empty file upload to continue
-		'saveAsFilename' => false,		// If true, will only save the filename and not relative path
+		'overwrite' => false,
+		'stopSave' => true,
+		'allowEmpty' => true,
 		'transforms' => array(),
-		's3' => array(
-			'accessKey' => '',
-			'secretKey' => '',
-			'ssl' => true,
-			'bucket' => '',
-			'path' => ''
-		),
-		'metaColumns' => array(
-			'ext' => '',
-			'type' => '',
-			'size' => '',
-			'group' => '',
-			'width' => '',
-			'height' => '',
-			'filesize' => ''
-		)
+		'transport' => array()
 	);
 
 	/**
-	 * Initialize uploader and save attachments.
+	 * Default transform settings.
 	 *
-	 * @access public
+	 * 		method			- The transform method
+	 * 		nameCallback	- Method to format filename with
+	 * 		append			- What to append to the end of the filename
+	 * 		prepend			- What to prepend to the beginning of the filename
+	 * 		uploadDir		- Directory to move file to after upload to make it publicly accessible
+	 * 		finalPath		- The final path to prepend to file names (like a domain)
+	 * 		dbColumn		- Database column to write file path to
+	 * 		overwrite		- Overwrite a file with the same name if it exists
+	 * 		self			- Should the transforms apply to the uploaded file instead of creating new images
+	 *
+	 * @var array
+	 */
+	protected $_transformSettings = array(
+		'method' => '',
+		'nameCallback' => '',
+		'append' => '',
+		'prepend' => '',
+		'uploadDir' => '',
+		'finalPath' => '',
+		'dbColumn' => '',
+		'overwrite' => false,
+		'self' => false
+	);
+
+	/**
+	 * Save attachment settings.
+	 *
 	 * @param Model $model
 	 * @param array $settings
-	 * @return void
 	 */
 	public function setup(Model $model, $settings = array()) {
-		$this->uploader = new Uploader();
+		if ($settings) {
+			if (!isset($this->_columns[$model->alias])) {
+				$this->_columns[$model->alias] = array();
+			}
 
-		if (!empty($settings)) {
 			foreach ($settings as $field => $attachment) {
-				if (isset($attachment['skipSave'])) {
-					$attachment['stopSave'] = $attachment['skipSave'];
-				}
+				$attachment = Set::merge($this->_defaultSettings, $attachment + array(
+					'dbColumn' => $field
+				));
 
-				$attachment = Set::merge($this->_defaults, $attachment);
 				$columns = array($attachment['dbColumn'] => $field);
 
-				if (!empty($attachment['transforms'])) {
-					foreach ($attachment['transforms'] as $transform) {
+				// Set defaults if not defined
+				if (!$attachment['tempDir']) {
+					$attachment['tempDir'] = TMP;
+				}
+
+				if (!$attachment['uploadDir']) {
+					$attachment['finalPath'] = 'files/uploads/';
+					$attachment['uploadDir'] = WWW_ROOT . $attachment['finalPath'];
+				}
+
+				// Merge transform settings with defaults
+				if ($attachment['transforms']) {
+					foreach ($attachment['transforms'] as $dbColumn => $transform) {
+						$transform = Set::merge($this->_transformSettings, $transform + array(
+							'uploadDir' => $attachment['uploadDir'],
+							'finalPath' => $attachment['finalPath'],
+							'dbColumn' => $dbColumn
+						));
+
+						if ($transform['self']) {
+							$transform['dbColumn'] = $attachment['dbColumn'];
+						}
+
 						$columns[$transform['dbColumn']] = $field;
+						$attachment['transforms'][$dbColumn] = $transform;
 					}
 				}
 
-				$this->_attachments[$model->alias][$field] = $attachment;
-				$this->_columns[$model->alias] = $columns;
+				$this->settings[$model->alias][$field] = $attachment;
+				$this->_columns[$model->alias] += $columns;
 			}
 		}
 	}
 
 	/**
+	 * Cleanup and reset the behavior when its detached.
+	 *
+	 * @param Model $model
+	 * @return void
+	 */
+	public function cleanup(Model $model) {
+		parent::cleanup($model);
+
+		$this->_uploads = array();
+		$this->_columns = array();
+	}
+
+	/**
 	 * Deletes any files that have been attached to this model.
 	 *
-	 * @access public
 	 * @param Model $model
 	 * @param boolean $cascade
-	 * @return mixed
+	 * @return boolean
 	 */
 	public function beforeDelete(Model $model, $cascade = true) {
 		if (empty($model->id)) {
 			return false;
 		}
 
-		$data = $model->read(null, $model->id);
-		$columns = $this->_columns[$model->alias];
-
-		if (!empty($data[$model->alias])) {
-			foreach ($data[$model->alias] as $column => $value) {
-				if (isset($columns[$column])) {
-					$attachment = $this->_attachments[$model->alias][$columns[$column]];
-
-					$this->uploader->setup($attachment);
-					$this->s3 = $this->s3($attachment['s3']);
-
-					$path = $attachment['saveAsFilename'] ? rtrim($attachment['uploadDir'], '/') . '/' . $value : $value;
-					$this->delete($path);
-				}
-			}
-		}
-
-		return true;
+		return $this->deleteFiles($model, $model->id);
 	}
 
 	/**
-	 * Before saving the data, try uploading the image, if successful save to database.
+	 * Before saving the data, try uploading the file, if successful save to database.
 	 *
-	 * @access public
 	 * @param Model $model
-	 * @return mixed
+	 * @return boolean
 	 */
 	public function beforeSave(Model $model) {
-		if (empty($model->data[$model->alias])) {
+		$alias = $model->alias;
+		$cleanup = array();
+
+		if (empty($model->data[$alias])) {
 			return true;
 		}
 
-		foreach ($model->data[$model->alias] as $field => $file) {
-			if (empty($this->_attachments[$model->alias][$field])) {
+		// Loop through the data and upload the file
+		foreach ($model->data[$alias] as $field => $file) {
+			if (empty($this->settings[$alias][$field])) {
 				continue;
 			}
 
-			$attachment = $this->_attachments[$model->alias][$field];
+			// Gather attachment settings
+			$attachment = $this->_settingsCallback($model, $this->settings[$alias][$field]);
 			$data = array();
 
-			// Not a form upload, so lets treat it as an import
-			if (is_string($file) && !empty($file)) {
-				$attachment['importFrom'] = $file;
-			}
+			// Initialize Transit
+			$transit = new Transit($file);
+			$transit->setDirectory($attachment['tempDir']);
 
-			// Should we continue if a file threw errors during upload?
-			if (empty($file['tmp_name']) || (isset($file['error']) && $file['error'] == UPLOAD_ERR_NO_FILE) || (is_string($file) && empty($attachment['importFrom']))) {
-				if ($attachment['stopSave'] && !$attachment['allowEmpty']) {
-					return false;
-				} else if ($attachment['allowEmpty']) {
-					unset($model->data[$model->alias][$attachment['dbColumn']]);
+			$this->_uploads[$alias] = $transit;
+
+			// Set transformers and transporter
+			$this->_addTransformers($model, $transit, $attachment);
+			$this->_setTransporter($model, $transit, $attachment);
+
+			// Attempt upload or import
+			try {
+				$overwrite = $attachment['overwrite'];
+
+				// File upload
+				if (is_array($file)) {
+					$response = $transit->upload($overwrite);
+
+				// Remote import
+				} else if (strpos($file, 'http') === 0) {
+					$response = $transit->importFromRemote($overwrite);
+
+				// Local import
+				} else if (file_exists($file)) {
+					$response = $transit->importFromLocal($overwrite);
+
+				// Stream import
+				} else {
+					$response = $transit->importFromStream($overwrite);
+				}
+
+				// Successful upload or import
+				if ($response) {
+
+					// Rename and move file
+					$data[$attachment['dbColumn']] = $this->_renameAndMove($model, $transit->getOriginalFile(), $attachment);
+
+					// Transform the files and save their path
+					if ($attachment['transforms']) {
+						$transit->transform();
+
+						$transformedFiles = $transit->getTransformedFiles();
+						$count = 0;
+
+						foreach ($attachment['transforms'] as $transform) {
+							if ($transform['self']) {
+								$tempFile = $transit->getOriginalFile();
+							} else {
+								$tempFile = $transformedFiles[$count];
+								$count++;
+							}
+
+							$data[$transform['dbColumn']] = $this->_renameAndMove($model, $tempFile, $transform);
+						}
+					}
+
+					$metaData = $transit->getOriginalFile()->toArray();
+
+					// Transport the files and save their remote path
+					if ($attachment['transport']) {
+						if ($transportedFiles = $transit->transport()) {
+							$transformSchemas = array_values($attachment['transforms']);
+
+							foreach ($transportedFiles as $i => $transportedFile) {
+								if ($i === 0) {
+									$dbColumn = $attachment['dbColumn'];
+								} else {
+									$dbColumn = $transformSchemas[($i - 1)]['dbColumn'];
+								}
+
+								$data[$dbColumn] = $transportedFile;
+							}
+						}
+					}
+				}
+
+			// Trigger form errors if validation fails
+			} catch (ValidationException $e) {
+				if ($attachment['allowEmpty']) {
+					if (empty($attachment['defaultPath']) || $model->id) {
+						unset($model->data[$alias][$attachment['dbColumn']]);
+					} else {
+						$model->data[$alias][$attachment['dbColumn']] = $attachment['defaultPath'];
+					}
+
 					continue;
 				}
-			}
 
-			// Save model method for formatting function
-			if (!empty($attachment['name']) && method_exists($model, $attachment['name'])) {
-				$attachment['name'] = array($model, $attachment['name']);
-			}
+				$model->invalidate($field, __d('uploader', $e->getMessage()));
 
-			// Setup instances
-			$this->uploader->setup($attachment);
-			$this->s3 = $this->s3($attachment['s3']);
-
-			// Upload or import the file and attach to model data
-			$uploadResponse = $this->upload($file, $attachment, array(
-				'overwrite' => $attachment['overwrite'],
-				'name' => $attachment['name'],
-				'append' => $attachment['append'],
-				'prepend' => $attachment['prepend']
-			));
-
-			if (empty($uploadResponse)) {
-				return $model->invalidate($field, __d('uploader', 'There was an error uploading this file, please try again.'));
-			}
-
-			$basePath = $this->transfer($uploadResponse['path']);
-			$data[$attachment['dbColumn']] = ($attachment['saveAsFilename'] && $this->s3 === null) ? basename($basePath) : $basePath;
-
-			$toDelete = array();
-			$lastPath = $basePath;
-
-			// Apply image transformations
-			if (!empty($attachment['transforms'])) {
-				foreach ($attachment['transforms'] as $options) {
-					$method = $options['method'];
-
-					if (!method_exists($this->uploader, $method)) {
-						trigger_error(sprintf('Uploader.Attachment::beforeSave(): "%s" is not a defined transformation method.', $method), E_USER_WARNING);
-						return false;
-					}
-
-					$transformResponse = $this->uploader->{$method}($options);
-
-					// Rollback uploaded files if one fails
-					if (empty($transformResponse)) {
-						foreach ($data as $path) {
-							$this->delete($path);
-						}
-
-						return $model->invalidate($field, __d('uploader', 'An error occured during image %s transformation.', $method));
-					}
-
-					// Transform successful
-					$transformPath = $this->transfer($transformResponse);
-					$data[$options['dbColumn']] = ($attachment['saveAsFilename'] && $this->s3 === null) ? basename($transformPath) : $transformPath;
-
-					// Delete original if same column name and transform name are not the same file
-					if ($options['dbColumn'] == $attachment['dbColumn'] && $lastPath != $transformPath) {
-						$toDelete[] = $lastPath;
-					}
-
-					$lastPath = $transformPath;
-				}
-			}
-
-			// Delete old files if replacing them
-			if ($toDelete) {
-				foreach ($toDelete as $deleteFile) {
-					$this->delete($deleteFile);
-				}
-			}
-
-			// Apply meta columns
-			if (!empty($attachment['metaColumns'])) {
-				foreach ($attachment['metaColumns'] as $field => $column) {
-					if (isset($uploadResponse[$field]) && !empty($column)) {
-						$data[$column] = $uploadResponse[$field];
-					}
-				}
-			}
-
-			// Reset S3 and delete original files
-			if ($this->s3 !== null) {
-				foreach ($this->s3->uploads as $path) {
-					$this->delete($path);
+				if ($attachment['stopSave']) {
+					return false;
 				}
 
-				$this->s3 = null;
+			// Log exceptions that shouldn't be shown to the client
+			} catch (Exception $e) {
+				$model->invalidate($field, __d('uploader', 'An unknown error has occurred'));
+
+				$this->log($e->getMessage(), LOG_DEBUG);
+
+				// Rollback the files since it threw errors
+				$transit->rollback();
+			}
+
+			// Save file meta data
+			$cleanup = $data;
+
+			if ($attachment['metaColumns'] && $data && !empty($metaData)) {
+				foreach ($attachment['metaColumns'] as $method => $column) {
+					if (isset($metaData[$method]) && $column) {
+						$data[$column] = $metaData[$method];
+					}
+				}
 			}
 
 			// Merge upload data with model data
-			$model->data[$model->alias] = $data + $model->data[$model->alias];
+			if ($data) {
+				$model->data[$alias] = $data + $model->data[$alias];
+			}
+		}
+
+		// If we are doing an update, delete the previous files that are being replaced
+		if ($model->id && $cleanup) {
+			$this->_cleanupOldFiles($model, $cleanup);
 		}
 
 		return true;
 	}
 
 	/**
-	 * Delete a file from Amazon S3 or locally.
+	 * Delete all files associated with a record but do not delete the record.
 	 *
-	 * @access public
-	 * @param string $path
+	 * @param Model $model
+	 * @param int $id
+	 * @param array $filter
 	 * @return boolean
 	 */
-	public function delete($path) {
-		if (strpos($path, self::AS3_DOMAIN) !== false && $this->s3 !== null) {
-			return $this->s3->deleteObject($this->s3->bucket, $this->s3->path . basename($path));
+	public function deleteFiles(Model $model, $id, array $filter = array()) {
+		$columns = $this->_columns[$model->alias];
+		$data = $model->find('first', array(
+			'conditions' => array($model->alias . '.' . $model->primaryKey => $id),
+			'contain' => false,
+			'recursive' => -1
+		));
+
+		if (empty($data[$model->alias])) {
+			return false;
 		}
 
-		return $this->uploader->delete($path);
-	}
+		$save = array();
 
-	/**
-	 * Return an S3 instance.
-	 *
-	 * @access public
-	 * @param array $settings
-	 * @return S3
-	 */
-	public function s3(array $settings) {
-		if (empty($settings['accessKey']) || empty($settings['secretKey'])) {
-			return null;
-		}
+		foreach ($data[$model->alias] as $column => $value) {
+			if (empty($columns[$column])) {
+				continue;
+			} else if ($filter && !in_array($column, $filter)) {
+				continue;
+			}
 
-		$ssl = isset($settings['useSsl']) ? $settings['useSsl'] : $settings['ssl'];
-
-		$s3 = new S3($settings['accessKey'], $settings['secretKey'], (bool) $ssl);
-		$s3->bucket = $settings['bucket'];
-		$s3->path = trim($settings['path'], '/') . '/';
-		$s3->uploads = array();
-
-		return $s3;
-	}
-
-	/**
-	 * Attempt to upload a file via remote import, file system import or standard upload.
-	 *
-	 * @access public
-	 * @param string|array $file
-	 * @param array $attachment
-	 * @param array $options
-	 * @return array
-	 */
-	public function upload($file, $attachment, $options) {
-		if (!empty($attachment['importFrom'])) {
-			if (preg_match('/(http|https)/', $attachment['importFrom'])) {
-				return $this->uploader->importRemote($attachment['importFrom'], $options);
-
-			} else {
-				return $this->uploader->import($attachment['importFrom'], $options);
+			if ($this->_deleteFile($model, $columns[$column], $value)) {
+				$save[$column] = '';
 			}
 		}
 
-		return $this->uploader->upload($file, $options);
+		// Set the fields to empty
+		if ($save) {
+			$model->id = $id;
+			$model->save($save, array(
+				'validate' => false,
+				'callbacks' => false,
+				'fieldList' => array_keys($save)
+			));
+		}
+
+		return true;
 	}
 
 	/**
-	 * Transfer an object to the S3 storage bucket.
+	 * Return the uploaded original File object.
 	 *
-	 * @access public
-	 * @param string $path
+	 * @param Model $model
+	 * @return \Transit\File
+	 */
+	public function getUploadedFile(Model $model) {
+		if (isset($this->_uploads[$model->alias])) {
+			return $this->_uploads[$model->alias]->getOriginalFile();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Return the transformed File objects.
+	 *
+	 * @param Model $model
+	 * @return \Transit\File[]
+	 */
+	public function getTransformedFiles(Model $model) {
+		if (isset($this->_uploads[$model->alias])) {
+			return $this->_uploads[$model->alias]->getTransformedFiles();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Trigger callback methods to modify attachment settings before uploading.
+	 *
+	 * @param Model $model
+	 * @param array $options
+	 * @return array
+	 */
+	protected function _settingsCallback(Model $model, array $options) {
+		if (method_exists($model, 'beforeUpload')) {
+			$options = $model->beforeUpload($options);
+		}
+
+		if ($options['transforms'] && method_exists($model, 'beforeTransform')) {
+			foreach ($options['transforms'] as $i => $transform) {
+				$options['transforms'][$i] = $model->beforeTransform($transform);
+			}
+		}
+
+		if ($options['transport'] && method_exists($model, 'beforeTransport')) {
+			$options['transport'] = $model->beforeTransport($options['transport']);
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Add Transit Transformers based on the attachment settings.
+	 *
+	 * @param Model $model
+	 * @param \Transit\Transit $transit
+	 * @param array $attachment
+	 */
+	protected function _addTransformers(Model $model, Transit $transit, array $attachment) {
+		if (empty($attachment['transforms'])) {
+			return;
+		}
+
+		foreach ($attachment['transforms'] as $options) {
+			$transformer = $this->_getTransformer($options);
+
+			if ($options['self']) {
+				$transit->addSelfTransformer($transformer);
+			} else {
+				$transit->addTransformer($transformer);
+			}
+		}
+	}
+
+	/**
+	 * Set the Transit Transporter to use based on the attachment settings.
+	 *
+	 * @param Model $model
+	 * @param \Transit\Transit $transit
+	 * @param array $attachment
+	 */
+	protected function _setTransporter(Model $model, Transit $transit, array $attachment) {
+		if (empty($attachment['transport'])) {
+			return;
+		}
+
+		$transit->setTransporter($this->_getTransporter($attachment['transport']));
+	}
+
+	/**
+	 * Return a Transformer based on the options.
+	 *
+	 * @param array $options
+	 * @return \Transit\Transformer
+	 * @throws \InvalidArgumentException
+	 */
+	protected function _getTransformer(array $options) {
+		switch ($options['method']) {
+			case self::CROP:
+				return new CropTransformer($options);
+			break;
+			case self::FLIP:
+				return new FlipTransformer($options);
+			break;
+			case self::RESIZE:
+				return new ResizeTransformer($options);
+			break;
+			case self::SCALE:
+				return new ScaleTransformer($options);
+			break;
+			default:
+				throw new InvalidArgumentException(sprintf('Invalid transformation method %s', $options['method']));
+			break;
+		}
+	}
+
+	/**
+	 * Return a Transporter based on the options.
+	 *
+	 * @param array $options
+	 * @return \Transit\Transporter
+	 * @throws \InvalidArgumentException
+	 */
+	protected function _getTransporter(array $options) {
+		switch ($options['class']) {
+			case self::S3:
+				return new S3Transporter($options['accessKey'], $options['secretKey'], $options);
+			break;
+			case self::GLACIER:
+				return new GlacierTransporter($options['accessKey'], $options['secretKey'], $options);
+			break;
+			default:
+				throw new InvalidArgumentException(sprintf('Invalid transport class %s', $options['class']));
+			break;
+		}
+	}
+
+	/**
+	 * Rename or move the file and return its relative path.
+	 *
+	 * @param Model $model
+	 * @param \Transit\File $file
+	 * @param array $options
 	 * @return string
 	 */
-	public function transfer($path) {
-		if ($this->s3 === null) {
-			return $path;
+	protected function _renameAndMove(Model $model, File $file, array $options) {
+		$nameCallback = null;
+
+		if ($options['nameCallback'] && method_exists($model, $options['nameCallback'])) {
+			$nameCallback = array($model, $options['nameCallback']);
 		}
 
-		$name = $this->s3->path . basename($path);
-		$bucket = $this->s3->bucket;
+		$file->rename($nameCallback, $options['append'], $options['prepend']);
 
-		if ($this->s3->putObjectFile($this->uploader->formatPath($path), $bucket, $name, S3::ACL_PUBLIC_READ)) {
-			$this->s3->uploads[] = $path;
-
-			return sprintf('http://%s.%s/%s', $bucket, self::AS3_DOMAIN, $name);
+		if ($options['uploadDir']) {
+			$file->move($options['uploadDir'], $options['overwrite']);
 		}
 
-		return $path;
+		return (string) $options['finalPath'] . $file->basename();
+	}
+
+	/**
+	 * Attempt to delete a file using the attachment settings.
+	 *
+	 * @param Model $model
+	 * @param string $field
+	 * @param string $path
+	 * @return bool
+	 */
+	protected function _deleteFile(Model $model, $field, $path) {
+		if (empty($this->settings[$model->alias][$field])) {
+			return false;
+		}
+
+		$attachment = $this->settings[$model->alias][$field];
+		$basePath = $attachment['uploadDir'] ?: $attachment['tempDir'];
+
+		try {
+			// Delete remote file
+			if ($attachment['transport']) {
+				$transporter = $this->_getTransporter($attachment['transport']);
+
+				return $transporter->delete($path);
+
+			// Delete local file
+			} else {
+				$file = new File($basePath . basename($path));
+
+				return $file->delete();
+			}
+
+		} catch (Exception $e) {
+			$this->log($e->getMessage(), LOG_DEBUG);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Delete previous files if a record is being overwritten.
+	 *
+	 * @param Model $model
+	 * @param array $fields
+	 * @return void
+	 */
+	protected function _cleanupOldFiles(Model $model, array $fields) {
+		$columns = $this->_columns[$model->alias];
+		$data = $model->find('first', array(
+			'conditions' => array($model->alias . '.' . $model->primaryKey => $model->id),
+			'contain' => false,
+			'recursive' => -1
+		));
+
+		if (empty($data[$model->alias])) {
+			return;
+		}
+
+		foreach ($fields as $column => $value) {
+			if (empty($data[$model->alias][$column])) {
+				continue;
+			}
+
+			// Delete if previous value doesn't match new value
+			$previous = $data[$model->alias][$column];
+
+			if ($previous !== $value) {
+				$this->_deleteFile($model, $columns[$column], $previous);
+			}
+		}
 	}
 
 }

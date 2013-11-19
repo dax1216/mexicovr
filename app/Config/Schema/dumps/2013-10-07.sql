@@ -237,7 +237,4 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`user_id`, `role_id`, `first_name`, `last_name`, `email_address`, `password`, `phone`, `address`, `city`, `state`, `zip`, `country`, `created`, `updated`, `confirmation_key`, `is_email_confirmed`, `is_active`) VALUES
-(1, 1, 'Dax', 'Panganiban', 'dax1216@gmail.com', '47056910acfb2435dc50b98d11e93e9dc2eb63c9', NULL, NULL, NULL, NULL, NULL, NULL, '2013-08-28 16:07:48', '2013-08-28 16:21:29', '91da817cc99d0ac75df94949a92b14f1', 0, 1),
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+(1, 1, 'Dax', 'Panganiban', 'dax1216@gmail.com', '47056910acfb2435dc50b98d11e93e9dc2eb63c9', NULL, NULL, NULL, NULL, NULL, NULL, '2013-08-28 16:07:48', '2013-08-28 16:21:29', '91da817cc99d0ac75df94949a92b14f1', 0, 1)
