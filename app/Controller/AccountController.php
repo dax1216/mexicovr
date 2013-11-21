@@ -11,6 +11,7 @@ class AccountController extends AppController {
         //parent::beforeFilter();
 
         $this->Auth->allow();
+        $this->layout = "property";
     }
 
     /**
@@ -101,6 +102,18 @@ class AccountController extends AppController {
     }
 
     public function login() {
+        if ($this->request->is('post')) {
+
+            if ($this->Auth->login()) {
+                $this->Session->setFlash('Successfully logged in!', 'default', array('class' => 'alert alert-success'));
+                $this->redirect($this->Auth->loginRedirect);
+            } else {
+                $this->Session->setFlash($this->Auth->authError, 'default', array('class' => 'alert alert-error'));
+            }
+        }
+    }
+
+     public function member() {
         if ($this->request->is('post')) {
 
             if ($this->Auth->login()) {

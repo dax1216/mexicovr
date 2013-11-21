@@ -1,27 +1,32 @@
 
-
-      <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
-        <h1>Hello, world!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><a href="#" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
-      </div>
-
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
+<div class="search-property">
+    <form action="">
+        <a href="#" class="search-rentprop rent-current"></a>
+        <a href="#" class="search-buyprop"></a>
+        <input type="textbox" class="destination" placeholder="DESTINATION" />
+        <div class="lines"></div>
+        <div id="dd" class="wrapper-dropdown-1" tabindex="1">
+            <span>BEDROOMS</span>
+            <ul class="dropdown" tabindex="1">
+                <li><a href="#">1 BEDROOM</a></li>
+                <li><a href="#">2 BEDROOMS</a></li>
+            </ul>
         </div>
-        <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
-       </div>
-        <div class="span4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn" href="#">View details &raquo;</a></p>
-        </div>
-      </div>
+        <span class="dateholder">
+            <span class="date-bg"><input type="text" class="datefrom" id="datefrom" placeholder="FROM" /></span>
+            <span class="date-bg"><input type="text" class="dateto" id="dateto" placeholder="TO" /></span>
+        </span>
+        <div class="or">OR</div>
+        <input type="textbox" class="mxvrno" placeholder="ENTER MXVR #" />
+        <div class="lines"></div>
+        <span class="sub"><input type="submit" value="SEARCH" class="btnsearch-property" /></span>
+    </form>
+</div>
+<div class="searchmap">
+    <img class="imgmap" src="images/map.png" />
+    <div class="callout">
+        <div class="callout-header">Acapulco</div>
+        <p>For a relaxed tropical paradise, Acapulco certainly is vibrant one --as a matter of fact, it literally never sleeps. With non-stop nightlife, great shopping centers and restaurants, this bustling seaside resort is alive and...</p>
+        <div class="readmore"><a href="#">Read More..</a></div>
+    </div>
+</div>

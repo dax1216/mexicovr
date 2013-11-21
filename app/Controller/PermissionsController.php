@@ -7,6 +7,7 @@ class PermissionsController extends AppController {
 
     public function beforeFilter() {
         parent::beforeFilter();
+        $this->layout = "default-bootstrap";
     }
 
     public function index() {

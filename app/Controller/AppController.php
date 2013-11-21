@@ -55,12 +55,12 @@ class AppController extends Controller {
 
     public $helpers = array('Session', 'Form', 'Html', 'Number', 'Time', 'Geography');
 
-    /*public function beforeFilter() {
+    public function beforeFilter() {
         $this->Auth->allow();
         
         if(!$this->Access->check($this->params['controller'] . '/'. $this->params['action'])) {
             $this->Session->setFlash('Access denied.', 'default', array('class' => 'alert alert-error'));
             $this->redirect('/');
         }
-    }*/
+    }
 }
