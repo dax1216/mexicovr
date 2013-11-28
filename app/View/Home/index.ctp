@@ -1,9 +1,33 @@
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+
+<script>
+  $(function() {
+    var availableDestination = [
+      "Acapulco",
+      "AppleScript",
+      "Sonora",
+      "Sinola",
+      "Oaxaca",
+      "Chiapas",
+      "Morelos",
+      "Sample"
+    ];
+    $("#destination").autocomplete({
+      source: availableDestination
+    });
+  });
+ </script>
+
+
 
 <div class="search-property">
     <form action="">
         <a href="#" class="search-rentprop rent-current"></a>
         <a href="#" class="search-buyprop"></a>
-        <input type="textbox" class="destination" placeholder="DESTINATION" />
+        <input type="text" class="destination" placeholder="DESTINATION" id="destination">
         <div class="lines"></div>
         <div id="dd" class="wrapper-dropdown-1" tabindex="1">
             <span>BEDROOMS</span>
@@ -24,9 +48,12 @@
 </div>
 <div class="searchmap">
     <img class="imgmap" src="images/map.png" />
-    <div class="callout">
+
+    <div class="callout" id="acapulco" style="display: none">
         <div class="callout-header">Acapulco</div>
         <p>For a relaxed tropical paradise, Acapulco certainly is vibrant one --as a matter of fact, it literally never sleeps. With non-stop nightlife, great shopping centers and restaurants, this bustling seaside resort is alive and...</p>
         <div class="readmore"><a href="#">Read More..</a></div>
     </div>
+
 </div>
+    
