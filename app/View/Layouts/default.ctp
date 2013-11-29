@@ -12,7 +12,7 @@
             echo $this->Html->meta('icon');
             echo $this->fetch('meta');
 
-            echo $this->Html->css(array('dp', 'shCore', 'style', 'shThemeDefault'));
+            echo $this->Html->css(array('dp', 'shCore', 'style', 'map-style', 'shThemeDefault'));
             echo $this->fetch('css');
 
             echo $this->Html->script(array('jquery', 'modernizr.custom.79639', 'jquery.min', 'dropdown', 'jquery.datepicker', 'datepicker_lang_US'));

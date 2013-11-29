@@ -1,19 +1,41 @@
  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+ <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+ <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 
 <script>
   $(function() {
     var availableDestination = [
+      "San Jose del Cabo",
+      "La Paz",
+      "Ciudad Constitucion",
+      "Tijuana",
+      "Mexicali",
+      "Ciudad Juarez",
+      "Guaymas",
+      "Los Mochis",
+      "Culiacan",
+      "Los Mochis",
+      "Culiacan",
+      "Guadalajara",
+      "Toluca",
+      "Cuernavaca",
       "Acapulco",
-      "AppleScript",
-      "Sonora",
-      "Sinola",
-      "Oaxaca",
-      "Chiapas",
-      "Morelos",
-      "Sample"
+      "Tuxtla Gutierrez",
+      "Chetumal",
+      "Merida",
+      "Campeche",
+      "Pueblo",
+      "Pachuca",
+      "Queretaro",
+      "Mexico City",
+      "Leon",
+      "San Luis Potosi",
+      "Ciudad Victoria",
+      "Monterrey",
+      "Torreon",
+      "Chihuahua",
+      "Ciudad Juarez"
     ];
     $("#destination").autocomplete({
       source: availableDestination
@@ -46,14 +68,26 @@
         <span class="sub"><input type="submit" value="SEARCH" class="btnsearch-property" /></span>
     </form>
 </div>
+
 <div class="searchmap">
     <img class="imgmap" src="images/map.png" />
 
-    <div class="callout" id="acapulco" style="display: none">
+    <div class="callout-sanjose" id="sanjose">
+        <div class="callout-header">Acapulco</div>
+        <p>For a relaxed tropical paradise, Acapulco certainly is vibrant one --as a matter of fact, it literally never sleeps. With non-stop nightlife, great shopping centers and restaurants, this bustling seaside resort is alive and...</p>
+        <div class="readmore"><a href="#">Read More..</a></div>
+    </div>
+    
+     <div class="callout-lapaz" id="lapaz">
+        <div class="callout-header">Acapulco</div>
+        <p>For a relaxed tropical paradise, Acapulco certainly is vibrant one --as a matter of fact, it literally never sleeps. With non-stop nightlife, great shopping centers and restaurants, this bustling seaside resort is alive and...</p>
+        <div class="readmore"><a href="#">Read More..</a></div>
+    </div>
+    
+     <div class="callout-ciudad" id="ciudad">
         <div class="callout-header">Acapulco</div>
         <p>For a relaxed tropical paradise, Acapulco certainly is vibrant one --as a matter of fact, it literally never sleeps. With non-stop nightlife, great shopping centers and restaurants, this bustling seaside resort is alive and...</p>
         <div class="readmore"><a href="#">Read More..</a></div>
     </div>
 
 </div>
-    
