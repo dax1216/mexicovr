@@ -72,7 +72,7 @@ select,
 textarea {
 	font-family: 'HelveticaNeueLTStd55Roman';
 }
-input[type="text"],input[type="password"]  {
+input[type="text"],input[type="password"],input[type="email"],input[type="tel"]  {
 	behavior: url(http://cfo.mydevwebsites.com/wp-content/themes/thecfosquad/js/PIE.htc);
 	-webkit-box-shadow: inset 5px 30px 15px -35px rgba(0,0,0,0.75);
 	-moz-box-shadow: inset 5px 30px 15px -35px  rgba(0,0,0,0.75);
@@ -1107,20 +1107,23 @@ input.destination {
 	#bgWrap .register .form .buttons {
 		margin: auto;
 	}
-	#bgWrap .register .form .left .text {
+	#bgWrap .register .form .left .text,#bgWrap .register .form .left .checkbox {
 		margin-top: 50px;
 	}
-	#bgWrap .register .form .left .text a {
+	#bgWrap .register .form .left .text a, #bgWrap .register .form .left .checkbox a {
 		text-decoration: underline;
 	}
-	#bgWrap .register .form .left .text input[type="checkbox"] {
+	#bgWrap .register .form .left .text input[type="checkbox"], #bgWrap .register .form .left .checkbox input[type="checkbox"] {
 		width: 5px;
 		margin-top: 10px;
 		margin-right: 15px;
 	}
-	#bgWrap .register .form .left .text a:hover {
+	#bgWrap .register .form .left .text a:hover, #bgWrap .register .form .left .checkbox a:hover {
 		text-decoration: none;
 	}
+        #bgWrap .register .form .left .checkbox label, #bgWrap .register .form .left .radiobutton label {
+            display: inline;
+        }
 	#bgWrap .thanks h2 {
 		font-size: 18px;
 		font-family: Arial;
@@ -1709,7 +1712,7 @@ input.destination {
 			top: -10px;
 		}
 		input[type=checkbox] {
-			visibility: hidden;
+/*			visibility: hidden;*/
 		}
 
 	/* End of SQUARED FOUR */
@@ -1965,7 +1968,7 @@ input.destination {
 		margin-bottom: 10px;
 		color: #fff;
 	}
-	#contact .form input[type="text"], #contact .form input[type="password"], #contact .form textarea, #contact #dd, #contact #dd1, #contact #dd2, #contact #dd3, #contact #dd4  {
+	#contact .form input[type="text"], #contact .form input[type="password"],#contact .form input[type="email"],#contact .form input[type="tel"], #contact .form textarea, #contact #dd, #contact #dd1, #contact #dd2, #contact #dd3, #contact #dd4  {
 		behavior: url(http://cfo.mydevwebsites.com/wp-content/themes/thecfosquad/js/PIE.htc);
 		-webkit-box-shadow: -2px 0 4px 2px rgba(108,208,233,1);
 		-moz-box-shadow: -2px 0 4px 2px rgba(108,208,233,1);
@@ -2009,6 +2012,23 @@ input.destination {
 	#contact .right {
 		width: 245px;
 	}
+        
+        
+/* Additional */
+#flashMessage.alert-error{
+     color: rgb(255, 50, 50);
+     font-weight: bold;
+}
+#flashMessage.alert-success{
+     color: rgba(0,172,6,1);
+     font-weight: bold;
+}
+.error-message{
+    color: rgb(255, 50, 50);
+}
+        
+        
+        
 
 /* End of About Us Page */
 

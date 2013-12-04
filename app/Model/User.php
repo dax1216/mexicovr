@@ -31,36 +31,58 @@ class User extends AppModel {
         'first_name' => array(
             'notempty' => array(
 			'rule' => array('notempty'),
-			'message' => 'First Name is required',
+			'message' => 'First Name is required.',
 			'allowEmpty' => false,			
 			),
         ),
         'last_name' => array(
             'notempty' => array(
 			'rule' => array('notempty'),
-			'message' => 'Last Name is required',
+			'message' => 'Last Name is required.',
 			'allowEmpty' => false,			
 			)
-        ),        
+        ),
+        'phone' => array(
+            'notempty' => array(
+			'rule' => array('notempty'),
+			'message' => 'Phone No. is required.',
+			'allowEmpty' => false,			
+			),
+            'phone' => array(
+                'rule' => array('phone', null, 'us'),
+                'message' => 'Must be a valid Phone No.',
+            ),
+        ),
+        /*'username' => array(
+             'notempty' => array(
+			'rule' => array('notempty'),
+			'message' => 'Username is required.',
+			'allowEmpty' => false,			
+			),
+            'unique' => array(
+                        'rule'      => 'isUnique',
+                        'message'   => 'Username entered is already taken.',
+            )
+        ),*/
         'email_address' => array(
             'email_address' => array(
                         'rule'      => 'email',
-                        'message'   => 'Must be a valid email address',
+                        'message'   => 'Must be a valid email address.',
             ),
             'unique' => array(
                         'rule'      => 'isUnique',
-                        'message'   => 'Already taken',
+                        'message'   => 'Email entered is already taken.',
             ),
-            'identicalFieldValues' => array(
-                'rule' => array('identicalFieldValues', 'email_address_confirm' ),
-                'message' => 'The email address you entered does not match',
-                'on' => 'create'
-             ),
+//            'identicalFieldValues' => array(
+//                'rule' => array('identicalFieldValues', 'email_address_confirm' ),
+//                'message' => 'The email address you entered does not match',
+//                'on' => 'create'
+//             ),
         ),
         'email_address_confirm' => array(
             'empty' => array(
                 'rule'      => 'notEmpty',
-                'message'   => 'Email Address confirmation is required',
+                'message'   => 'Email Address confirmation is required.',
                 'last' => false, // Stop validation after this rule
                 'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
@@ -68,7 +90,7 @@ class User extends AppModel {
         'password' => array(            
             'empty' => array(
                     'rule'      => 'notEmpty',
-                    'message'   => 'Password is required',
+                    'message'   => 'Password is required.',
                     'last' => false, // Stop validation after this rule
                     //'on' => 'create', // Limit validation to 'create' or 'update' operations
                 ),
@@ -76,17 +98,24 @@ class User extends AppModel {
         'password_confirm' => array(
             'empty' => array(
                 'rule'      => 'notEmpty',
-                'message'   => 'Password Confirm is required',
+                'message'   => 'Password Confirm is required.',
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
             ),
             'identicalFieldValues' => array(
                     'rule' => array('identicalFieldValues', 'password' ),
-                    'message' => 'The password you entered does not match',
+                    'message' => 'The password you entered does not match.',
                     //'on' => 'create'
                  )
         ),
-        
+        'tos' => array(
+            'notEmpty' => array(
+                'rule'     => array('comparison', '!=', 0),
+                'required' => true,
+                'message'  => 'You have to accept the Terms and Conditions.',
+                'on' => 'create'
+            )
+        ),
     );
 
     public $belongsTo = array(
@@ -116,7 +145,8 @@ class User extends AppModel {
 
 
 	public function beforeSave() {
-        if (isset($this->data['User']['password'])) {
+            
+        if (!isset($this->data['User']['user_id']) && isset($this->data['User']['password'])) {
             $this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
         }
         
