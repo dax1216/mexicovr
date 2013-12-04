@@ -348,3 +348,4 @@ Cache::config('_cake_model_', array(
 ));
 
 Configure::write(array('site_config.role_user' => 2));
+define("APP_URL", "http://localhost/mexicovr/");

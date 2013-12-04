@@ -14,11 +14,11 @@
 		echo $this->Html->meta('icon');
                 echo $this->fetch('meta');
 
-		echo $this->Html->css(array('dp', 'shCore', 'style','shThemeDefault'));
+		echo $this->Html->css(array('dp', 'shCore', 'style','shThemeDefault','jscrollpane'));
 		echo $this->fetch('css');
 
 
-                echo $this->Html->script(array('jquery', 'modernizr.custom.79639','jquery.min.js','dropdown.js','jquery.datepicker.js','datepicker_lang_US.js'));
+                echo $this->Html->script(array('jquery','popup','jquery.mousewheel','jquery.jscrollpane.min', 'modernizr.custom.79639','jquery.min','dropdown','jquery.datepicker','datepicker_lang_US'));
                 //code highlighter file import
                 echo $this->Html->script(array('shCore','shBrushJScript','shBrushCss'));
 		echo $this->fetch('script');
@@ -30,7 +30,7 @@
         SyntaxHighlighter.config.clipboardSwf = '../highlighter/scripts/clipboard.swf';
     	SyntaxHighlighter.all();
 	</script>
-    <!--end code highlighter-->
+    <!--end code highlighter1-->
 
   	<!--[if IE 8]>
 	    <script type="text/javascript">
