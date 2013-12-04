@@ -44,7 +44,9 @@ class PropertiesController extends AppController {
     }
 
     public function description($params = null){
-        
+          if ($this->request->is('post')) {
+             
+          }
     }
 
     public function address($params = null){
