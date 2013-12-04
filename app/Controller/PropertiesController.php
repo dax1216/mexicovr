@@ -24,17 +24,31 @@ class PropertiesController extends AppController {
         $this->set('properties', $this->paginate());
     }
 
+    public function choose_your_listings($var = null){
+        if($var){
+            
+        }
+    }
+
     public function rent($params = null){
-         $this->set('type', $params);
+        
     }
 
      public function sell($params = null){
          $this->set('type', $params);
     }
 
-       public function price() {
+    public function price() {
         $this->Property->recursive = 0;
         $this->set('properties', $this->paginate());
+    }
+
+    public function description($params = null){
+        
+    }
+
+    public function address($params = null){
+
     }
 
     /**
