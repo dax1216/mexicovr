@@ -8,7 +8,7 @@ App::uses('AttachmentBehavior', 'Uploader.Model/Behavior');
 class Advertisement extends AppModel {
 
 /**
- * Validation rules
+ * Validation rules Daisy Tudtud
  *
  * @var array
  */
