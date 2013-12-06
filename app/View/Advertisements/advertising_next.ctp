@@ -12,14 +12,14 @@
 					<div class="text">
 						<p><strong><?php echo __($advertisment['title']); ?></strong> <?php echo __($advertisment['description1']); ?></p>
 						<div class="lines"></div>
-						<h3>7878 lorem ipsum <br/> sed diem mimb</h3>
+						<h3><?php echo __($advertisment['propertyAddress']) ?></h3>
 						<div class="lines"></div>
 						<h2><?php echo __($advertisment['propertyContact']); ?></h2>
 					</div>
 				</div>
 				<div class="button">
 					<h3>$<?php echo __($advertisment['propertyPrice']); ?></h3>
-					<a href="advertising-advertise.html"><span class="sub"><input type="submit" value="ADVERTISE" class="btnAdv"/></span></a>
+					<a href="/advertisements/advertising_advertise"><span class="sub"><input type="submit" value="ADVERTISE" class="btnAdv"/></span></a>
 				</div>
 			</div>
 			<div class="right">

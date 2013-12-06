@@ -955,35 +955,45 @@ input.destination {
 		-moz-border-radius: 5px;
 		border-radius: 5px;
 	}
-	.advertising .box {
+	.premium .left {
+		margin-left: 30px;
+	}
+	#bgWrap .premium .left h1 {
+		padding: 10px 0 0;
+		text-align: center;
+	}
+	#bgWrap  .premium .box {
+		margin: 10px 0 auto;
+	}
+	.advertising .box,{
 		margin: 0 auto;
 	}
-	.advertising .button {
+	.advertising .button, .premium .button {
 		margin: 0 auto;
 		margin-top: 20px;
 		width: 220px;
 		text-align: center;
 	}
-	.advertising .images {
+	.advertising .images, .premium .images {
 		margin: 0 auto;
 		text-align: center;	
 		height: 150px;
 		width: 215px;
 		background: #002342;
 	}
-	.advertising .images .btnimages {
+	.advertising .images .btnimages, .premium .images .btnimages {
 		width: 170px;
 		margin-top: 55px;
 	}
-	.advertising .desc {
+	.advertising .desc, .premium .desc {
 		height: 85px;
 		vertical-align: top;
 	}
-	.advertising .text {
+	.advertising .text, .premium .text {
 		text-align: center;
 		margin-bottom: 20px;
 	}
-	.advertising .area {
+	.advertising .area, .premium .area {
 		behavior: url(http://cfo.mydevwebsites.com/wp-content/themes/thecfosquad/js/PIE.htc);
 		-webkit-box-shadow: inset 5px 30px 15px -35px rgba(0,0,0,0.75);
 		-moz-box-shadow: inset 5px 30px 15px -35px  rgba(0,0,0,0.75);
@@ -1001,7 +1011,7 @@ input.destination {
 		margin-top: 10px;
 		width: 180px;
 	}
-	.advertising .lines {
+	.advertising .lines, .premium .lines {
 		margin: 10px 0;
 	}
 	.payment #contact .right {
@@ -1044,6 +1054,7 @@ input.destination {
 	.payment #contact .form input[type="text"].code {
 		width: 120px;
 	}
+	#bgWrap .premium 
 	#bgWrap .submits .buttons {
 		width: 230px;
 	}

@@ -131,5 +131,11 @@ class AdvertisementsController extends AppController {
     	$advertisment = $this->Advertisement->find('randomAdvertisment');
     	$this->set('advertisment', $advertisment[0]['Advertisement']);
     }
+
+    public function advertising_advertise()
+    {
+    	
+    }
+    
     
 }
