@@ -1,5 +1,16 @@
-<div class="advertisements view">
-<h2><?php  echo __('Advertisement'); ?></h2>
+<div class="advertisements view" id="content">
+	<h2>
+		<?php  echo __('Advertisement'); ?>
+	</h2>
+	<div class="actions">
+			<h3><?php echo __('Actions'); ?></h3>
+			<ul>
+				<li><?php echo $this->Html->link(__('Edit Advertisement'), array('action' => 'edit', $advertisement['Advertisement']['id'])); ?> </li>
+				<li><?php echo $this->Form->postLink(__('Delete Advertisement'), array('action' => 'delete', $advertisement['Advertisement']['id']), null, __('Are you sure you want to delete # %s?', $advertisement['Advertisement']['id'])); ?> </li>
+				<li><?php echo $this->Html->link(__('List Advertisements'), array('action' => 'index')); ?> </li>
+				<li><?php echo $this->Html->link(__('New Advertisement'), array('action' => 'add')); ?> </li>
+			</ul>
+	</div>
 	<dl>
 		<dt><?php echo __('Id'); ?></dt>
 		<dd>
@@ -42,13 +53,4 @@
 			&nbsp;
 		</dd>
 	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Advertisement'), array('action' => 'edit', $advertisement['Advertisement']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Advertisement'), array('action' => 'delete', $advertisement['Advertisement']['id']), null, __('Are you sure you want to delete # %s?', $advertisement['Advertisement']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Advertisements'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Advertisement'), array('action' => 'add')); ?> </li>
-	</ul>
 </div>
