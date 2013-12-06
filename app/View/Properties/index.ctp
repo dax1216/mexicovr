@@ -31,17 +31,17 @@
         <ul>
             <li>
                 <div class="title">LOREM IPSUM</div>
-                <img src="images/rate1.jpg" />
+                <img src="<?php echo $this->webroot; ?>images/rate1.jpg" />
                 <div class="price">
                     <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
                         <div class="total">$ 300/NT  $1500/WK</div>
                     </div>
                     <div class="right">
                         <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
                         </ul>
                     </div>
                     <div class="clear"></div>
@@ -49,17 +49,17 @@
             </li>
             <li>
                 <div class="title">LOREM IPSUM</div>
-                <img src="images/rate2.jpg" />
+                <img src="<?php echo $this->webroot; ?>images/rate2.jpg" />
                 <div class="price">
                     <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
                         <div class="total">$ 300/NT  $1500/WK</div>
                     </div>
                     <div class="right">
                         <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
                         </ul>
                     </div>
                     <div class="clear"></div>
@@ -67,76 +67,17 @@
             </li>
             <li>
                 <div class="title">LOREM IPSUM</div>
-                <img src="images/rate3.png" />
+                <img src="<?php echo $this->webroot; ?>images/rate3.png" />
                 <div class="price">
                     <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
                         <div class="total">$ 300/NT  $1500/WK</div>
                     </div>
                     <div class="right">
                         <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
-                        </ul>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <div class="clear"></div>
-    <div class="rent">
-        <ul>
-            <li>
-                <div class="title">LOREM IPSUM</div>
-                <img src="images/rate4.jpg" />
-                <div class="price">
-                    <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
-                        <div class="total">$ 300/NT  $1500/WK</div>
-                    </div>
-                    <div class="right">
-                        <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
-                        </ul>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-            </li>
-            <li>
-                <div class="title">LOREM IPSUM</div>
-                <img src="images/rate5.jpg" />
-                <div class="price">
-                    <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
-                        <div class="total">$ 300/NT  $1500/WK</div>
-                    </div>
-                    <div class="right">
-                        <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
-                        </ul>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-            </li>
-            <li>
-                <div class="title">LOREM IPSUM</div>
-                <img src="images/rate6.jpg" />
-                <div class="price">
-                    <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
-                        <div class="total">$ 300/NT  $1500/WK</div>
-                    </div>
-                    <div class="right">
-                        <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
                         </ul>
                     </div>
                     <div class="clear"></div>
@@ -149,17 +90,17 @@
         <ul>
             <li>
                 <div class="title">LOREM IPSUM</div>
-                <img src="images/rate7.jpg" />
+                <img src="<?php echo $this->webroot; ?>images/rate4.jpg" />
                 <div class="price">
                     <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
                         <div class="total">$ 300/NT  $1500/WK</div>
                     </div>
                     <div class="right">
                         <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
                         </ul>
                     </div>
                     <div class="clear"></div>
@@ -167,17 +108,17 @@
             </li>
             <li>
                 <div class="title">LOREM IPSUM</div>
-                <img src="images/rate8.jpg" />
+                <img src="<?php echo $this->webroot; ?>images/rate5.jpg" />
                 <div class="price">
                     <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
                         <div class="total">$ 300/NT  $1500/WK</div>
                     </div>
                     <div class="right">
                         <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
                         </ul>
                     </div>
                     <div class="clear"></div>
@@ -185,76 +126,17 @@
             </li>
             <li>
                 <div class="title">LOREM IPSUM</div>
-                <img src="images/rate9.jpg" />
+                <img src="<?php echo $this->webroot; ?>images/rate6.jpg" />
                 <div class="price">
                     <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
                         <div class="total">$ 300/NT  $1500/WK</div>
                     </div>
                     <div class="right">
                         <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
-                        </ul>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <div class="clear"></div>
-    <div class="rent">
-        <ul>
-            <li>
-                <div class="title">LOREM IPSUM</div>
-                <img src="images/rate1.jpg" />
-                <div class="price">
-                    <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
-                        <div class="total">$ 300/NT  $1500/WK</div>
-                    </div>
-                    <div class="right">
-                        <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
-                        </ul>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-            </li>
-            <li>
-                <div class="title">LOREM IPSUM</div>
-                <img src="images/rate2.jpg" />
-                <div class="price">
-                    <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
-                        <div class="total">$ 300/NT  $1500/WK</div>
-                    </div>
-                    <div class="right">
-                        <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
-                        </ul>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-            </li>
-            <li>
-                <div class="title">LOREM IPSUM</div>
-                <img src="images/rate3.png" />
-                <div class="price">
-                    <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
-                        <div class="total">$ 300/NT  $1500/WK</div>
-                    </div>
-                    <div class="right">
-                        <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
                         </ul>
                     </div>
                     <div class="clear"></div>
@@ -267,17 +149,17 @@
         <ul>
             <li>
                 <div class="title">LOREM IPSUM</div>
-                <img src="images/rate4.jpg" />
+                <img src="<?php echo $this->webroot; ?>images/rate7.jpg" />
                 <div class="price">
                     <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
                         <div class="total">$ 300/NT  $1500/WK</div>
                     </div>
                     <div class="right">
                         <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
                         </ul>
                     </div>
                     <div class="clear"></div>
@@ -285,17 +167,17 @@
             </li>
             <li>
                 <div class="title">LOREM IPSUM</div>
-                <img src="images/rate5.jpg" />
+                <img src="<?php echo $this->webroot; ?>images/rate8.jpg" />
                 <div class="price">
                     <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
                         <div class="total">$ 300/NT  $1500/WK</div>
                     </div>
                     <div class="right">
                         <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
                         </ul>
                     </div>
                     <div class="clear"></div>
@@ -303,17 +185,17 @@
             </li>
             <li>
                 <div class="title">LOREM IPSUM</div>
-                <img src="images/rate6.jpg" />
+                <img src="<?php echo $this->webroot; ?>images/rate9.jpg" />
                 <div class="price">
                     <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
                         <div class="total">$ 300/NT  $1500/WK</div>
                     </div>
                     <div class="right">
                         <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
                         </ul>
                     </div>
                     <div class="clear"></div>
@@ -326,17 +208,17 @@
         <ul>
             <li>
                 <div class="title">LOREM IPSUM</div>
-                <img src="images/rate7.jpg" />
+                <img src="<?php echo $this->webroot; ?>images/rate1.jpg" />
                 <div class="price">
                     <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
                         <div class="total">$ 300/NT  $1500/WK</div>
                     </div>
                     <div class="right">
                         <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
                         </ul>
                     </div>
                     <div class="clear"></div>
@@ -344,17 +226,17 @@
             </li>
             <li>
                 <div class="title">LOREM IPSUM</div>
-                <img src="images/rate8.jpg" />
+                <img src="<?php echo $this->webroot; ?>images/rate2.jpg" />
                 <div class="price">
                     <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
                         <div class="total">$ 300/NT  $1500/WK</div>
                     </div>
                     <div class="right">
                         <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
                         </ul>
                     </div>
                     <div class="clear"></div>
@@ -362,17 +244,135 @@
             </li>
             <li>
                 <div class="title">LOREM IPSUM</div>
-                <img src="images/rate9.jpg" />
+                <img src="<?php echo $this->webroot; ?>images/rate3.png" />
                 <div class="price">
                     <div class="left">
-                        <div class="rating">RATING <img src="images/star.png" /></div>
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
                         <div class="total">$ 300/NT  $1500/WK</div>
                     </div>
                     <div class="right">
                         <ul class="icons">
-                            <li><img src="images/disable.png"/></li>
-                            <li><img src="images/paw.png"/></li>
-                            <li><img src="images/card.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+    <div class="rent">
+        <ul>
+            <li>
+                <div class="title">LOREM IPSUM</div>
+                <img src="<?php echo $this->webroot; ?>images/rate4.jpg" />
+                <div class="price">
+                    <div class="left">
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
+                        <div class="total">$ 300/NT  $1500/WK</div>
+                    </div>
+                    <div class="right">
+                        <ul class="icons">
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </li>
+            <li>
+                <div class="title">LOREM IPSUM</div>
+                <img src="<?php echo $this->webroot; ?>images/rate5.jpg" />
+                <div class="price">
+                    <div class="left">
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
+                        <div class="total">$ 300/NT  $1500/WK</div>
+                    </div>
+                    <div class="right">
+                        <ul class="icons">
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </li>
+            <li>
+                <div class="title">LOREM IPSUM</div>
+                <img src="<?php echo $this->webroot; ?>images/rate6.jpg" />
+                <div class="price">
+                    <div class="left">
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
+                        <div class="total">$ 300/NT  $1500/WK</div>
+                    </div>
+                    <div class="right">
+                        <ul class="icons">
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+    <div class="rent">
+        <ul>
+            <li>
+                <div class="title">LOREM IPSUM</div>
+                <img src="<?php echo $this->webroot; ?>images/rate7.jpg" />
+                <div class="price">
+                    <div class="left">
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
+                        <div class="total">$ 300/NT  $1500/WK</div>
+                    </div>
+                    <div class="right">
+                        <ul class="icons">
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </li>
+            <li>
+                <div class="title">LOREM IPSUM</div>
+                <img src="<?php echo $this->webroot; ?>images/rate8.jpg" />
+                <div class="price">
+                    <div class="left">
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
+                        <div class="total">$ 300/NT  $1500/WK</div>
+                    </div>
+                    <div class="right">
+                        <ul class="icons">
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </li>
+            <li>
+                <div class="title">LOREM IPSUM</div>
+                <img src="<?php echo $this->webroot; ?>images/rate9.jpg" />
+                <div class="price">
+                    <div class="left">
+                        <div class="rating">RATING <img src="<?php echo $this->webroot; ?>images/star.png" /></div>
+                        <div class="total">$ 300/NT  $1500/WK</div>
+                    </div>
+                    <div class="right">
+                        <ul class="icons">
+                            <li><img src="<?php echo $this->webroot; ?>images/disable.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/paw.png"/></li>
+                            <li><img src="<?php echo $this->webroot; ?>images/card.png"/></li>
                         </ul>
                     </div>
                     <div class="clear"></div>
