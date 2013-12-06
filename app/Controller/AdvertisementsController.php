@@ -12,7 +12,7 @@ class AdvertisementsController extends AppController {
 
     public function beforeFilter() {
         $this->Auth->allow();
-        $this->layout = "subpage";
+        $this->layout = "advertisments";
     }
 
     /**
@@ -104,19 +104,20 @@ class AdvertisementsController extends AppController {
         $this->Session->setFlash(__('Advertisement was not deleted'));
         $this->redirect(array('action' => 'index'));
     }
-
-    public function advertise() {
+    
+    
+    public function advertise(){
         if ($this->request->is('post')) {
             $this->Advertisement->create();
-            if ($this->Advertisement->save($this->request->data, true)) {
+            if ($this->Advertisement->save($this->request->data,true)) {
                 $this->Session->setFlash(__('The advertisement has been saved'));
-                $this->redirect(array('action' => 'preview/' . $this->Advertisement->getLastInsertID()));
+                $this->redirect(array('action' => 'preview/'.$this->Advertisement->getLastInsertID()));
             } else {
                 $this->Session->setFlash(__('The advertisement could not be saved. Please, try again.'));
             }
         }
     }
-
+    
     public function preview($id = null) {
         $this->Advertisement->id = $id;
         if (!$this->Advertisement->exists()) {
@@ -125,4 +126,10 @@ class AdvertisementsController extends AppController {
         $this->set('advertisement', $this->Advertisement->read(null, $id));
     }
 
+    public function advertising_next()
+    {
+    	$advertisment = $this->Advertisement->find('randomAdvertisment');
+    	$this->set('advertisment', $advertisment[0]['Advertisement']);
+    }
+    
 }
