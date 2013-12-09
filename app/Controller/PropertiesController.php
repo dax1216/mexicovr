@@ -125,6 +125,7 @@ class PropertiesController extends AppController {
         $this->Session->destroy('property_desc');
     }
     
+    /* start of daisy's implementation*/
     public function rates() {
         //dummy data
         $this->Session->write('Property', array(
@@ -207,6 +208,8 @@ class PropertiesController extends AppController {
         
         $this->set('photo_limit', $photoLimit);
     }
+    
+    /* end of daisy's implementation*/
 
     /**
      * view method
