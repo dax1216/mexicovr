@@ -194,12 +194,12 @@
 /**
  * A random string used in security hashing methods.
  */
-	Configure::write('Security.salt', sha1('RC-CakePHP-Template'));
+	Configure::write('Security.salt', sha1('RC-CakePHP-TemplateFred'));
 
 /**
  * A random numeric string (digits only) used to encrypt/decrypt strings.
  */
-	Configure::write('Security.cipherSeed', '20130801120001');
+	Configure::write('Security.cipherSeed', '20130801120001Fred');
 
 /**
  * Apply timestamps with the last modified time to static assets (js, css, images).

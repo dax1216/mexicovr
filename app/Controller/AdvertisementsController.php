@@ -12,7 +12,7 @@ class AdvertisementsController extends AppController {
 
     public function beforeFilter() {
         $this->Auth->allow();
-        $this->layout = "subpage";
+        $this->layout = "advertisments";
     }
 
     /**
@@ -126,4 +126,16 @@ class AdvertisementsController extends AppController {
         $this->set('advertisement', $this->Advertisement->read(null, $id));
     }
 
+    public function advertising_next()
+    {
+    	$advertisment = $this->Advertisement->find('randomAdvertisment');
+    	$this->set('advertisment', $advertisment[0]['Advertisement']);
+    }
+
+    public function advertising_advertise()
+    {
+    	
+    }
+    
+    
 }

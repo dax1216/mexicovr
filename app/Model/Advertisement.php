@@ -76,7 +76,7 @@ class Advertisement extends AppModel {
 	);
         
         
-        public $actsAs = array(
+    public $actsAs = array(
                 'Uploader.Attachment' => array(
                         // Do not copy all these settings, it's merely an example
                         'image' => array(
@@ -135,4 +135,23 @@ class Advertisement extends AppModel {
                         )
                 )
         );
+
+	public $findMethods = array('randomAdvertisment' => true);
+	
+	protected function _findRandomAdvertisment($state, $query, $results = array())
+	{
+		if('before' === $state)
+		{
+			$query['order'] = 'rand()';
+			$query['limit'] = 1;
+			return $query;
+		}
+		
+		if('after' === $state)
+		{
+			return $results;
+		}
+		
+		return $results;
+	}
 }
