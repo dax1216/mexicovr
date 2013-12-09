@@ -4,6 +4,8 @@
 	<tr>
 			<th><?php echo $this->Paginator->sort('id'); ?></th>
 			<th><?php echo $this->Paginator->sort('name'); ?></th>
+			<th><?php echo $this->Paginator->sort('listing_type'); ?></th>
+			<th><?php echo $this->Paginator->sort('price'); ?></th>
 			<th><?php echo $this->Paginator->sort('photo_limit'); ?></th>
 			<th><?php echo $this->Paginator->sort('is_audio_enabled'); ?></th>
 			<th><?php echo $this->Paginator->sort('is_video_enabled'); ?></th>
@@ -17,6 +19,8 @@
 	<tr>
 		<td><?php echo h($package['Package']['id']); ?>&nbsp;</td>
 		<td><?php echo h($package['Package']['name']); ?>&nbsp;</td>
+		<td><?php echo h($package['Package']['listing_type']); ?>&nbsp;</td>
+		<td><?php echo h($package['Package']['price']); ?>&nbsp;</td>
 		<td><?php echo h($package['Package']['photo_limit']); ?>&nbsp;</td>
 		<td><?php echo h($package['Package']['is_audio_enabled']); ?>&nbsp;</td>
 		<td><?php echo h($package['Package']['is_video_enabled']); ?>&nbsp;</td>

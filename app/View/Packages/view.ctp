@@ -11,6 +11,16 @@
 			<?php echo h($package['Package']['name']); ?>
 			&nbsp;
 		</dd>
+		<dt><?php echo __('Listing Type'); ?></dt>
+		<dd>
+			<?php echo h($package['Package']['listing_type']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Price'); ?></dt>
+		<dd>
+			<?php echo h($package['Package']['price']); ?>
+			&nbsp;
+		</dd>
 		<dt><?php echo __('Photo Limit'); ?></dt>
 		<dd>
 			<?php echo h($package['Package']['photo_limit']); ?>
@@ -67,6 +77,7 @@
 		<th><?php echo __('Zip'); ?></th>
 		<th><?php echo __('State'); ?></th>
 		<th><?php echo __('Province'); ?></th>
+		<th><?php echo __('Title'); ?></th>
 		<th><?php echo __('Description'); ?></th>
 		<th><?php echo __('Bedrooms'); ?></th>
 		<th><?php echo __('Bathrooms'); ?></th>
@@ -94,6 +105,7 @@
 			<td><?php echo $property['zip']; ?></td>
 			<td><?php echo $property['state']; ?></td>
 			<td><?php echo $property['province']; ?></td>
+			<td><?php echo $property['title']; ?></td>
 			<td><?php echo $property['description']; ?></td>
 			<td><?php echo $property['bedrooms']; ?></td>
 			<td><?php echo $property['bathrooms']; ?></td>

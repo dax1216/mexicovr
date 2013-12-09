@@ -2012,6 +2012,15 @@ input.destination {
 
 /* End of About Us Page */
 
+/* additional */
+
+#contact form input.property-photo{
+    width: 100%;
+}
+
+/* end of additional */
+
+
 #footerWrap {
 	margin-top: 70px;
 	background: url(../images/footer_bg.png) repeat-x;

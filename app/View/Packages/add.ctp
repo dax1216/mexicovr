@@ -4,6 +4,8 @@
 		<legend><?php echo __('Add Package'); ?></legend>
 	<?php
 		echo $this->Form->input('name');
+		echo $this->Form->input('listing_type');
+		echo $this->Form->input('price');
 		echo $this->Form->input('photo_limit');
 		echo $this->Form->input('is_audio_enabled');
 		echo $this->Form->input('is_video_enabled');

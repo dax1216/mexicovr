@@ -25,6 +25,7 @@ class PackagesControllerTest extends ControllerTestCase {
 		'app.payment_type',
 		'app.property_photo',
 		'app.property_rate',
+		'app.season',
 		'app.reservation',
 		'app.review'
 	);
