@@ -53,7 +53,7 @@
                             $id = "squaredFour".$idt;
                             echo $this->Form->checkbox('activity', array(
                                 'id' => $id,
-                                'value' =>  $name,
+                                'value' =>  $activity['Activity']['id'],
                                 "name"=> 'data[Property][activity][]',
                                 'hiddenField' => false
                             ));

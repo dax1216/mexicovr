@@ -82,13 +82,13 @@ class PropertiesController extends AppController {
             $this->Session->write('property_desc', $property_desc);
 
             //save activities here
-            $actcount = 1;
+//            $actcount = 1;
             foreach ($this->request->data['Property']['activity'] as $val) {
-                $actdata = array(
-                    'actname' . $actcount => $val
-                );
-                $actcount++;
-                $actallvalue[] = $actdata;
+//                $actdata = array(
+//                    'actname' . $actcount => $val
+//                );
+//                $actcount++;
+                $actallvalue[] = $val;
             }
 
             $this->Session->write('property_activity', $actallvalue);
@@ -108,16 +108,16 @@ class PropertiesController extends AppController {
             );
 
             $this->Session->write('property_rate', $prate);
-            $this->redirect(array('action' => 'rate'));
+            $this->redirect(array('action' => 'preview'));
         }
     }
 
-    public function preview() {
+    public function preview($params = null)  {
         $this->layout = "property_preview";
-        $property_address = $this->Session->read('property_address');
-        $property_desc = $this->Session->read('property_desc');
-        $property_activity = $this->Session->read('property_activity');
-        $property_activity = $this->Session->read('property_rate');
+        $this->set('activities', $this->Activity->find('all', array('conditions'=>array('Activity.id'=>$this->Session->read('property_activity')))));
+        $this->set('property_address', $this->Session->read('property_address'));
+        $this->set('property_desc', $this->Session->read('property_desc'));
+        $this->set('property_rate',$this->Session->read('property_rate'));
     }
 
     public function destroy() {
