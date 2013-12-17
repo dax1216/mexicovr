@@ -6,7 +6,7 @@ $cont = $this->params['controller'];
 ?>
 
 
-<div id="headerWrap">
+    <div id="headerWrap">
 		<div id="header">
 			<div id="logo"><a href="<?php echo $this->webroot; ?>"><img src="<?php echo $this->webroot; ?>images/logo.png"/></a></div>
 			<div id="head-right">
