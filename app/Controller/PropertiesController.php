@@ -182,28 +182,30 @@ class PropertiesController extends AppController {
             'payment_types' => array(1, 2),
             'miscellaneous' => array(1)
         ));
-        echo '<pre>';
-        var_dump($this->Session->read('Property'));
-        echo '</pre>';
         $packageID = $this->Session->read('Property.package_id');
         $this->loadModel('Package');
         $packageData = $this->Package->read(array('photo_limit'), $packageID);
         $photoLimit = $packageData['Package']['photo_limit'];
+//        var_dump($this->request->data);
         if ($this->request->is('post')) {
-            $photoArray = array();
-            $photos = $this->request->data['photo'];
-            $validPhotos = 0;
-            foreach ($photos as $photo) {
-//                $this->QuestionsOption->create();
-//                $point++;
-//                $optionData = array('question_id' => $this->Question->getLastInsertId(), 'name' => $option, 'points' => $point);
-                if ($photo && ($validPhotos<$photoLimit-1)) {
-                    $photoArray[] = 
-                    $this->Session->write('Property.rates', $rates);
-                    $validPhotos++;
-                }
-                $cnt++;
-            }
+//            echo 'test';
+            echo '<pre>';
+            var_dump($this->request->data);
+            echo '</pre>';
+//            $photoArray = array();
+//            $photos = $this->request->data;
+//            $validPhotos = 0;
+//            foreach ($photos as $photo) {
+////                $this->QuestionsOption->create();
+////                $point++;
+////                $optionData = array('question_id' => $this->Question->getLastInsertId(), 'name' => $option, 'points' => $point);
+//                if ($photo && ($validPhotos<$photoLimit-1)) {
+////                    $photoArray[] = 
+//                    $this->Session->write('Property.rates', $rates);
+//                    $validPhotos++;
+//                }
+//                $cnt++;
+//            }
         }
         
         $this->set('photo_limit', $photoLimit);

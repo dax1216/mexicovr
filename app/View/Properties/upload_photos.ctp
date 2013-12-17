@@ -7,7 +7,7 @@
 <div id="content">
     <div id="contact" class="photos">
         <h1 class="title">Photos of your listing</h1>
-        <form action="">
+        <?php echo $this->Form->create('Properties', array('type' => 'file')); ?>
             <div class="form">
                 <p><em>Upload photos</em></p>
                 <div class="line-black"></div>
@@ -20,10 +20,10 @@
                 <div class="clear"></div>
             </div>		
             <div class="buttons">
-                <a href="listing-rate.html"><span class="back"><input type="submit" class="btnback" value="<< BACK" /></span></a>
+                <a href="listing-rate.html"><span class="back"><input type="button" class="btnback" value="<< BACK" /></span></a>
                 <span class="next"><input type="submit" class="btnnext" value="NEXT >>" /></span>
             </div>
-        </form>
+        <?php echo $this->Form->end(); ?>
     </div>
 </div>
 <script type="text/javascript">
