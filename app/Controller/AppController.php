@@ -61,7 +61,7 @@ class AppController extends Controller {
 
         if (!$this->Access->check($this->params['controller'] . '/' . $this->params['action'])) {
             $this->Session->setFlash('Access denied.', 'default', array('class' => 'alert alert-error'));
-            $this->redirect('/');
+//            $this->redirect('/');
         }
     }
 

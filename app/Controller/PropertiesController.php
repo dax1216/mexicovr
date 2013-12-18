@@ -1,6 +1,7 @@
 <?php
 
 App::uses('AppController', 'Controller');
+App::uses('AttachmentBehavior', 'Uploader.Model/Behavior');
 
 /**
  * Properties Controller
@@ -186,29 +187,29 @@ class PropertiesController extends AppController {
         $this->loadModel('Package');
         $packageData = $this->Package->read(array('photo_limit'), $packageID);
         $photoLimit = $packageData['Package']['photo_limit'];
-//        var_dump($this->request->data);
+        
         if ($this->request->is('post')) {
-//            echo 'test';
-            echo '<pre>';
-            var_dump($this->request->data);
-            echo '</pre>';
-//            $photoArray = array();
-//            $photos = $this->request->data;
-//            $validPhotos = 0;
-//            foreach ($photos as $photo) {
-////                $this->QuestionsOption->create();
-////                $point++;
-////                $optionData = array('question_id' => $this->Question->getLastInsertId(), 'name' => $option, 'points' => $point);
-//                if ($photo && ($validPhotos<$photoLimit-1)) {
-////                    $photoArray[] = 
-//                    $this->Session->write('Property.rates', $rates);
-//                    $validPhotos++;
-//                }
-//                $cnt++;
-//            }
+            $photoArray = array();
+            $photos = $this->request->data['photo'];
+            $validPhotos = 0;
+            $this->loadModel('TmpUpload');
+            foreach ($photos as $photo) {
+                $this->TmpUpload->create();
+                if ($photo && ($validPhotos<$photoLimit-1)) {
+                    if($this->TmpUpload->save(array('session_id'=>$this->Session->id(), 'tag'=>'property_photo', 'path'=>$photo))){
+                        $photoArray[] =  $photo;                        
+                        $validPhotos++;
+                    }
+                }
+                $this->Session->write('Property.photos', $photoArray);
+            }
         }
         
         $this->set('photo_limit', $photoLimit);
+    }
+    
+    public function availability_calendar(){
+        
     }
     
     /* end of daisy's implementation*/
