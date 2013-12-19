@@ -40,22 +40,6 @@ class AdvertisementsController extends AppController {
         $this->set('advertisement', $this->Advertisement->read(null, $id));
     }
 
-    /**
-     * add method
-     *
-     * @return void
-     */
-    public function add() {
-        if ($this->request->is('post')) {
-            $this->Advertisement->create();
-            if ($this->Advertisement->save($this->request->data)) {
-                $this->Session->setFlash(__('The advertisement has been saved'));
-                $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash(__('The advertisement could not be saved. Please, try again.'));
-            }
-        }
-    }
 
     /**
      * edit method
@@ -134,7 +118,17 @@ class AdvertisementsController extends AppController {
 
     public function advertising_advertise()
     {
+    	if ($this->request->is('post')) {
+    		$this->request->data['Advertisement']['is_active'] = 1;
+    		$this->Advertisement->create();
+    		if ($this->Advertisement->save($this->request->data)) {
+     			$this->redirect(array('action' => 'index'));
+    		} else {
+     			$this->redirect(array('action' => 'advertising_advertise'));
+    		}
+    	}
     	
+    	//$dasd = $this->Advertisement->read(null,$id);
     }
     
     
