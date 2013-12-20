@@ -47,7 +47,7 @@
                ?>
 
                 <li><div class="squaredFour">
-                        <img src="<?php echo $this->webroot; ?>images/<?php echo h($activity['Activity']['icon']); ?>" />
+                        <img src="<?php echo $this->webroot; ?><?php echo h($activity['Activity']['icon']); ?>" />
                           <?php
                             $name =  $activity['Activity']['name'];
                             $id = "squaredFour".$idt;

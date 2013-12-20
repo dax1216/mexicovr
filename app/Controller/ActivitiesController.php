@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('AttachmentBehavior', 'Uploader.Model/Behavior');
 /**
  * Activities Controller
  *
@@ -47,7 +48,6 @@ class ActivitiesController extends AppController {
 				$this->Session->setFlash(__('The activity could not be saved. Please, try again.'));
 			}
 		}
-		$properties = $this->Activity->Property->find('list');
 		$this->set(compact('properties'));
 	}
 

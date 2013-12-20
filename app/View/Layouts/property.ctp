@@ -12,11 +12,11 @@
         echo $this->Html->meta('icon');
         echo $this->fetch('meta');
 
-        echo $this->Html->css(array('style','jscrollpane','dp','datepicker','normalize'));
+        echo $this->Html->css(array('jscrollpane','dp','datepicker','normalize','style'));
 	echo $this->fetch('css');
 
 
-        echo $this->Html->script(array('jquery.min.js', 'tabs','popup','modernizr.custom.79639','jquery.mousewheel','jquery.jscrollpane','dropdown','jquery-ui-1.8.18.custom.min'));
+        echo $this->Html->script(array('jquery.min', 'tabs','popup','modernizr.custom.79639','jquery.mousewheel','jquery.jscrollpane','dropdown','jquery.ui.core','jquery.ui.datepicker','jquery-ui.multidatespicker','prettify','lang-css'));
 		echo $this->fetch('script');
         ?>
 

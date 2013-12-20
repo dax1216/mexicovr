@@ -1,12 +1,11 @@
 <div class="activities form">
-<?php echo $this->Form->create('Activity'); ?>
+<?php echo $this->Form->create('Activity', array('type' => 'file')); ?>
 	<fieldset>
 		<legend><?php echo __('Add Activity'); ?></legend>
 	<?php
 		echo $this->Form->input('name');
-		echo $this->Form->input('icon');
-		echo $this->Form->input('is_active');
-		echo $this->Form->input('Property');
+		echo $this->Form->input('icon', array('type'=>'file'));
+//		echo $this->Form->input('is_active');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>
