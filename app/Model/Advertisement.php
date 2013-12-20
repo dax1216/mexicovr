@@ -12,68 +12,57 @@ class Advertisement extends AppModel {
  *
  * @var array
  */
-	public $validate = array(
-		'title' => array(
-			'notempty' => array(
-				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		/*'image' => array(
-			'notempty' => array(
-				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),*/
-		'description1' => array(
-			'notempty' => array(
-				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'description2' => array(
-			'notempty' => array(
-				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'is_active' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'update' => array(
-			'datetime' => array(
-				'rule' => array('datetime'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-	);
+	public $validate = array('title' => array('notempty' => array('rule' => array('notempty'),
+																  'message' => 'Please add a title',
+																  'allowEmpty' => false,
+																  'required' => true
+																 ),
+											 ),
+							'description1' => array('notempty' => array('rule' => array('notempty'),
+																		'message' => 'Please add 1st Description',
+																		'allowEmpty' => false,
+																		'required' => true
+																	   ),
+												),
+							'propertyAddress' => array('notempty' => array('rule' => array('notempty'),
+																		   'message' => 'Please add Property Address',
+																		   'allowEmpty' => false,
+																		   'required'	=> true
+																		  )
+													  ),
+							'description2' => array('notempty' => array('rule' => array('notempty'),
+																		'message' => 'Please add 2nd Description',
+																		'allowEmpty' => false,
+																		'required' => true
+																	   ),
+												   ),
+							'propertyContact' => array('notempty' => array('rule' => 'notempty',
+																		   'message' => 'Please add property contact details',
+																		   'allowEmpty' => false,
+																		   'required' => true
+																		  ),
+													   'alphaNumeric' => array('rule' => 'alphaNumeric',
+																		   'message' => 'Please enter numbers only',
+																		   'allowEmpty' => false,
+																		   'required' => true
+																		 )
+												   	  ),
+							'propertyPrice'   => array('notempty' => array('rule' => array('notempty'),
+																		   'message' => 'Please add 2nd Description',
+																		   'allowEmpty' => false,
+																		   'required' => true
+																	      ),
+												       'alphaNumeric' => array('rule' => 'alphaNumeric',
+																	      	   'message' => 'Please enter numbers only',
+																	      	   'allowEmpty' => false,
+																	      	   'required' => true
+												       						  )
+												   	  ),
+							'is_active' => array('numeric' => array('rule' => array('numeric'),
+																	'required' => true,
+																   ),
+												)
+							);
         
         
     public $actsAs = array(
@@ -81,27 +70,7 @@ class Advertisement extends AppModel {
                         // Do not copy all these settings, it's merely an example
                         'image' => array(
                                 'tempDir' => TMP,
-                                //'uploadDir' => '/var/www/app/webroot/img/uploads/',
-                                //'finalPath' => '/img/uploads/'
-//                                'nameCallback' => '',
-//                                'append' => '',
-//                                'prepend' => '',
-//                                'tempDir' => TMP,
-//                                'uploadDir' => '',
-//                                'transportDir' => '',
-//                                'finalPath' => '',
-//                                'dbColumn' => '',
-//                                'metaColumns' => array(),
-//                                'defaultPath' => '',
-//                                'overwrite' => false,
-//                                'stopSave' => true,
                                 'allowEmpty' => false,
-//                                'transforms' => array(),
-//                                'transformers' => array(),
-//                                'transport' => array(),
-//                                'transporters' => array(),
-//                                'curl' => array()
-                            
                                 'overwrite' => true,
                                 'transforms' => array(
                                         'image_small' => array(
@@ -112,13 +81,6 @@ class Advertisement extends AppModel {
                                                 'width' => 215,
                                                 'height' => 115
                                         ),
-//                                        'imageMedium' => array(
-//                                                'class' => 'resize',
-//                                                'append' => '-medium',
-//                                                'width' => 800,
-//                                                'height' => 600,
-//                                                'aspect' => false
-//                                        )
                                 )
                         )
                 ),
@@ -154,4 +116,5 @@ class Advertisement extends AppModel {
 		
 		return $results;
 	}
+		
 }
