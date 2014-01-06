@@ -7,7 +7,7 @@
         <div class="title">
             <h1><?php echo $advertisement['title'] ?></h1>
         </div>
-        <?php echo '<img src='.$advertisement['image_small'].' alt="Lorem Ipsum" />'; ?>
+        <?php echo '<img src=/'.$advertisement['image_small'].' alt="Lorem Ipsum" />'; ?>
         <div class="text">
             <?php echo '<p><strong>'.$advertisement['title'].'</strong> '.$advertisement['description1'].'</p>'; ?>
             <div class="lines"></div>
