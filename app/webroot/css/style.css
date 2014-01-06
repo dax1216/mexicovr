@@ -424,6 +424,7 @@ input.destination {
     top: 100%;
     left: 0;
     right: 0;
+    z-index: 1;
 
     /* Styles */
     background: #fff;
@@ -1227,6 +1228,8 @@ p {
 		border-radius: 10px;
 		height: 43px;
 		padding: 0px 15px;
+		z-index:0;
+		position: relative;
 	}
 	#contact .form .total h1 {
 		font-family: 'BebasNeue';

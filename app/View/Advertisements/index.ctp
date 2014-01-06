@@ -5,19 +5,26 @@
     </div>
     <div class="box">
         <div class="title">
-            <h1>Lorem Ipsum</h1>
+            <h1><?php echo $advertisement['title'] ?></h1>
         </div>
-        <img src="images/image.png" alt="Lorem Ipsum" />
+        <?php echo '<img src='.$advertisement['image_small'].' alt="Lorem Ipsum" />'; ?>
         <div class="text">
-            <p><strong>Limf worf</strong> Lorem ipsum dolor sitam et, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laor eet dolore magna aliquam erat volutpati si enim ad minim veniam.</p>
+            <?php echo '<p><strong>'.$advertisement['title'].'</strong> '.$advertisement['description1'].'</p>'; ?>
             <div class="lines"></div>
-            <h3>7878 lorem ipsum <br/> sed diem mimb</h3>
+            <?php echo '<h3>'.$advertisement['propertyAddress'].' <br/> $'.$advertisement['propertyPrice'].'</h3>'; ?>
             <div class="lines"></div>
-            <h2>1 800 555-5555</h2>
+            <?php echo '<h2>'.$advertisement['propertyContact'].'</h2>'; ?>
         </div>
     </div>
     <div class="buttons">
-        <a href="advertising.html"><span class="back"><input type="submit" class="btnback" value="<< BACK" /></span></a>
-        <a href="advertising-payment.html"><span class="next"><input type="submit" class="btnnext" value="NEXT >>" /></span></a>
+         <?php
+         	/***** 
+         	echo $this->Html->link('<< BACK', '/advertisements/advertising_advertise', array('class' => 'btnback'));
+			echo $this->Html->link('NEXT >>', '/advertisements/advertising_advertise', array('class' => 'btnnext'));
+			*****/
+			echo '<a href="/advertisements/advertising_advertise"><span class="back"><input type="submit" class="btnback" value="<< BACK" /></span></a>
+        		  <a href="/advertisements/advertising_payment/'.$advertisement['id'].'"><span class="next"><input type="submit" class="btnnext" value="NEXT >>" /></span></a>
+				 ';
+         ?>
     </div>
 </div>

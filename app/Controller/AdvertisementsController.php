@@ -20,9 +20,16 @@ class AdvertisementsController extends AppController {
      *
      * @return void
      */
-    public function index() {
-        $this->Advertisement->recursive = 0;
-        $this->set('advertisements', $this->paginate());
+    public function index($id = NULL) {
+    	if( NULL != $id)
+    	{
+    		$neighbors = $this->Advertisement->find('neighbors', array('field' => 'id', 'value' => $id));
+    		$this->set('previousAd', $neighbors['prev']);
+    		$this->set('nextAd', $neighbors['next']);
+    	}
+
+    	$advertisement = $this->Advertisement->find('first', array('order' => array('Advertisement.created' => 'desc')));
+        $this->set('advertisement', $advertisement['Advertisement']);
     }
 
     /**
@@ -88,8 +95,8 @@ class AdvertisementsController extends AppController {
         $this->Session->setFlash(__('Advertisement was not deleted'));
         $this->redirect(array('action' => 'index'));
     }
-    
-    
+
+
     public function advertise(){
         if ($this->request->is('post')) {
             $this->Advertisement->create();
@@ -101,7 +108,8 @@ class AdvertisementsController extends AppController {
             }
         }
     }
-    
+
+
     public function preview($id = null) {
         $this->Advertisement->id = $id;
         if (!$this->Advertisement->exists()) {
@@ -110,11 +118,13 @@ class AdvertisementsController extends AppController {
         $this->set('advertisement', $this->Advertisement->read(null, $id));
     }
 
+
     public function advertising_next()
     {
     	$advertisment = $this->Advertisement->find('randomAdvertisment');
     	$this->set('advertisment', $advertisment[0]['Advertisement']);
     }
+
 
     public function advertising_advertise()
     {
@@ -127,9 +137,20 @@ class AdvertisementsController extends AppController {
      			$this->redirect(array('action' => 'advertising_advertise'));
     		}
     	}
-    	
-    	//$dasd = $this->Advertisement->read(null,$id);
     }
-    
-    
+
+
+    public function advertising_payment()
+    {
+		
+    }
+
+
+    public function advertising_purchase()
+    {
+    	
+    }
+
+
+
 }
