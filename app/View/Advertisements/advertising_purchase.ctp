@@ -8,7 +8,7 @@
 					<label class="lbltitle left">Listings Options</label>
 					<div class="edit right"><a href="#">Edit</a></div>
 					<div class="clear"></div>
-					<div class="number1"><img src="images/num1.png" /></div>
+					<div class="number1"><img src="/images/num1.png" /></div>
 						<div class="line-black"></div>
 						<div class="left">
 							<label>RENT YOUR PROPETY</label>
@@ -23,22 +23,22 @@
 					<label class="lbltitle left">Payment</label>
 					<div class="edit right"><a href="#">Edit</a></div>
 					<div class="clear"></div>
-					<div class="number2"><img src="images/num2.png" /></div>
+					<div class="number2"><img src="/images/num2.png" /></div>
 						<div class="line-black"></div>
 						<div class="left">
-							<label>Lorem I. Dolor</label>
-							<label>123 Sed do eiusmod tempor</label>
-							<label>456 Labore et dolore magna</label>
-							<label>Reprehenderit</label>
-							<label>Voluptate velit</label>
-							<label>1234</label>
-							<label>Deserunt mollit</label>
+							<label><?php echo $advertisementData['name']; ?></label>
+							<label><?php echo $advertisementData['address1']; ?></label>
+							<label><?php echo $advertisementData['address2']; ?></label>
+							<label><?php echo $advertisementData['city']; ?></label>
+							<label><?php echo $advertisementData['state']; ?></label>
+							<label><?php echo $advertisementData['zip']; ?></label>
+							<label><?php echo $advertisementData['country']; ?></label>
 						</div>
 						<div class="right">
-							<label>Voluptate</label>
-							<label>123-456-7890</label>
-							<label>01-02-2013</label>
-							<label>6789</label>
+							<label><?php echo $advertisementData['cardType']; ?></label>
+							<label><?php echo $advertisementData['creditCardNumber']; ?></label>
+							<label><?php echo $advertisementData['expirationMonth'] .'-'.$advertisementData['expirationYear']; ?></label>
+							<label><?php echo $advertisementData['securityCode']; ?></label>
 							<label class="lbltotal"><h1>TOTAL</h1></label>
 							<div class="bg-total">
 								<div class="top"></div>

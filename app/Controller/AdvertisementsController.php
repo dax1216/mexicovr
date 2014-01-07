@@ -148,7 +148,8 @@ class AdvertisementsController extends AppController {
 
     public function advertising_purchase()
     {
-    	
+    	// $this->request->data['Advertisement']  // we need this for populating the data for review
+    	$this->set('advertisementData', $this->request->data['Advertisement']);
     }
 
 

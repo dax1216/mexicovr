@@ -6,39 +6,39 @@
 			<div class="left">
 				<h1 class="title">Premium</h1>
 					<div class="boxs">
-					<?php echo $this->Form->create('Advertisement', array('type' => 'file',
+						<?php echo $this->Form->create('Advertisement', array('type' => 'file',
 																	 	  'action' => 'advertising_advertise'
 																		 )
 											  	  );
-					?>
-						<div class="lines"></div>
-						<div class="text">
-							<?php echo $this->Form->input('title', array('value' => 'title', 'label' => false)); ?>
-						</div>
-						<div class="lines"></div>
-						<div class="images">
-							<?php echo $this->Form->input('image', array('value' => 'DOWNLOAD IMAGE', 'type' => 'file', 'label' => false)) ?>
-						</div>
-						<div class="lines"></div>
-						<div class="text">
-							<?php echo $this->Form->input('description1', array('type' => 'textarea', 'class' => 'area', 'value' => 'description 1', 'label' => false)); ?>
+						?>
 							<div class="lines"></div>
-							<?php echo $this->Form->textarea('propertyAddress', array('type' => 'textarea', 'class' => 'area', 'value' => 'property address', 'label' => false)); ?>
+							<div class="text">
+								<?php echo $this->Form->input('title', array('value' => 'title', 'label' => false)); ?>
+							</div>
 							<div class="lines"></div>
-						</div>
-						<div class="text">
-							<?php echo $this->Form->input('description2', array('type' => 'textarea', 'class' => 'area', 'value' => 'description 2', 'label' => false)); ?>
+							<div class="images">
+								<?php echo $this->Form->input('image', array('value' => 'DOWNLOAD IMAGE', 'type' => 'file', 'label' => false)) ?>
+							</div>
 							<div class="lines"></div>
-						</div>
-						<div class="text">
-							<?php echo $this->Form->input('propertyContact', array('value' => 'property contact', 'label' => false)); ?>
-							<div class="lines"></div>
-						</div>
-						<div class="text">
-							<?php echo $this->Form->input('propertyPrice', array('value' => 'property price', 'type' => 'text', 'label' => false)); ?>
+							<div class="text">
+								<?php echo $this->Form->input('description1', array('type' => 'textarea', 'class' => 'area', 'value' => 'description 1', 'label' => false)); ?>
+								<div class="lines"></div>
+								<?php echo $this->Form->textarea('propertyAddress', array('type' => 'textarea', 'class' => 'area', 'value' => 'property address', 'label' => false)); ?>
+								<div class="lines"></div>
+							</div>
+							<div class="text">
+								<?php echo $this->Form->input('description2', array('type' => 'textarea', 'class' => 'area', 'value' => 'description 2', 'label' => false)); ?>
+								<div class="lines"></div>
+							</div>
+							<div class="text">
+								<?php echo $this->Form->input('propertyContact', array('value' => 'property contact', 'label' => false)); ?>
+								<div class="lines"></div>
+							</div>
+							<div class="text">
+								<?php echo $this->Form->input('propertyPrice', array('value' => 'property price', 'type' => 'text', 'label' => false)); ?>
 						</div>
 					</div>
-				<?php echo $this->Form->end(); ?>
+					<?php echo $this->Form->end(); ?>
 				<div class="button">
 					<span class="sub"><input type="submit" id="submitAdvertisement" value="NEXT" class="btnPre"/></span>
 				</div>

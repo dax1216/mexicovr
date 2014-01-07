@@ -72,6 +72,8 @@ class Advertisement extends AppModel {
                                 'tempDir' => TMP,
                                 'allowEmpty' => false,
                                 'overwrite' => true,
+                        		'uploadDir' => 'files/uploads/advertisements/',
+                        		'finalPath' => 'files/uploads/advertisements/',
                                 'transforms' => array(
                                         'image_small' => array(
                                                 'method' => 'resize',
