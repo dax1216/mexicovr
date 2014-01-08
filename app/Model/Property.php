@@ -131,36 +131,36 @@ class Property extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'rate' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'video' => array(
-			'notempty' => array(
-				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'audio' => array(
-			'notempty' => array(
-				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
+//		'rate' => array(
+//			'numeric' => array(
+//				'rule' => array('numeric'),
+//				//'message' => 'Your custom message here',
+//				//'allowEmpty' => false,
+//				//'required' => false,
+//				//'last' => false, // Stop validation after this rule
+//				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+//			),
+//		),
+//		'video' => array(
+//			'notempty' => array(
+//				'rule' => array('notempty'),
+//				//'message' => 'Your custom message here',
+//				//'allowEmpty' => false,
+//				//'required' => false,
+//				//'last' => false, // Stop validation after this rule
+//				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+//			),
+//		),
+//		'audio' => array(
+//			'notempty' => array(
+//				'rule' => array('notempty'),
+//				//'message' => 'Your custom message here',
+//				//'allowEmpty' => false,
+//				//'required' => false,
+//				//'last' => false, // Stop validation after this rule
+//				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+//			),
+//		),
 		'package_id' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),

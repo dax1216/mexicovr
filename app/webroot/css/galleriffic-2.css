@@ -72,16 +72,27 @@ div.caption-container {
 	position: relative;
 	clear: left;
 	height: 75px;
+	top: 300px;
 }
 span.image-caption {
+	background: url(../images/caption.png) repeat;
+	behavior: url(http://cfo.mydevwebsites.com/wp-content/themes/thecfosquad/js/PIE.htc);
+	-webkit-border-radius: 5px 0 0 5px;
+	-moz-border-radius: 5px 0 0 5px;
+	border-radius: 5px 0 0 5px;
+	font-family: 'HelveticaNeueBold';
+	font-weight: normal;
+	font-size: 17px;
+	text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.33);
+	color: #006699;
 	display: block;
 	position: absolute;
-	width: 550px;
 	top: 0;
-	left: 0;
+	right: 0;
 }
 div.caption {
-	padding: 12px;
+	padding: 0 10px;
+	margin-top: 3px;
 }
 div.image-title {
 	font-weight: bold;

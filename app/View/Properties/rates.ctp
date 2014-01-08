@@ -9,12 +9,11 @@
         <h1>RATES FOR YOUR LISTING</h1>
         <div class="line-black"></div>
     </div>
-         <?php echo $this->Form->create(array('url' => '/properties/rate', 'autocomplete' => 'off')); ?>
+        <?php echo $this->Form->create('Property', array('action' => 'rates')); ?>
         <div id="contact">
             <div class="form">
                
-                <?php foreach ($seasons as $key => $season) { ?>
-                    <?php
+                <?php
                     $months = array(
                         '1' => 'January',
                         '2' => 'February',
@@ -29,7 +28,9 @@
                         '11' => 'November',
                         '12' => 'December',
                     );
-                    ?>
+                ?>
+                
+                <?php foreach ($seasons as $key => $season) { ?>    
                     <ul class="season<?php echo $season == 'Holidays' ? ' holiday' : ''; ?>">
                         <li><h2><?php echo $season; ?>:</h2></li>
                         <?php if ($season != 'Holidays') { ?>
@@ -63,7 +64,7 @@
                     <li><label>Additional Information:</label></li>
 
                     <li>
-                        <?php echo $this->Form->input('week_rate_' . $key, array('class' => 'addition', 'label' => false)); ?>
+                        <?php echo $this->Form->input('additional_information', array('class' => 'addition', 'label' => false)); ?>
                     </li>
                 </ul>						
                 <div class="clear"></div>
@@ -72,7 +73,7 @@
         </div>
         <div class="buttons">
             <a href="advertising.html"><span class="back"><input type="button" class="btnback" value="<< BACK" /></span></a>
-            <a href="advertising-purchase.html"><span class="next"><input type="submit" class="btnnext" value="NEXT >>" /></span></a>
+            <span class="next"><input type="submit" class="btnnext" value="NEXT >>" /></span>
         </div>
         <?php echo $this->Form->end(); ?>
 </div>

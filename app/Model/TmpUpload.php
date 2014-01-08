@@ -68,17 +68,29 @@ class TmpUpload extends AppModel {
                         'path' => array(
                                 'tempDir' => TMP,
                                 'allowEmpty' => false,
-                                'overwrite' => true,
-//                                'transforms' => array(
-//                                        'image_small' => array(
-//                                                'method' => 'resize',
-//                                                'append' => '-small',
-//                                                'overwrite' => true,
-//                                                'self' => false,
-//                                                'width' => 215,
-//                                                'height' => 115
-//                                        ),
-//                                )
+//                                'overwrite' => true,
+                                'uploadDir' => 'files/uploads/properties/',
+                                'finalPath' => 'files/uploads/properties/',
+                                'transforms' => array(
+                                        'image_small' => array(
+                                                'method' => 'resize',
+                                                'append' => '-s',
+                                                'overwrite' => true,
+                                                'self' => false,
+                                                'width' => 65,
+                                                'height' => 60,
+//                                                'nameCallback' => 'formatTransformName'
+                                        ),
+                                        'image_reg' => array(
+                                                'method' => 'resize',
+                                                'append' => '-r',
+                                                'overwrite' => true,
+                                                'self' => false,
+                                                'width' => 465,
+                                                'height' => 382,
+//                                                'nameCallback' => 'formatTransformName'
+                                        ),
+                                )
                         )
                 ),
                 'Uploader.FileValidation' => array(

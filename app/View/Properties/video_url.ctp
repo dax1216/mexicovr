@@ -9,13 +9,13 @@
         <h1 class="title">Photos of your listing</h1>
         <?php echo $this->Form->create('Properties', array('type' => 'file')); ?>
             <div class="form">
-                <p><em>Upload photos</em></p>
+                <p><em>Enter Video URL</em></p>
                 <div class="line-black"></div>
                 <div class="list" id="photoupload">
-                    <div class="upload-wrapper"><?php echo $this->Form->input('photo[0]',array('label' => false,'type'=>'file','div'=>false,'class'=>'property-photo','name'=>'data[photo][0]')); ?></div>
+                    <div class="upload-wrapper"><?php echo $this->Form->input('photo[0]',array('label' => false,'div'=>false,'class'=>'property-photo','name'=>'data[photo][0]')); ?></div>
 <!--                    <input name="photo_0" type="file" /> -->
 <!--                    <input type="button" value="BROWSE" class="browse" />-->
-                    <span class="attach"><a href="#" id="attach-more">Attach more files</a></span>
+<!--                    <span class="attach"><a href="#" id="attach-more">Attach more files</a></span>-->
                 </div>
                 <div class="clear"></div>
             </div>		

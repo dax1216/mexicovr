@@ -85,6 +85,7 @@
                     jQuery('#my_modal').popup();
                     jQuery('#my_modal1').popup();
                     jQuery('#my_modal2').popup();
+                    jQuery('#my_modal3').popup();
 
                     jQuery('div.navigation').css({'width' : '225px', 'float' : 'right'});
                     jQuery('div.content').css('display', 'block');
