@@ -66,51 +66,57 @@ class Advertisement extends AppModel {
         )
     );
     public $actsAs = array(
-        'Uploader.Attachment' => array(
-            // Do not copy all these settings, it's merely an example
-            'image' => array(
-                'tempDir' => TMP,
-                'allowEmpty' => false,
-                'overwrite' => true,
-                'transforms' => array(
-                    'image_small' => array(
-                        'method' => 'resize',
-                        'append' => '-small',
-                        'overwrite' => true,
-                        'self' => false,
-                        'width' => 215,
-                        'height' => 115
-                    ),
+                'Uploader.Attachment' => array(
+                        // Do not copy all these settings, it's merely an example
+                        'image' => array(
+                                'tempDir' => TMP,
+                                'allowEmpty' => false,
+                                'overwrite' => true,
+                        		'uploadDir' => 'files/uploads/advertisements/',
+                        		'finalPath' => 'files/uploads/advertisements/',
+                                'transforms' => array(
+                                        'image_small' => array(
+                                                'method' => 'resize',
+                                                'append' => '-small',
+                                                'overwrite' => true,
+                                                'self' => false,
+                                                'width' => 215,
+                                                'height' => 115
+                                        ),
+                                )
+                        )
+                ),
+                'Uploader.FileValidation' => array(
+                        'image' => array(
+                                'extension' => array('gif', 'jpg', 'png', 'jpeg'),
+                                'required' => array(
+                                        'value' => true,
+                                        'error' => 'File required'
+                                )
+                        ),
+                        'thumbnail' => array(
+                                'required' => false
+                        )
                 )
-            )
-        ),
-        'Uploader.FileValidation' => array(
-            'image' => array(
-                'extension' => array('gif', 'jpg', 'png', 'jpeg'),
-                'required' => array(
-                    'value' => true,
-                    'error' => 'File required'
-                )
-            ),
-            'thumbnail' => array(
-                'required' => false
-            )
-        )
-    );
-    public $findMethods = array('randomAdvertisment' => true);
+        );
 
-    protected function _findRandomAdvertisment($state, $query, $results = array()) {
-        if ('before' === $state) {
-            $query['order'] = 'rand()';
-            $query['limit'] = 1;
-            return $query;
-        }
-
-        if ('after' === $state) {
-            return $results;
-        }
-
-        return $results;
-    }
-
+	public $findMethods = array('randomAdvertisment' => true);
+	
+	protected function _findRandomAdvertisment($state, $query, $results = array())
+	{
+		if('before' === $state)
+		{
+			$query['order'] = 'rand()';
+			$query['limit'] = 1;
+			return $query;
+		}
+		
+		if('after' === $state)
+		{
+			return $results;
+		}
+		
+		return $results;
+	}
+		
 }
