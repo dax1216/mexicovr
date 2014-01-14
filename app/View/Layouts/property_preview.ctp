@@ -64,11 +64,11 @@
                 jQuery(document).ready(function() {
                     jQuery.noConflict();
 
-                    jQuery("#datefrom").datepicker({ picker: "<img class='picker' align='middle' src='images/calendar.png' alt=''/>" });
-                    jQuery("#dateto").datepicker({ picker: "<img class='picker' align='middle' src='images/calendar.png' alt=''/>" });
+                    jQuery("#datefrom").datepicker({ picker: "<img class='picker' align='middle' src='"+<?php echo $this->webroot; ?>+"images/calendar.png' alt=''/>" });
+                    jQuery("#dateto").datepicker({ picker: "<img class='picker' align='middle' src='"+<?php echo $this->webroot; ?>+"images/calendar.png' alt=''/>" });
 
-                    jQuery("#arrive").datepicker({ picker: "<img class='picker' align='middle' src='images/calendar.png' alt=''/>" });
-                    jQuery("#depart").datepicker({ picker: "<img class='picker' align='middle' src='images/calendar.png' alt=''/>" });
+                    jQuery("#arrive").datepicker({ picker: "<img class='picker' align='middle' src='"+<?php echo $this->webroot; ?>+"images/calendar.png' alt=''/>" });
+                    jQuery("#depart").datepicker({ picker: "<img class='picker' align='middle' src='"+<?php echo $this->webroot; ?>+"images/calendar.png' alt=''/>" });
 
                     jQuery('.scroll').jScrollPane(
                     {
@@ -83,9 +83,16 @@
                     jQuery(".tabs ul").idTabs();
 
                     jQuery('#my_modal').popup();
-                    jQuery('#my_modal1').popup();
+ 
+//                    jQuery('#my_modal1').popup({beforeopen: function(){
+////                            var testing123 = 
+////                            console.info(testing123);
+//                            jQuery('#my_modal1').html();
+//                    }});
+                    
                     jQuery('#my_modal2').popup();
                     jQuery('#my_modal3').popup();
+                    jQuery('#my_modal4').popup();
 
                     jQuery('div.navigation').css({'width' : '225px', 'float' : 'right'});
                     jQuery('div.content').css('display', 'block');
@@ -139,14 +146,14 @@
         </head>
 
         <body>
+            <?php // echo $this->element('review', array('property_id' => $property['Property']['id'], 'Js'=>$this->Js)); ?>
             <div id="ie8"></div>
         <?php echo $this->element('menu') ?>
             <div id="bgWrap">
             <?php echo $content_for_layout ?>
-
+                
             <div class="clear"></div>
         </div><!--end of bgWrap-->
-
 
         <div class="clear"></div>
         <?php echo $this->element('footer') ?>

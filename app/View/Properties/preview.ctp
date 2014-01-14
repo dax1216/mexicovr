@@ -22,7 +22,10 @@
                 </div>
                 <div id="thumbs" class="navigation right">
                     <ul class="thumbs noscript">
-                        <?php foreach ($property['photos'] as $photo) { ?>
+                        
+                        <?php 
+                        if(isset($property['photos'])){    
+                            foreach ($property['photos'] as $photo) { ?>
                             <?php 
                                 $image = $photo['name'];
                                 $imgFile = '';
@@ -33,14 +36,15 @@
                                 }
                             ?>
                             <li>
-                                <a class="thumb" name="drop" href="<?php echo $this->webroot; ?>files/uploads/properties/<?php echo $imgFile; ?>-resize-465x382-r.<?php echo $ext; ?>" title="Title #1">
-                                    <img src="<?php echo $this->webroot; ?>files/uploads/properties/<?php echo $imgFile; ?>-resize-65x60-s.<?php echo $ext; ?>" alt="Title #1" />
+                                <a class="thumb" name="drop" href="<?php echo $this->webroot; ?>files/uploads/properties/photos/<?php echo $imgFile; ?>-resize-465x382-r.<?php echo $ext; ?>" title="Title #1">
+                                    <img src="<?php echo $this->webroot; ?>files/uploads/properties/photos/<?php echo $imgFile; ?>-resize-65x60-s.<?php echo $ext; ?>" alt="Title #1" />
                                 </a>
                                 <div class="caption">
                                     Beachfront
                                 </div>
                             </li>
-                        <?php } ?>
+                        <?php } 
+                        }?>
                     </ul>
                 </div>
             </div>
@@ -117,36 +121,34 @@
         <?php // echo $this->element('contact') ?>
 
     </div><!-- my_modal2 -->
-    
+    <?php // var_dump($property['video']); ?>
     <div id="my_modal3" class="modals">
         <?php if(isset($property['video'])){ ?>
             <!------ Video ------->
-            <embed
-            width="420" height="345"
-            src="<?php echo $property['video']; ?>"
-            type="application/x-shockwave-flash">
-            </embed>
+            <iframe title="YouTube video player" class="youtube-player" type="text/html" 
+width="420" height="345" src="<?php echo $property['video']; ?>"
+frameborder="0" allowFullScreen></iframe>
+            
         <?php } ?>
     </div><!-- my_modal3 -->
     
     <div id="my_modal4" class="modals">
         <?php if(isset($property['audio'])){ ?>
             <!------ Audio ------->
-            <embed
+<!--            <embed
             width="420" height="345"
             src="<?php echo $this->webroot; ?>/files/uploads/properties/<?php echo $property['audio']; ?>">
-            </embed>
+            </embed>-->
+            <object height="345" width="420" data="<?php echo $this->webroot.$property['audio']; ?>"></object>
         <?php } ?>
     </div><!-- my_modal3 -->
-
     <div class="buttons">
         <?php echo $this->Form->create('Property', array('action' => 'save_property')); ?>
-            <span class="next"><input type="button" class="btnnext" value="SUBMIT" /></span>
+            <span class="next"><input type="submit" class="btnnext" value="SUBMIT" /></span>
 <!--            <span class="sub"><input type="submit" class="btnSub my_modal_open" value="UPDATE" /></span>-->
-            <span class="sub"><input type="submit" value="UPDATE" /></span>
+            <span class="sub"><input type="button" value="UPDATE" class="btnnext"/></span>
         <?php echo $this->Form->end(); ?>
     </div>	
-
 </div><!-- left -->
 
 
@@ -163,6 +165,3 @@
     </ul>
 </div>
 <div class="clear"></div>
-<pre>
-<?php var_dump($property); ?>
-</pre>

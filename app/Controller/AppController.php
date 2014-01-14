@@ -54,7 +54,7 @@ class AppController extends Controller {
         'DebugKit.Toolbar' => array('panels' => array('history' => false)),
         'Access',
         'RequestHandler');
-    public $helpers = array('Session', 'Form', 'Html', 'Number', 'Time', 'Geography');
+    public $helpers = array('Session', 'Form', 'Html', 'Number', 'Time', 'Geography', 'Js');
 
     public function beforeFilter() {
         $this->Auth->allow();

@@ -1,473 +1,175 @@
-<div class="properties view">
-<h2><?php  echo __('Property'); ?></h2>
-	<dl>
-		<dt><?php echo __('Id'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['id']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Address1'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['address1']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Address2'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['address2']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('City'); ?></dt>
-		<dd>
-			<?php echo $this->Html->link($property['City']['name'], array('controller' => 'cities', 'action' => 'view', $property['City']['id'])); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Zip'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['zip']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('State'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['state']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Province'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['province']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Description'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['description']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Bedrooms'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['bedrooms']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Bathrooms'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['bathrooms']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Rate'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['rate']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Video'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['video']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Audio'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['audio']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Listing Package'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['listing_package']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Additional Information'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['additional_information']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Listing Type'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['listing_type']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Is Active'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['is_active']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Created'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['created']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Updated'); ?></dt>
-		<dd>
-			<?php echo h($property['Property']['updated']); ?>
-			&nbsp;
-		</dd>
-	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Property'), array('action' => 'edit', $property['Property']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Property'), array('action' => 'delete', $property['Property']['id']), null, __('Are you sure you want to delete # %s?', $property['Property']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Properties'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Property'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Cities'), array('controller' => 'cities', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New City'), array('controller' => 'cities', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Property Activities'), array('controller' => 'property_activities', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Property Activity'), array('controller' => 'property_activities', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Property Miscellaneous Items'), array('controller' => 'property_miscellaneous_items', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Property Miscellaneous Item'), array('controller' => 'property_miscellaneous_items', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Property Owner Messages'), array('controller' => 'property_owner_messages', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Property Owner Message'), array('controller' => 'property_owner_messages', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Property Payment Types'), array('controller' => 'property_payment_types', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Property Payment Type'), array('controller' => 'property_payment_types', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Property Photos'), array('controller' => 'property_photos', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Property Photo'), array('controller' => 'property_photos', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Property Rates'), array('controller' => 'property_rates', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Property Rate'), array('controller' => 'property_rates', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Property Reservations'), array('controller' => 'property_reservations', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Property Reservation'), array('controller' => 'property_reservations', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Property Reviews'), array('controller' => 'property_reviews', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Property Review'), array('controller' => 'property_reviews', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
-<div class="related">
-	<h3><?php echo __('Related Property Activities'); ?></h3>
-	<?php if (!empty($property['PropertyActivity'])): ?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Property Id'); ?></th>
-		<th><?php echo __('Activity Id'); ?></th>
-		<th><?php echo __('Is Active'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('Updated'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($property['PropertyActivity'] as $propertyActivity): ?>
-		<tr>
-			<td><?php echo $propertyActivity['id']; ?></td>
-			<td><?php echo $propertyActivity['property_id']; ?></td>
-			<td><?php echo $propertyActivity['activity_id']; ?></td>
-			<td><?php echo $propertyActivity['is_active']; ?></td>
-			<td><?php echo $propertyActivity['created']; ?></td>
-			<td><?php echo $propertyActivity['updated']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'property_activities', 'action' => 'view', $propertyActivity['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'property_activities', 'action' => 'edit', $propertyActivity['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'property_activities', 'action' => 'delete', $propertyActivity['id']), null, __('Are you sure you want to delete # %s?', $propertyActivity['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
+<?php
+//var_dump($property_address);
+//var_dump($property_desc);
+//// var_dump($property_activity);
+//var_dump($property_rate);
+?>
 
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Property Activity'), array('controller' => 'property_activities', 'action' => 'add')); ?> </li>
-		</ul>
-	</div>
-</div>
-<div class="related">
-	<h3><?php echo __('Related Property Miscellaneous Items'); ?></h3>
-	<?php if (!empty($property['PropertyMiscellaneousItem'])): ?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Property Id'); ?></th>
-		<th><?php echo __('Miscellaneous Item Id'); ?></th>
-		<th><?php echo __('Is Active'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('Updated'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($property['PropertyMiscellaneousItem'] as $propertyMiscellaneousItem): ?>
-		<tr>
-			<td><?php echo $propertyMiscellaneousItem['id']; ?></td>
-			<td><?php echo $propertyMiscellaneousItem['property_id']; ?></td>
-			<td><?php echo $propertyMiscellaneousItem['miscellaneous_item_id']; ?></td>
-			<td><?php echo $propertyMiscellaneousItem['is_active']; ?></td>
-			<td><?php echo $propertyMiscellaneousItem['created']; ?></td>
-			<td><?php echo $propertyMiscellaneousItem['updated']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'property_miscellaneous_items', 'action' => 'view', $propertyMiscellaneousItem['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'property_miscellaneous_items', 'action' => 'edit', $propertyMiscellaneousItem['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'property_miscellaneous_items', 'action' => 'delete', $propertyMiscellaneousItem['id']), null, __('Are you sure you want to delete # %s?', $propertyMiscellaneousItem['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
+test
+<div class="left">
+    <div class="products">
+        <div id="contact" class="single">
+            <h1 class="title left"><?php echo $property['Property']['title']; ?></h1>
+            <div class="right product"><p>MXVR# <?php echo $property['Property']['id']; ?> <span>PHOTO GALLERIES</span></p></div>
+            <div class="clear"></div>
+            <div class="wrap">
+                <div id="gallery" class="content">
+                    <div class="slideshow-container">
+                        <div id="loading" class="loader"></div>
+                        <div id="slideshow" class="slideshow"></div>
+                        <div id="caption" class="caption-container"></div>
+                    </div>
+                </div>
+                <div id="thumbs" class="navigation right">
+                    <ul class="thumbs noscript">
 
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Property Miscellaneous Item'), array('controller' => 'property_miscellaneous_items', 'action' => 'add')); ?> </li>
-		</ul>
-	</div>
-</div>
-<div class="related">
-	<h3><?php echo __('Related Property Owner Messages'); ?></h3>
-	<?php if (!empty($property['PropertyOwnerMessage'])): ?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Owner Id'); ?></th>
-		<th><?php echo __('Property Id'); ?></th>
-		<th><?php echo __('First Name'); ?></th>
-		<th><?php echo __('Last Name'); ?></th>
-		<th><?php echo __('Email Address'); ?></th>
-		<th><?php echo __('Home Phone'); ?></th>
-		<th><?php echo __('Arrival'); ?></th>
-		<th><?php echo __('Departure'); ?></th>
-		<th><?php echo __('Number Of Adults'); ?></th>
-		<th><?php echo __('Number Of Children'); ?></th>
-		<th><?php echo __('Have Pets'); ?></th>
-		<th><?php echo __('Comments Questions'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('Updated'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($property['PropertyOwnerMessage'] as $propertyOwnerMessage): ?>
-		<tr>
-			<td><?php echo $propertyOwnerMessage['id']; ?></td>
-			<td><?php echo $propertyOwnerMessage['owner_id']; ?></td>
-			<td><?php echo $propertyOwnerMessage['property_id']; ?></td>
-			<td><?php echo $propertyOwnerMessage['first_name']; ?></td>
-			<td><?php echo $propertyOwnerMessage['last_name']; ?></td>
-			<td><?php echo $propertyOwnerMessage['email_address']; ?></td>
-			<td><?php echo $propertyOwnerMessage['home_phone']; ?></td>
-			<td><?php echo $propertyOwnerMessage['arrival']; ?></td>
-			<td><?php echo $propertyOwnerMessage['departure']; ?></td>
-			<td><?php echo $propertyOwnerMessage['number_of_adults']; ?></td>
-			<td><?php echo $propertyOwnerMessage['number_of_children']; ?></td>
-			<td><?php echo $propertyOwnerMessage['have_pets']; ?></td>
-			<td><?php echo $propertyOwnerMessage['comments_questions']; ?></td>
-			<td><?php echo $propertyOwnerMessage['created']; ?></td>
-			<td><?php echo $propertyOwnerMessage['updated']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'property_owner_messages', 'action' => 'view', $propertyOwnerMessage['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'property_owner_messages', 'action' => 'edit', $propertyOwnerMessage['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'property_owner_messages', 'action' => 'delete', $propertyOwnerMessage['id']), null, __('Are you sure you want to delete # %s?', $propertyOwnerMessage['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
+                        <?php
+                        if (isset($property_photos)) {
+                            foreach ($property_photos as $photo) {
+                                ?>
+                                <?php
+                                $image = $photo['PropertyPhoto']['photo'];
+                                $imgFile = '';
+                                $ext = '';
+                                if ($image != '') {
+                                    $imgFile = substr($image, 0, -4);
+                                    $ext = substr($image, -3);
+                                }
+                                ?>
+                                <li>
+                                    <a class="thumb" name="drop" href="<?php echo $this->webroot; ?><?php echo $imgFile; ?>-resize-465x382-r.<?php echo $ext; ?>" title="Title #1">
+                                        <img src="<?php echo $this->webroot; ?><?php echo $imgFile; ?>-resize-65x60-s.<?php echo $ext; ?>" alt="Title #1" />
+                                    </a>
+                                    <div class="caption">
+                                        Beachfront
+                                    </div>
+                                </li>
+                            <?php
+                            }
+                        }
+                        ?>
+                    </ul>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div><!-- products -->
 
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Property Owner Message'), array('controller' => 'property_owner_messages', 'action' => 'add')); ?> </li>
-		</ul>
-	</div>
-</div>
-<div class="related">
-	<h3><?php echo __('Related Property Payment Types'); ?></h3>
-	<?php if (!empty($property['PropertyPaymentType'])): ?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Property Id'); ?></th>
-		<th><?php echo __('Payment Type Id'); ?></th>
-		<th><?php echo __('Is Active'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('Updated'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($property['PropertyPaymentType'] as $propertyPaymentType): ?>
-		<tr>
-			<td><?php echo $propertyPaymentType['id']; ?></td>
-			<td><?php echo $propertyPaymentType['property_id']; ?></td>
-			<td><?php echo $propertyPaymentType['payment_type_id']; ?></td>
-			<td><?php echo $propertyPaymentType['is_active']; ?></td>
-			<td><?php echo $propertyPaymentType['created']; ?></td>
-			<td><?php echo $propertyPaymentType['updated']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'property_payment_types', 'action' => 'view', $propertyPaymentType['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'property_payment_types', 'action' => 'edit', $propertyPaymentType['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'property_payment_types', 'action' => 'delete', $propertyPaymentType['id']), null, __('Are you sure you want to delete # %s?', $propertyPaymentType['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
+    <div class="tabs">
+        <ul>
+            <li class="first"><a href="#about">ABOUT THIS ACCOMMODATION</a></li>
+            <li><a href="#rate">RATES</a></li>
+            <li><a href="#calendar">CALENDAR</a></li>
+            <li class="last"><a href="#reviews">REVIEWS</a></li>
+        </ul>
+        <div id="about">
+            <div class="left">
+                <div class="scroll">
+                    <h1 class="green"><?php echo $property['Property']['title']; ?></h1>
+                    <h3 class="green">
 
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Property Payment Type'), array('controller' => 'property_payment_types', 'action' => 'add')); ?> </li>
-		</ul>
-	</div>
-</div>
-<div class="related">
-	<h3><?php echo __('Related Property Photos'); ?></h3>
-	<?php if (!empty($property['PropertyPhoto'])): ?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Property Id'); ?></th>
-		<th><?php echo __('Photo'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('Updated'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($property['PropertyPhoto'] as $propertyPhoto): ?>
-		<tr>
-			<td><?php echo $propertyPhoto['id']; ?></td>
-			<td><?php echo $propertyPhoto['property_id']; ?></td>
-			<td><?php echo $propertyPhoto['photo']; ?></td>
-			<td><?php echo $propertyPhoto['created']; ?></td>
-			<td><?php echo $propertyPhoto['updated']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'property_photos', 'action' => 'view', $propertyPhoto['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'property_photos', 'action' => 'edit', $propertyPhoto['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'property_photos', 'action' => 'delete', $propertyPhoto['id']), null, __('Are you sure you want to delete # %s?', $propertyPhoto['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
+                        <?php
+                        if ($property['Property']['bedrooms'] == '1') {
+                            echo $property['Property']['bedrooms'] . " BED / ";
+                        } else {
+                            echo $property['Property']['bedrooms'] . " BEDS / ";
+                        }
 
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Property Photo'), array('controller' => 'property_photos', 'action' => 'add')); ?> </li>
-		</ul>
-	</div>
-</div>
-<div class="related">
-	<h3><?php echo __('Related Property Rates'); ?></h3>
-	<?php if (!empty($property['PropertyRate'])): ?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Property Id'); ?></th>
-		<th><?php echo __('Price'); ?></th>
-		<th><?php echo __('Season'); ?></th>
-		<th><?php echo __('Night Rate'); ?></th>
-		<th><?php echo __('Week Rate'); ?></th>
-		<th><?php echo __('Month Rate'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('Updated'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($property['PropertyRate'] as $propertyRate): ?>
-		<tr>
-			<td><?php echo $propertyRate['id']; ?></td>
-			<td><?php echo $propertyRate['property_id']; ?></td>
-			<td><?php echo $propertyRate['price']; ?></td>
-			<td><?php echo $propertyRate['season']; ?></td>
-			<td><?php echo $propertyRate['night_rate']; ?></td>
-			<td><?php echo $propertyRate['week_rate']; ?></td>
-			<td><?php echo $propertyRate['month_rate']; ?></td>
-			<td><?php echo $propertyRate['created']; ?></td>
-			<td><?php echo $propertyRate['updated']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'property_rates', 'action' => 'view', $propertyRate['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'property_rates', 'action' => 'edit', $propertyRate['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'property_rates', 'action' => 'delete', $propertyRate['id']), null, __('Are you sure you want to delete # %s?', $propertyRate['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
+                        if ($property['Property']['bathrooms'] == '1') {
+                            echo $property['Property']['bathrooms'] . " BATH ";
+                        } else {
+                            echo $property['Property']['bathrooms'] . " BATHS ";
+                        }
+                        ?>
+                    </h3>
+                    <img src="<?php echo $this->webroot; ?>images/about1.jpg" />
+                    <p>
+<?php echo $property['Property']['description']; ?>
+                    </p>
+                </div>
+            </div>
+            <div class="right">
 
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Property Rate'), array('controller' => 'property_rates', 'action' => 'add')); ?> </li>
-		</ul>
-	</div>
-</div>
-<div class="related">
-	<h3><?php echo __('Related Property Reservations'); ?></h3>
-	<?php if (!empty($property['PropertyReservation'])): ?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Property Id'); ?></th>
-		<th><?php echo __('Date'); ?></th>
-		<th><?php echo __('Is Active'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('Updated'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($property['PropertyReservation'] as $propertyReservation): ?>
-		<tr>
-			<td><?php echo $propertyReservation['id']; ?></td>
-			<td><?php echo $propertyReservation['property_id']; ?></td>
-			<td><?php echo $propertyReservation['date']; ?></td>
-			<td><?php echo $propertyReservation['is_active']; ?></td>
-			<td><?php echo $propertyReservation['created']; ?></td>
-			<td><?php echo $propertyReservation['updated']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'property_reservations', 'action' => 'view', $propertyReservation['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'property_reservations', 'action' => 'edit', $propertyReservation['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'property_reservations', 'action' => 'delete', $propertyReservation['id']), null, __('Are you sure you want to delete # %s?', $propertyReservation['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
+                <?php foreach ($property_activities as $activity):
+                    ?>
+                    <img src="<?php echo $this->webroot; ?><?php echo $activity['Activity']['icon']; ?>" />
+<?php endforeach; ?>
 
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Property Reservation'), array('controller' => 'property_reservations', 'action' => 'add')); ?> </li>
-		</ul>
-	</div>
-</div>
-<div class="related">
-	<h3><?php echo __('Related Property Reviews'); ?></h3>
-	<?php if (!empty($property['PropertyReview'])): ?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Property Id'); ?></th>
-		<th><?php echo __('First Name'); ?></th>
-		<th><?php echo __('Last Name'); ?></th>
-		<th><?php echo __('Email Address'); ?></th>
-		<th><?php echo __('Arrival'); ?></th>
-		<th><?php echo __('Departure'); ?></th>
-		<th><?php echo __('Review'); ?></th>
-		<th><?php echo __('Rate'); ?></th>
-		<th><?php echo __('Is Active'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('Updated'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	<?php
-		$i = 0;
-		foreach ($property['PropertyReview'] as $propertyReview): ?>
-		<tr>
-			<td><?php echo $propertyReview['id']; ?></td>
-			<td><?php echo $propertyReview['property_id']; ?></td>
-			<td><?php echo $propertyReview['first_name']; ?></td>
-			<td><?php echo $propertyReview['last_name']; ?></td>
-			<td><?php echo $propertyReview['email_address']; ?></td>
-			<td><?php echo $propertyReview['arrival']; ?></td>
-			<td><?php echo $propertyReview['departure']; ?></td>
-			<td><?php echo $propertyReview['review']; ?></td>
-			<td><?php echo $propertyReview['rate']; ?></td>
-			<td><?php echo $propertyReview['is_active']; ?></td>
-			<td><?php echo $propertyReview['created']; ?></td>
-			<td><?php echo $propertyReview['updated']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'property_reviews', 'action' => 'view', $propertyReview['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'property_reviews', 'action' => 'edit', $propertyReview['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'property_reviews', 'action' => 'delete', $propertyReview['id']), null, __('Are you sure you want to delete # %s?', $propertyReview['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
+            </div>
+            <div class="clear"></div>
+        </div><!-- about -->
+        <div id="rate">
+            <div class="scroll">
+                <p>
+<?php echo $property['property_rate']['rate']; ?>
+                </p>
+            </div>
+        </div>
+        <div id="calendar"></div>
+        <div id="reviews"></div>
+    </div><!-- tabs -->
 
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Property Review'), array('controller' => 'property_reviews', 'action' => 'add')); ?> </li>
-		</ul>
-	</div>
+    <div id="my_modal" class="modals">
+        <!------ Write a review ------->
+<?php echo $this->element('message') ?>
+    </div><!-- my_modal -->
+
+    <div id="my_modal1" class="modals">
+        <!------ Write a review ------->
+<?php echo $this->element('review', array('property_id' => $property['Property']['id'])); ?>
+    </div><!-- my_modal1 -->
+
+    <div id="my_modal2" class="modals">
+        <!------ Write a review ------->
+<?php // echo $this->element('contact')   ?>
+
+    </div><!-- my_modal2 -->
+        <?php // var_dump($property['video']);  ?>
+    <div id="my_modal3" class="modals">
+<?php if (isset($property['Property']['video']) && $property['Property']['video']) { ?>
+            <!------ Video ------->
+            <iframe title="YouTube video player" class="youtube-player" type="text/html" 
+                    width="420" height="345" src="<?php echo $property['Property']['video']; ?>"
+                    frameborder="0" allowFullScreen></iframe>
+
+<?php } ?>
+    </div><!-- my_modal3 -->
+
+    <div id="my_modal4" class="modals">
+<?php if (isset($property['Property']['audio']) && $property['Property']['audio']) { ?>
+            <!------ Audio ------->
+            <!--            <embed
+                        width="420" height="345"
+                        src="<?php echo $this->webroot; ?>/files/uploads/properties/<?php echo $property['audio']; ?>">
+                        </embed>-->
+            <object height="345" width="420" data="<?php echo $this->webroot . $property['Property']['audio']; ?>"></object>
+<?php } ?>
+    </div><!-- my_modal3 -->
+</div><!-- left -->
+
+
+
+
+<div id="sidebar" class="side-product">
+    <ul class="images">
+        <li><img src="<?php echo $this->webroot; ?>images/img1.jpg" /></li>
+        <li><?php echo isset($property['Property']['video']) && $property['Property']['video'] ? '<a href="#" class="my_modal3_open"><img src="' . $this->webroot . 'images/img2.jpg" /></a>' : '<img src="' . $this->webroot . 'images/img2.jpg" />'; ?></li>
+        <li><?php echo isset($property['Property']['audio']) && $property['Property']['audio'] ? '<a href="#" class="my_modal4_open"><img src="' . $this->webroot . 'images/img3.jpg" /></a>' : '<img src="' . $this->webroot . 'images/img3.jpg" />'; ?></li>
+        <li><a href="#" class="my_modal1_open"><img src="<?php echo $this->webroot; ?>images/img4.jpg" /></a></li>
+        <li><a href="#" class="my_modal2_open"><img src="<?php echo $this->webroot; ?>images/img5.jpg" /></a></li>
+        <li><a href="#" class="my_modal_open"><img src="<?php echo $this->webroot; ?>images/img6.png" /></a></li>
+    </ul>
 </div>
+<div class="clear"></div>
+<?php echo htmlentities($this->element('review', array('property_id' => $property['Property']['id']))); ?>
+<?php echo $this->Js->writeBuffer(); ?>
+<script type="text/javascript">
+    var abcasd = 'test'
+    jQuery('#my_modal1').popup({beforeopen: function(){
+            alert(abcasd);
+            
+            
+            //                            console.info(testing123);
+//            jQuery('#my_modal1').html();
+        }});
+</script>

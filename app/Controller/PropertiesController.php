@@ -137,13 +137,22 @@ class PropertiesController extends AppController {
             $photoArray = array();
             $photos = $this->request->data['photo'];
             $validPhotos = 0;
-            $this->loadModel('TmpUpload');
+            $this->loadModel('TmpUploadPhoto');
             foreach ($photos as $photo) {
-                $this->TmpUpload->create();
-                if ($photo && ($validPhotos < $photoLimit - 1)) {
-                    if ($this->TmpUpload->save(array('session_id' => $this->Session->id(), 'tag' => 'property_photo', 'path' => $photo))) {
-                        $photoArray[] = $photo;
-                        $validPhotos++;
+                $this->TmpUploadPhoto->create();
+                if ($photoLimit == -1) {
+                    if ($photo) {
+                        if ($this->TmpUploadPhoto->save(array('session_id' => $this->Session->id(), 'tag' => 'property_photo', 'photo' => $photo))) {
+                            $photoArray[] = $photo;
+                            $validPhotos++;
+                        }
+                    }
+                } else {
+                    if ($photo && ($validPhotos < $photoLimit - 1)) {
+                        if ($this->TmpUploadPhoto->save(array('session_id' => $this->Session->id(), 'tag' => 'property_photo', 'photo' => $photo))) {
+                            $photoArray[] = $photo;
+                            $validPhotos++;
+                        }
                     }
                 }
             }
@@ -164,11 +173,16 @@ class PropertiesController extends AppController {
         $packageData = $this->Package->read(array('is_audio_enabled', 'is_video_enabled'), $packageID);
         if ($packageData['Package']['is_audio_enabled']) {
             if ($this->request->is('post')) {
-                $audio = $this->request->data['Properties']['audio'];
-                $this->loadModel('TmpUpload');
-                $this->TmpUpload->create();
-                if ($this->TmpUpload->save(array('session_id' => $this->Session->id(), 'tag' => 'property_audio', 'path' => $audio))) {
-                    $this->Session->write('Property.audio', $audio);
+                if (isset($this->request->data['Properties']['audio']) && $this->request->data['Properties']['audio']['name']) {
+                    $audio = $this->request->data['Properties']['audio'];
+                    $this->loadModel('TmpUploadAudio');
+                    $this->TmpUploadAudio->create();
+                    if ($this->TmpUploadAudio->save(array('session_id' => $this->Session->id(), 'tag' => 'property_audio', 'audio' => $audio))) {
+                        $audioFile = $this->TmpUploadAudio->read(null, $this->TmpUploadAudio->getLastInsertId());
+                        $this->Session->write('Property.audio', $audioFile['TmpUploadAudio']['audio']);
+                        $this->redirect(array('action' => 'video_url'));
+                    }
+                } else {
                     $this->redirect(array('action' => 'video_url'));
                 }
             }
@@ -222,101 +236,48 @@ class PropertiesController extends AppController {
         if ($this->request->is('post')) {
             $propertySess = $this->Session->read('Property');
             $property = array(
-                'user_id'=>$this->Auth->user('user_id'),
-                'address1'=>$propertySess['property_address']['address1'],
-                'address2'=>$propertySess['property_address']['address2'],
-                'city'=>$propertySess['property_address']['city'],
-                'zip'=>$propertySess['property_address']['zip'],
-                'state'=>$propertySess['property_address']['state'],
-                'province'=>$propertySess['property_address']['province'],
-                'title'=>$propertySess['property_desc']['title'],
-                'description'=>$propertySess['property_desc']['description'],
-                'bedrooms'=>$propertySess['property_desc']['bedrooms'],
-                'bathrooms'=>$propertySess['property_desc']['bathrooms'],
-                'rate'=>isset($propertySess['rate'])?$propertySess['rate']:'',
-                'video'=>isset($propertySess['video'])?$propertySess['video']:'',
-                'audio'=>isset($propertySess['audio'])?'files/uploads/properties/'.$propertySess['audio']:'',
-                'package_id'=>$propertySess['package_id'],
-                'additional_information'=>isset($propertySess['additional_information'])?$propertySess['additional_information']:'',
-                'listing_type'=>$propertySess['listing_type']
+                'user_id' => $this->Auth->user('user_id'),
+                'address1' => $propertySess['property_address']['address1'],
+                'address2' => $propertySess['property_address']['address2'],
+                'city' => $propertySess['property_address']['city'],
+                'zip' => $propertySess['property_address']['zip'],
+                'state' => $propertySess['property_address']['state'],
+                'province' => $propertySess['property_address']['province'],
+                'title' => $propertySess['property_desc']['title'],
+                'description' => $propertySess['property_desc']['description'],
+                'bedrooms' => $propertySess['property_desc']['bedrooms'],
+                'bathrooms' => $propertySess['property_desc']['bathrooms'],
+                'rate' => isset($propertySess['rate']) ? $propertySess['rate'] : '',
+                'video' => isset($propertySess['video']) ? $propertySess['video'] : '',
+                'audio' => isset($propertySess['audio']) ? $propertySess['audio'] : '',
+                'package_id' => $propertySess['package_id'],
+                'additional_information' => isset($propertySess['additional_information']) ? $propertySess['additional_information'] : '',
+                'listing_type' => $propertySess['listing_type']
             );
             $this->Property->create();
-            if($this->Property->save($property)){
-                //activities
-                if(isset($propertySess['activities'])){
-                    foreach($propertySess['activities'] as $act){    
-                        $this->PropertyActivity->create();
-                        if($this->PropertyActivity->save(array('property_id'=>$this->Property->getLastInsertID(), 'activity_id'=>$act))){
-                            echo 'success - activity<br /></br />';
-                        }else{
-                            var_dump($this->PropertyActivity->validationErrors);
-                            echo 'failed - activity<br /></br />';
-                        }
-                    }
+            if ($this->Property->save($property)) {
+                $propertyId = $this->Property->getLastInsertID();
+                if (
+                        $this->save_activities($propertySess,$propertyId) &&
+                        $this->save_photos($propertySess,$propertyId) &&
+                        $this->save_reservations($propertySess,$propertyId) &&
+                        $this->save_rates($propertySess,$propertyId) &&
+                        $this->save_rate($propertySess,$propertyId)
+                ) {
+                    $sessionId = $this->Session->id();
+                    $this->loadModel('TmpUploadPhoto');
+                    $this->loadModel('TmpUploadAudio');
+                    $this->TmpUploadPhoto->deleteAll(array('TmpUploadPhoto.session_id' => $sessionId));
+                    $this->TmpUploadAudio->deleteAll(array('TmpUploadAudio.session_id' => $sessionId));
+                    $this->Session->delete('Property');
+                    $this->redirect(array('action' => 'view/'.$propertyId));
+                }else{
+                    echo 'error';
+                    $this->autoRender = false;
                 }
-                //photos
-                if(isset($propertySess['photos'])){
-                    foreach($propertySess['photos'] as $photo){  
-                        $this->PropertyPhoto->create();
-                        if($this->PropertyPhoto->save(array('property_id'=>$this->Property->getLastInsertID(), 'photo'=>'files/uploads/properties/'.$photo['name']))){
-                            echo 'success - photo<br /></br />';
-                        }else{
-                            var_dump($this->PropertyPhoto->validationErrors);
-                            echo 'failed - photo<br /></br />';
-                        }
-                    }
-                }
-                //reservations
-                if(isset($propertySess['reservation_dates'])){
-                    foreach($propertySess['reservation_dates'] as $res){  
-                        $this->Reservation->create();
-                        if($this->Reservation->save(array('property_id'=>$this->Property->getLastInsertID(), 'date'=>date("Y-m-d", strtotime($res) )))){
-                            echo 'success - reservation<br /></br />';
-                        }else{
-                            var_dump($this->Reservation->validationErrors);
-                            echo 'failed - reservation<br /></br />';
-                        }
-                    }
-                }
-                //if rent -> rates
-                if(isset($propertySess['rates'])){
-                    foreach($propertySess['rates'] as $key=>$rate){  
-                        $this->PropertyRate->create();
-                        $rateData = array(
-                            'property_id'=>$this->Property->getLastInsertID(),
-                            'season_id'=>$key,
-                            'from'=>$rate['from'],
-                            'to'=>$rate['to'],
-                            'night_rate'=>$rate['night_rate']?$rate['night_rate']:'',
-                            'week_rate'=>$rate['week_rate']?$rate['week_rate']:'',
-                            'month_rate'=>$rate['month_rate']?$rate['month_rate']:'',
-                            );
-                        if($this->PropertyRate->save($rateData)){
-                            echo 'success - PropertyRate<br /></br />';
-                        }else{
-                            var_dump($this->PropertyRate->validationErrors);
-                            echo 'failed - PropertyRate<br /></br />';
-                        }
-                    }
-                }
-                //if sale -> rate
-                if(isset($propertySess['rate'])){
-                        $this->PropertyRate->create();
-                        if($this->PropertyRate->save(array(
-                            'property_id'=>$this->Property->getLastInsertID(),
-                            'price'=>$propertySess['rate']
-                            ))){
-                            echo 'success - PropertyRate<br /></br />';
-                        }else{
-                            var_dump($this->PropertyRate->validationErrors);
-                            echo 'failed - PropertyRate<br /></br />';
-                        }
-                }
-                
-                echo 'success';
-            }else{
-                var_dump($this->Property->validationErrors);
-                echo 'failed';
+            } else {
+                echo 'error';
+                $this->autoRender = false;
             }
 //            $video = $this->request->data['Properties']['video'];
 //            $this->Session->write('Property.video', $video);
@@ -325,8 +286,102 @@ class PropertiesController extends AppController {
 //            } else {
 //                $this->redirect(array('action' => 'preview'));
 //            }
-            $this->autoRender = false;
         }
+    }
+
+    private function save_activities($propertySess,$propertyId) {
+        //activities
+        if (isset($propertySess['activities'])) {
+            $error = 0;
+            foreach ($propertySess['activities'] as $act) {
+                $this->PropertyActivity->create();
+                if (!$this->PropertyActivity->save(array('property_id' => $propertyId, 'activity_id' => $act))) {
+                    $error++;
+                }
+            }
+            return $error?false:true;
+        }else{
+            return true;
+        }
+        return false;
+    }
+
+    private function save_photos($propertySess,$propertyId) {
+        //photos
+        if (isset($propertySess['photos'])) {
+            $error = 0;
+            foreach ($propertySess['photos'] as $photo) {
+                $this->PropertyPhoto->create();
+                if (!$this->PropertyPhoto->save(array('property_id' => $propertyId, 'photo' => 'files/uploads/properties/photos/' . $photo['name']))) {
+                    $error++;
+                }
+            }
+            return $error?false:true;
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    private function save_reservations($propertySess,$propertyId) {
+        //reservations
+        if (isset($propertySess['reservation_dates'])) {
+            $error = 0;
+            foreach ($propertySess['reservation_dates'] as $res) {
+                $this->Reservation->create();
+                if (!$this->Reservation->save(array('property_id' => $propertyId, 'date' => date("Y-m-d", strtotime($res))))) {
+                    $error++;
+                }
+            }
+            return $error?false:true;
+        }else{
+            return true;
+        }
+        return false;
+    }
+
+    private function save_rates($propertySess,$propertyId) {
+        //if rent -> rates
+        if (isset($propertySess['rates'])) {
+            $error = 0;
+            foreach ($propertySess['rates'] as $key => $rate) {
+                $this->PropertyRate->create();
+                $rateData = array(
+                    'property_id' => $propertyId,
+                    'season_id' => $key,
+                    'from' => $rate['from'],
+                    'to' => $rate['to'],
+                    'night_rate' => $rate['night_rate'] ? $rate['night_rate'] : '',
+                    'week_rate' => $rate['week_rate'] ? $rate['week_rate'] : '',
+                    'month_rate' => $rate['month_rate'] ? $rate['month_rate'] : '',
+                );
+                if (!$this->PropertyRate->save($rateData)) {
+                    $error++;
+                }
+            }
+            return $error?false:true;
+        }else{
+            return true;
+        }
+        return false;
+    }
+
+    private function save_rate($propertySess,$propertyId) {
+        //if sale -> rate
+        if (isset($propertySess['rate'])) {
+            $this->PropertyRate->create();
+            if ($this->PropertyRate->save(array(
+                        'property_id' => $propertyId,
+                        'price' => $propertySess['rate']
+                    ))) {
+                return true;
+            } else {
+                return false;
+            }
+        }else{
+            return true;
+        }
+        return false;
     }
 
     public function rent($params = null) {
@@ -355,11 +410,16 @@ class PropertiesController extends AppController {
      * @return void
      */
     public function view($id = null) {
+        $this->layout = "property_preview";
         $this->Property->id = $id;
         if (!$this->Property->exists()) {
             throw new NotFoundException(__('Invalid property'));
         }
         $this->set('property', $this->Property->read(null, $id));
+        $this->set('property_photos', $this->PropertyPhoto->find('all',array('fields'=>array('PropertyPhoto.photo'),'conditions'=>array('PropertyPhoto.property_id'=>$id))));
+        $this->set('property_activities', $this->Activity->find('all',array('fields'=>array('Activity.name','Activity.icon'),'conditions'=>array('Activity.id'=>$this->PropertyActivity->find('list',array('conditions'=>array('PropertyActivity.property_id'=>$id), 'fields'=>array('PropertyActivity.activity_id')))))));
+        $this->set('property', $this->Property->read(null, $id));
+        
     }
 
     /**

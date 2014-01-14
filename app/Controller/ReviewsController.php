@@ -38,17 +38,25 @@ class ReviewsController extends AppController {
  * @return void
  */
 	public function add() {
-		if ($this->request->is('post')) {
+		/*if ($this->request->is('post')) {
 			$this->Review->create();
 			if ($this->Review->save($this->request->data)) {
-				$this->Session->setFlash(__('The review has been saved'));
-				$this->redirect(array('action' => 'index'));
+//				$this->Session->setFlash(__('The review has been saved'));
+//				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The review could not be saved. Please, try again.'));
+//				$this->Session->setFlash(__('The review could not be saved. Please, try again.'));
 			}
 		}
 		$properties = $this->Review->Property->find('list');
 		$this->set(compact('properties'));
+                 * 
+                 */
+            
+                 echo json_encode(array('test'=>'testing123'));
+                 if ($this->request->is('ajax')) {
+			$this->layout = 'ajax';
+                        $this->autoRender = false;
+		}
 	}
 
 /**
