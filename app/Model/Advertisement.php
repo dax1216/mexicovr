@@ -35,7 +35,7 @@ class Advertisement extends AppModel {
         'description2' => array('notempty' => array('rule' => array('notempty'),
                 'message' => 'Please add 2nd Description',
                 'allowEmpty' => false,
-                'required' => true
+                'required' => false
             ),
         ),
         'propertyContact' => array('notempty' => array('rule' => 'notempty',

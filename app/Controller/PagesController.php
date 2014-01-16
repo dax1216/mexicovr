@@ -45,7 +45,8 @@ class PagesController extends AppController {
      * @param string $id
      * @return void
      */
-    public function view($id = null) {
+    public function admin_view($id = null) {
+         $this->layout = "admin";
         $this->Page->id = $id;
         if (!$this->Page->exists()) {
             throw new NotFoundException(__('Invalid page'));
@@ -77,7 +78,8 @@ class PagesController extends AppController {
      * @param string $id
      * @return void
      */
-    public function edit($id = null) {
+    public function admin_edit($id = null) {
+       $this->layout = "admin";
         $this->Page->id = $id;
         if (!$this->Page->exists()) {
             throw new NotFoundException(__('Invalid page'));
@@ -91,6 +93,7 @@ class PagesController extends AppController {
             }
         } else {
             $this->request->data = $this->Page->read(null, $id);
+
         }
     }
 
@@ -102,7 +105,7 @@ class PagesController extends AppController {
      * @param string $id
      * @return void
      */
-    public function delete($id = null) {
+    public function admin_delete($id = null) {
         if (!$this->request->is('post')) {
             throw new MethodNotAllowedException();
         }
@@ -116,6 +119,12 @@ class PagesController extends AppController {
         }
         $this->Session->setFlash(__('Page was not deleted'));
         $this->redirect(array('action' => 'index'));
+    }
+
+    public function admin_index() {
+        $this->layout = "admin";
+        $this->Page->recursive = 0;
+        $this->set('pages', $this->paginate());
     }
 
 }
