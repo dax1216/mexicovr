@@ -1,3 +1,4 @@
+<div style="margin: 20px;">
 <p>
 <?php
 	echo $this->Paginator->counter(array(
@@ -8,8 +9,9 @@
 
 <div class="pagination">
 <?php
-    echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
+    echo $this->Paginator->prev('< ' . __('previous '), array(), null, array('class' => 'prev disabled'));
     echo $this->Paginator->numbers(array('separator' => ''));
-    echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+    echo $this->Paginator->next(__(' next') . ' >', array(), null, array('class' => 'next disabled'));
 ?>
+</div>
 </div>

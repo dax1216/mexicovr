@@ -11,5 +11,3 @@
 	</fieldset>
 <?php echo $this->Form->end(__('Next')); ?>
 </div>
-
-<?php echo 'Current PHP version: ' . phpversion(); ?>

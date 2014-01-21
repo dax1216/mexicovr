@@ -21,7 +21,8 @@ class UsersController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
+	public function admin_view($id = null) {
+              $this->layout = "admin";
 		$this->User->id = $id;
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid User'));
@@ -59,7 +60,8 @@ class UsersController extends AppController {
  * @param string $id
  * @return void
  */
-	public function edit($id = null) {
+	public function admin_edit($id = null) {
+              $this->layout = "admin";
 		$this->User->id = $id;
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
@@ -100,5 +102,8 @@ class UsersController extends AppController {
 		$this->redirect(array('action' => 'index'));
 	}
 
-
+        public function admin_index(){
+              $this->layout = "admin";
+              $this->set('users', $this->paginate('User'));
+        }
 }
