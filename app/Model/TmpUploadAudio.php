@@ -57,8 +57,8 @@ class TmpUploadAudio extends AppModel {
                         'audio' => array(
                                 'tempDir' => TMP,
                                 'allowEmpty' => false,
-                                'uploadDir' => 'files/uploads/properties/audios/',
-                                'finalPath' => 'files/uploads/properties/audios/'
+                                'uploadDir' => 'files/uploads/properties/tmp_audios/',
+                                'finalPath' => 'files/uploads/properties/tmp_audios/'
                         )
                 ),
                 'Uploader.FileValidation' => array(

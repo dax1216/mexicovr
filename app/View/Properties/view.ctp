@@ -4,8 +4,12 @@
 //// var_dump($property_activity);
 //var_dump($property_rate);
 ?>
-
-test
+<?php
+$this->Js->JqueryEngine->jQueryObject = '$j';
+echo $this->Html->scriptBlock(
+        'var $j = jQuery.noConflict();', array('inline' => false)
+); // Tell jQuery to go into noconflict mode
+?>
 <div class="left">
     <div class="products">
         <div id="contact" class="single">
@@ -44,7 +48,7 @@ test
                                         Beachfront
                                     </div>
                                 </li>
-                            <?php
+                                <?php
                             }
                         }
                         ?>
@@ -84,7 +88,7 @@ test
                     </h3>
                     <img src="<?php echo $this->webroot; ?>images/about1.jpg" />
                     <p>
-<?php echo $property['Property']['description']; ?>
+                        <?php echo $property['Property']['description']; ?>
                     </p>
                 </div>
             </div>
@@ -93,7 +97,7 @@ test
                 <?php foreach ($property_activities as $activity):
                     ?>
                     <img src="<?php echo $this->webroot; ?><?php echo $activity['Activity']['icon']; ?>" />
-<?php endforeach; ?>
+                <?php endforeach; ?>
 
             </div>
             <div class="clear"></div>
@@ -101,7 +105,7 @@ test
         <div id="rate">
             <div class="scroll">
                 <p>
-<?php echo $property['property_rate']['rate']; ?>
+                    <?php echo $property['property_rate']['rate']; ?>
                 </p>
             </div>
         </div>
@@ -111,40 +115,40 @@ test
 
     <div id="my_modal" class="modals">
         <!------ Write a review ------->
-<?php echo $this->element('message') ?>
+        <?php echo $this->element('message') ?>
     </div><!-- my_modal -->
 
     <div id="my_modal1" class="modals">
         <!------ Write a review ------->
-<?php echo $this->element('review', array('property_id' => $property['Property']['id'])); ?>
+        <?php // echo $this->element('review', array('property_id' => $property['Property']['id'])); ?>
     </div><!-- my_modal1 -->
 
     <div id="my_modal2" class="modals">
         <!------ Write a review ------->
-<?php // echo $this->element('contact')   ?>
+        <?php // echo $this->element('contact') ?>
 
     </div><!-- my_modal2 -->
-        <?php // var_dump($property['video']);  ?>
+    <?php // var_dump($property['video']);   ?>
     <div id="my_modal3" class="modals">
-<?php if (isset($property['Property']['video']) && $property['Property']['video']) { ?>
+        <?php if (isset($property['Property']['video']) && $property['Property']['video']) { ?>
             <!------ Video ------->
             <iframe title="YouTube video player" class="youtube-player" type="text/html" 
                     width="420" height="345" src="<?php echo $property['Property']['video']; ?>"
                     frameborder="0" allowFullScreen></iframe>
 
-<?php } ?>
+        <?php } ?>
     </div><!-- my_modal3 -->
 
     <div id="my_modal4" class="modals">
-<?php if (isset($property['Property']['audio']) && $property['Property']['audio']) { ?>
+        <?php if (isset($property['Property']['audio']) && $property['Property']['audio']) { ?>
             <!------ Audio ------->
             <!--            <embed
                         width="420" height="345"
                         src="<?php echo $this->webroot; ?>/files/uploads/properties/<?php echo $property['audio']; ?>">
                         </embed>-->
             <object height="345" width="420" data="<?php echo $this->webroot . $property['Property']['audio']; ?>"></object>
-<?php } ?>
-    </div><!-- my_modal3 -->
+        <?php } ?>
+    </div><!-- my_modal4 -->
 </div><!-- left -->
 
 
@@ -161,15 +165,64 @@ test
     </ul>
 </div>
 <div class="clear"></div>
-<?php echo htmlentities($this->element('review', array('property_id' => $property['Property']['id']))); ?>
-<?php echo $this->Js->writeBuffer(); ?>
+<?php
+$this->Js->get('.my_modal1_open')->event(
+        'click', $this->Js->request(
+                array('controller' => 'reviews', 'action' => 'display_review_element/' . $property['Property']['id']), array(
+                    'update' => '#my_modal1',
+                    'async' => true,
+                    'dataExpression' => true,
+                    'complete' =>
+                    '
+                                        $j("#datefrom").datepicker({ picker: "<img class=\'picker\' align=\'middle\' src=\'' . $this->webroot . 'images/calendar.png\' alt=\'\'/>" });
+                                        $j("#dateto").datepicker({ picker: "<img class=\'picker\' align=\'middle\' src=\'' . $this->webroot . 'images/calendar.png\' alt=\'\'/>" });
+                                        $j("#arrive").datepicker({ picker: "<img class=\'picker\' align=\'middle\' src=\'' . $this->webroot . 'images/calendar.png\' alt=\'\'/>" });
+                                        $j("#depart").datepicker({ picker: "<img class=\'picker\' align=\'middle\' src=\'' . $this->webroot . 'images/calendar.png\' alt=\'\'/>" });
+                                        $j("#score-demo").raty({ score: 3, path: "'.$this->webroot.'js/raty/lib/img", score: function(){alert("test");}});
+                    '
+                )
+        )
+);
+$this->Js->get('.my_modal2_open')->event(
+        'click', $this->Js->request(
+                array('controller' => 'properties', 'action' => 'display_contact_element/' . $property['Property']['id']), array(
+            'update' => '#my_modal2',
+            'async' => true,
+            'dataExpression' => true
+                )
+        )
+);
+?>
 <script type="text/javascript">
-    var abcasd = 'test'
-    jQuery('#my_modal1').popup({beforeopen: function(){
-            alert(abcasd);
-            
-            
-            //                            console.info(testing123);
-//            jQuery('#my_modal1').html();
-        }});
+    jQuery('#ReviewAddForm').live('submit',function(){
+        var data = jQuery(this).serialize();
+        //        console.info(data);
+        jQuery.ajax({
+            type: "POST",
+            data: data,
+            url: '<?php echo APP_URL . 'reviews/add'; ?>',
+            success: function(d){
+                console.info(d.message)
+                jQuery('#war-wrapper').html(d.message);
+            },
+            dataType: 'json'
+                
+        });
+    })
+    jQuery('#PropertyContactOwnerForm').live('submit',function(){
+        var data = jQuery(this).serialize();
+        //        console.info(data);
+        jQuery.ajax({
+            type: "POST",
+            data: data,
+            url: '<?php echo APP_URL . 'properties/contact_owner'; ?>',
+            success: function(d){
+                console.info(d.message)
+                jQuery('#contact-wrapper').html(d.message);
+            },
+            dataType: 'json'
+                
+        });
+    })
 </script>
+<?php echo $this->Js->writeBuffer(); ?>

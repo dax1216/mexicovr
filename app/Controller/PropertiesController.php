@@ -58,12 +58,14 @@ class PropertiesController extends AppController {
                 $this->Session->write('Property.package_id', $package['Package']['id']);
                 $this->Session->write('Property.listing_type', $listingType);
             }
+            $this->Session->write('Property.param_listing_type', $params);
         } else {
             $this->redirect(array('action' => 'choose_your_listings'));
         }
+        $this->set('sess_address', $this->Session->read('Property.property_address'));
     }
 
-    public function description($params = null) { //3rd step
+    public function description($preview = null) { //3rd step
         $this->set('activities', $this->Activity->find('all'));
 
         if ($this->request->is('post')) {
@@ -77,21 +79,36 @@ class PropertiesController extends AppController {
             $this->Session->write('Property.property_desc', $property_desc);
 
             //save activities here
-            foreach ($this->request->data['Property']['activity'] as $val) {
-                $actallvalue[] = $val;
+            $actallvalue = array();
+            if (isset($this->request->data['Property']['activity'])) {
+                foreach ($this->request->data['Property']['activity'] as $val) {
+                    $actallvalue[] = $val;
+                }
             }
 
             $this->Session->write('Property.activities', $actallvalue);
             if ($this->Session->read('Property.listing_type') == 'rent') {
-                $this->redirect(array('action' => 'rates'));
+                if($preview){
+                    $this->redirect(array('action' => 'rates/1'));
+                }else{
+                    $this->redirect(array('action' => 'rates'));
+                }
             } else {
-                $this->redirect(array('action' => 'rate'));
+                if($preview){
+                    $this->redirect(array('action' => 'rate/1'));
+                }else{
+                    $this->redirect(array('action' => 'rate'));
+                }
             }
         }
         $property_desc = $this->Session->read('Property.property_desc');
+        $this->set('sess_param_listing_type', $this->Session->read('Property.param_listing_type'));
+        $this->set('sess_desc', $property_desc);
+        $this->set('sess_activities', $this->Session->read('Property.activities'));
+        $this->set('preview', $preview);
     }
 
-    public function rates() { //4th step if rent
+    public function rates($preview = null) { //4th step if rent
         $this->loadModel('Season');
         $seasons = $this->Season->find('list', array('conditions' => array('is_active' => 1)));
         if ($this->request->is('post')) {
@@ -108,12 +125,19 @@ class PropertiesController extends AppController {
             }
             $this->Session->write('Property.rates', $rates);
             $this->Session->write('Property.additional_information', isset($rateData['additional_information']) ? $rateData['additional_information'] : '');
-            $this->redirect(array('action' => 'upload_photos'));
+            if($preview){
+                $this->redirect(array('action' => 'availability_calendar/1'));
+            }else{
+                $this->redirect(array('action' => 'upload_photos'));
+            }
         }
+        $this->set('sess_rates', $this->Session->read('Property.rates'));
+        $this->set('sess_additional_information', $this->Session->read('Property.additional_information'));
         $this->set('seasons', $seasons);
+        $this->set('preview', $preview);
     }
 
-    public function rate($params = null) { //4th step if sale
+    public function rate($preview = null) { //4th step if sale
         $property_address = $this->Session->read('Property.property_address');
         $property_desc = $this->Session->read('Property.property_desc');
         $property_activity = $this->Session->read('Property.property_activity');
@@ -123,18 +147,24 @@ class PropertiesController extends AppController {
             );
 
             $this->Session->write('Property.rate', $prate);
-            $this->redirect(array('action' => 'upload_photos'));
+            if($preview){
+                $this->redirect(array('action' => 'availability_calendar/1'));
+            }else{
+                $this->redirect(array('action' => 'upload_photos'));
+            }
         }
+        $this->set('sess_rate', $this->Session->read('Property.rate'));
+        $this->set('preview', $preview);
     }
 
-    public function upload_photos() { //5th step
+    public function upload_photos($preview=null) { //5th step
         $packageID = $this->Session->read('Property.package_id');
         $this->loadModel('Package');
         $packageData = $this->Package->read(array('photo_limit', 'is_audio_enabled'), $packageID);
         $photoLimit = $packageData['Package']['photo_limit'];
 
         if ($this->request->is('post')) {
-            $photoArray = array();
+            $photoArray = $this->Session->read('Property.photos');
             $photos = $this->request->data['photo'];
             $validPhotos = 0;
             $this->loadModel('TmpUploadPhoto');
@@ -143,34 +173,43 @@ class PropertiesController extends AppController {
                 if ($photoLimit == -1) {
                     if ($photo) {
                         if ($this->TmpUploadPhoto->save(array('session_id' => $this->Session->id(), 'tag' => 'property_photo', 'photo' => $photo))) {
-                            $photoArray[] = $photo;
+                            $last = $this->TmpUploadPhoto->read(array('id', 'photo'), $this->TmpUploadPhoto->getLastInsertID());
+                            $photoArray[$last['TmpUploadPhoto']['id']] = $last['TmpUploadPhoto']['photo'];
                             $validPhotos++;
                         }
                     }
                 } else {
                     if ($photo && ($validPhotos < $photoLimit - 1)) {
                         if ($this->TmpUploadPhoto->save(array('session_id' => $this->Session->id(), 'tag' => 'property_photo', 'photo' => $photo))) {
-                            $photoArray[] = $photo;
+                            $last = $this->TmpUploadPhoto->read('photo', $this->TmpUploadPhoto->getLastInsertID());
+                            $photoArray[$last['TmpUploadPhoto']['id']] = $last['TmpUploadPhoto']['photo'];
                             $validPhotos++;
                         }
                     }
                 }
             }
             $this->Session->write('Property.photos', $photoArray);
-            if ($packageData['Package']['is_audio_enabled']) {
-                $this->redirect(array('action' => 'upload_audio'));
-            } else {
-                $this->redirect(array('action' => 'video_url'));
+            if($preview){
+                $this->redirect(array('action' => 'preview'));
+            }else{
+                if ($packageData['Package']['is_audio_enabled']) {
+                    $this->redirect(array('action' => 'upload_audio'));
+                } else {
+                    $this->redirect(array('action' => 'video_url'));
+                }
             }
         }
-
+        $this->set('sess_listing_type', $this->Session->read('Property.listing_type'));
+        $this->set('sess_photos', $this->Session->read('Property.photos'));
         $this->set('photo_limit', $photoLimit);
+        $this->set('preview', $preview);
     }
 
     public function upload_audio() { //6th step
         $packageID = $this->Session->read('Property.package_id');
         $this->loadModel('Package');
         $packageData = $this->Package->read(array('is_audio_enabled', 'is_video_enabled'), $packageID);
+        $sessAudio = $this->Session->read('Property.audio');
         if ($packageData['Package']['is_audio_enabled']) {
             if ($this->request->is('post')) {
                 if (isset($this->request->data['Properties']['audio']) && $this->request->data['Properties']['audio']['name']) {
@@ -178,8 +217,14 @@ class PropertiesController extends AppController {
                     $this->loadModel('TmpUploadAudio');
                     $this->TmpUploadAudio->create();
                     if ($this->TmpUploadAudio->save(array('session_id' => $this->Session->id(), 'tag' => 'property_audio', 'audio' => $audio))) {
+                        if ($sessAudio) {
+                            foreach ($sessAudio as $key => $a) {
+                                $tmpPhoto = $this->TmpUploadAudio->read(null, $key);
+                                $this->TmpUploadAudio->delete();
+                            }
+                        }
                         $audioFile = $this->TmpUploadAudio->read(null, $this->TmpUploadAudio->getLastInsertId());
-                        $this->Session->write('Property.audio', $audioFile['TmpUploadAudio']['audio']);
+                        $this->Session->write('Property.audio.' . $this->TmpUploadAudio->getLastInsertId(), $audioFile['TmpUploadAudio']['audio']);
                         $this->redirect(array('action' => 'video_url'));
                     }
                 } else {
@@ -189,6 +234,7 @@ class PropertiesController extends AppController {
         } else {
             $this->redirect(array('action' => 'video_url'));
         }
+        $this->set('sess_audio', $sessAudio);
     }
 
     public function video_url() { //7th step
@@ -213,14 +259,18 @@ class PropertiesController extends AppController {
                 $this->redirect(array('action' => 'preview'));
             }
         }
+        $this->set('sess_video', $this->Session->read('Property.video'));
     }
 
-    public function availability_calendar() { //8th step if rent
+    public function availability_calendar($preview=null) { //8th step if rent
         if ($this->request->is('post')) {
             $dates = explode(',', $this->request->data['dates']);
             $this->Session->write('Property.reservation_dates', $dates);
             $this->redirect(array('action' => 'preview'));
         }
+        $this->set('sess_reservation_dates', $this->Session->read('Property.reservation_dates'));
+        $this->set('sess_listing_type', $this->Session->read('Property.listing_type'));
+        $this->set('preview', $preview);
     }
 
     public function preview($params = null) { //preview the listing, the final step
@@ -249,7 +299,7 @@ class PropertiesController extends AppController {
                 'bathrooms' => $propertySess['property_desc']['bathrooms'],
                 'rate' => isset($propertySess['rate']) ? $propertySess['rate'] : '',
                 'video' => isset($propertySess['video']) ? $propertySess['video'] : '',
-                'audio' => isset($propertySess['audio']) ? $propertySess['audio'] : '',
+                'audio' => isset($propertySess['audio']) ? str_replace('/tmp_audios', '/audios', array_shift(array_values($propertySess['audio']))): '',
                 'package_id' => $propertySess['package_id'],
                 'additional_information' => isset($propertySess['additional_information']) ? $propertySess['additional_information'] : '',
                 'listing_type' => $propertySess['listing_type']
@@ -258,38 +308,48 @@ class PropertiesController extends AppController {
             if ($this->Property->save($property)) {
                 $propertyId = $this->Property->getLastInsertID();
                 if (
-                        $this->save_activities($propertySess,$propertyId) &&
-                        $this->save_photos($propertySess,$propertyId) &&
-                        $this->save_reservations($propertySess,$propertyId) &&
-                        $this->save_rates($propertySess,$propertyId) &&
-                        $this->save_rate($propertySess,$propertyId)
+                        $this->save_activities($propertySess, $propertyId) &&
+                        $this->save_photos($propertySess, $propertyId) &&
+                        $this->save_reservations($propertySess, $propertyId) &&
+                        $this->save_rates($propertySess, $propertyId) &&
+                        $this->save_rate($propertySess, $propertyId)
                 ) {
+                    
+                    if(isset($propertySess['audio'])){
+                        $file = new File(WWW_ROOT . array_shift(array_values($propertySess['audio'])));
+
+                        if ($file->exists()) {
+                            $dir = new Folder(WWW_ROOT . "files\uploads\properties\audios", true);
+                            $file->copy($dir->path . DS . $file->name);
+                        }
+                    }
+                    
                     $sessionId = $this->Session->id();
                     $this->loadModel('TmpUploadPhoto');
                     $this->loadModel('TmpUploadAudio');
                     $this->TmpUploadPhoto->deleteAll(array('TmpUploadPhoto.session_id' => $sessionId));
                     $this->TmpUploadAudio->deleteAll(array('TmpUploadAudio.session_id' => $sessionId));
+                    
+                    //delete audio file in tmp folder
+                    foreach($propertySess['audio'] as $a){
+                        $fileA = new File(WWW_ROOT . $a, false, 0777);
+                        $fileA->delete();
+                    }
+                    
                     $this->Session->delete('Property');
-                    $this->redirect(array('action' => 'view/'.$propertyId));
-                }else{
-                    echo 'error';
+                    $this->redirect(array('action' => 'view/' . $propertyId));
+                } else {
+                    echo 'error2';
                     $this->autoRender = false;
                 }
             } else {
-                echo 'error';
+                echo 'error1';
                 $this->autoRender = false;
             }
-//            $video = $this->request->data['Properties']['video'];
-//            $this->Session->write('Property.video', $video);
-//            if ($property_listing == 'rent') {
-//                $this->redirect(array('action' => 'availability_calendar'));
-//            } else {
-//                $this->redirect(array('action' => 'preview'));
-//            }
         }
     }
 
-    private function save_activities($propertySess,$propertyId) {
+    private function save_activities($propertySess, $propertyId) {
         //activities
         if (isset($propertySess['activities'])) {
             $error = 0;
@@ -299,31 +359,61 @@ class PropertiesController extends AppController {
                     $error++;
                 }
             }
-            return $error?false:true;
-        }else{
-            return true;
-        }
-        return false;
-    }
-
-    private function save_photos($propertySess,$propertyId) {
-        //photos
-        if (isset($propertySess['photos'])) {
-            $error = 0;
-            foreach ($propertySess['photos'] as $photo) {
-                $this->PropertyPhoto->create();
-                if (!$this->PropertyPhoto->save(array('property_id' => $propertyId, 'photo' => 'files/uploads/properties/photos/' . $photo['name']))) {
-                    $error++;
-                }
-            }
-            return $error?false:true;
+            return $error ? false : true;
         } else {
             return true;
         }
         return false;
     }
 
-    private function save_reservations($propertySess,$propertyId) {
+    private function save_photos($propertySess, $propertyId) {
+        //photos
+        if (isset($propertySess['photos'])) {
+            $error = 0;
+            foreach ($propertySess['photos'] as $key=>$photo) {
+                
+                $photoSave = str_replace('/tmp_photos', '/photos', $photo);
+                $this->PropertyPhoto->create();
+                if ($this->PropertyPhoto->save(array('property_id' => $propertyId, 'photo' => $photoSave))) {
+                    //transfer tmp photos to property photos directory
+                    $image = $photo;
+                    $imgFile = '';
+                    $ext = '';
+                    if ($image != '') {
+                        $imgFile = substr($image, 0, -4);
+                        $ext = substr($image, -3);
+                    }
+
+                    $file = new File(WWW_ROOT . $photo);
+                    $filereg = new File(WWW_ROOT . $imgFile . '-resize-465x382-r.' . $ext, false, 0777);
+                    $filesmall = new File(WWW_ROOT . $imgFile . '-resize-65x60-s.' . $ext, false, 0777);
+
+                    if ($file->exists() && $filereg->exists() && $filesmall->exists()) {
+                        $dir = new Folder(WWW_ROOT . "files\uploads\properties\photos", true);
+                        $file->copy($dir->path . DS . $file->name);
+                        $filereg->copy($dir->path . DS . $filereg->name);
+                        $filesmall->copy($dir->path . DS . $filesmall->name);
+                    }
+                    
+                    //deleting associated transformed files
+                    $this->loadModel('TmpUploadPhoto');
+                    if ($this->TmpUploadPhoto->delete($key)) {            
+                        $filereg->delete();
+                        $filesmall->delete();
+                    }
+                    
+                }else{
+                    $error++;
+                }
+            }
+            return $error ? false : true;
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    private function save_reservations($propertySess, $propertyId) {
         //reservations
         if (isset($propertySess['reservation_dates'])) {
             $error = 0;
@@ -333,14 +423,14 @@ class PropertiesController extends AppController {
                     $error++;
                 }
             }
-            return $error?false:true;
-        }else{
+            return $error ? false : true;
+        } else {
             return true;
         }
         return false;
     }
 
-    private function save_rates($propertySess,$propertyId) {
+    private function save_rates($propertySess, $propertyId) {
         //if rent -> rates
         if (isset($propertySess['rates'])) {
             $error = 0;
@@ -359,14 +449,14 @@ class PropertiesController extends AppController {
                     $error++;
                 }
             }
-            return $error?false:true;
-        }else{
+            return $error ? false : true;
+        } else {
             return true;
         }
         return false;
     }
 
-    private function save_rate($propertySess,$propertyId) {
+    private function save_rate($propertySess, $propertyId) {
         //if sale -> rate
         if (isset($propertySess['rate'])) {
             $this->PropertyRate->create();
@@ -378,7 +468,7 @@ class PropertiesController extends AppController {
             } else {
                 return false;
             }
-        }else{
+        } else {
             return true;
         }
         return false;
@@ -416,10 +506,9 @@ class PropertiesController extends AppController {
             throw new NotFoundException(__('Invalid property'));
         }
         $this->set('property', $this->Property->read(null, $id));
-        $this->set('property_photos', $this->PropertyPhoto->find('all',array('fields'=>array('PropertyPhoto.photo'),'conditions'=>array('PropertyPhoto.property_id'=>$id))));
-        $this->set('property_activities', $this->Activity->find('all',array('fields'=>array('Activity.name','Activity.icon'),'conditions'=>array('Activity.id'=>$this->PropertyActivity->find('list',array('conditions'=>array('PropertyActivity.property_id'=>$id), 'fields'=>array('PropertyActivity.activity_id')))))));
+        $this->set('property_photos', $this->PropertyPhoto->find('all', array('fields' => array('PropertyPhoto.photo'), 'conditions' => array('PropertyPhoto.property_id' => $id))));
+        $this->set('property_activities', $this->Activity->find('all', array('fields' => array('Activity.name', 'Activity.icon'), 'conditions' => array('Activity.id' => $this->PropertyActivity->find('list', array('conditions' => array('PropertyActivity.property_id' => $id), 'fields' => array('PropertyActivity.activity_id')))))));
         $this->set('property', $this->Property->read(null, $id));
-        
     }
 
     /**
@@ -489,6 +578,37 @@ class PropertiesController extends AppController {
         }
         $this->Session->setFlash(__('Property was not deleted'));
         $this->redirect(array('action' => 'index'));
+    }
+
+    public function contact_owner() {
+
+        if ($this->request->is('post')) {
+            if (isset($this->request->data['Property']['property_id']) && sizeof($this->Property->read(null, $this->request->data['Property']['property_id']))) {
+                $prop = $this->Property->read(null, $this->request->data['Property']['property_id']);
+                $emailData = array(
+                    'to' => 'daisy@localhost.com', //temporary email
+                    'from' => 'noreply@mexicovr.com',
+                    'subject' => 'Someone contacted you about your property - ' . $prop['Property']['title'],
+                    'viewVars' => array(
+                        'emailContent' => 'First Name: ' . $this->request->data['Property']['first_name'] . '\nLast Name: ' . $this->request->data['Property']['first_name'] . '\nEmail Address: ' . $this->request->data['Property']['email_address'] . '\nHome Phone: ' . $this->request->data['Property']['home_phone'] . '\n\nComments and Questions: \n' . $this->request->data['Property']['comments'],
+                        'user' => array('User' => $prop['User'])
+                    )
+                );
+                $this->send_mail($emailData);
+                echo json_encode(array('message' => 'Successfully contacted the owner.'));
+            } else {
+                echo json_encode(array('message' => 'Error encountered.'));
+            }
+        }
+        if ($this->request->is('ajax')) {
+            $this->layout = 'ajax';
+            $this->autoRender = false;
+        }
+    }
+
+    public function display_contact_element($propertyId) {
+        $this->set('property_id', $propertyId);
+        $this->render('/Elements/contact');
     }
 
 }

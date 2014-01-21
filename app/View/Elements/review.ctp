@@ -1,30 +1,8 @@
-<?php 
-    $this->Js->JqueryEngine->jQueryObject = '$j';
-    echo $this->Html->scriptBlock(
-        'var $j = jQuery.noConflict();',
-        array('inline' => false)
-    ); // Tell jQuery to go into noconflict mode
-    $data = $this->Js->get('#ReviewAddForm')->serializeForm(array('isForm' => true, 'inline' => true));
-    //var_dump($data);
-    $this->Js->get('#ReviewAddForm')->event(
-            'submit', 
-            $this->Js->request(
-                    array('controller' => 'reviews', 'action' => 'add'), array(
-                'update' => '#UserInfoDiv',
-                'data' => $data,
-                'async' => true,
-                'dataExpression' => true,
-                'type' => 'json',
-                'method' => 'POST'
-                    )
-            )
-    );
-?>
-<div class="message">
+<?php echo $this->Html->script(array('raty/lib/jquery.raty.min')); ?>
+<div class="message" id="war-wrapper">
     <div class="form">
-        <div id="UserInfoDiv">test</div>
         <?php echo $this->Form->create('Review', array('action' => 'add', 'default'=>false)); ?>
-        <input type="hidden" value="<?php echo $property_id; ?>"/>
+        <?php echo $this->Form->input('property_id', array('type'=>'hidden', 'value'=>$property_id)); ?>
         <div class="left">
             <label>First Name</label>
             <?php echo $this->Form->input('first_name', array('label' => false, 'div' => false)); ?>
@@ -53,7 +31,9 @@
                 <input type="submit" class="btnSub" value="SUBMIT" />
         </span>
         <?php echo $this->Form->end(); ?>
-        
+        <div class="demo">
+            <div id="score-demo"></div>
+          </div>
         
     </div><!-- form -->
 </div><!-- message -->

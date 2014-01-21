@@ -15,7 +15,7 @@
             echo $this->Html->css(array('style', 'jscrollpane', 'dp', 'basic', 'galleriffic-2', 'jscrollpane', 'dp', 'shCore', 'shThemeDefault'));
             echo $this->fetch('css');
 
-            echo $this->Html->script(array('jquery.min.js', 'tabs', 'popup', 'modernizr.custom.79639', 'jquery.galleriffic.js', 'jquery.opacityrollover.js', 'jquery.mousewheel', 'jquery.jscrollpane', 'dropdown', 'jquery.datepicker.js', 'datepicker_lang_US.js'));
+            echo $this->Html->script(array('jquery.min.js', 'tabs', 'popup', 'modernizr.custom.79639', 'jquery.galleriffic.js', 'jquery.opacityrollover.js', 'jquery.mousewheel', 'jquery.jscrollpane', 'dropdown', 'jquery.datepicker.js', 'datepicker_lang_US.js', 'raty/lib/jquery.raty.min'));
             echo $this->fetch('script');
         ?>
 
@@ -84,11 +84,7 @@
 
                     jQuery('#my_modal').popup();
  
-//                    jQuery('#my_modal1').popup({beforeopen: function(){
-////                            var testing123 = 
-////                            console.info(testing123);
-//                            jQuery('#my_modal1').html();
-//                    }});
+                    jQuery('#my_modal1').popup();
                     
                     jQuery('#my_modal2').popup();
                     jQuery('#my_modal3').popup();
