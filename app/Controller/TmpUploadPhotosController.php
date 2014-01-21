@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('File', 'Utility');
 /**
  * TmpUploadPhotos Controller
  *
@@ -93,11 +94,42 @@ class TmpUploadPhotosController extends AppController {
 		if (!$this->TmpUploadPhoto->exists()) {
 			throw new NotFoundException(__('Invalid tmp upload photo'));
 		}
+                $tmpPhoto = $this->TmpUploadPhoto->read(null,$id);
 		if ($this->TmpUploadPhoto->delete()) {
-			$this->Session->setFlash(__('Tmp upload photo deleted'));
-			$this->redirect(array('action' => 'index'));
-		}
-		$this->Session->setFlash(__('Tmp upload photo was not deleted'));
-		$this->redirect(array('action' => 'index'));
+                        $image = $tmpPhoto['TmpUploadPhoto']['photo'];
+                                    $imgFile = '';
+                                    $ext = '';
+                                    if ($image != '') {
+                                        $imgFile = substr($image, 0, -4);
+                                        $ext = substr($image, -3);
+                                    }
+                                    
+                        //deleting associated transformed files            
+			$filereg = new File(WWW_ROOT . $imgFile.'-resize-465x382-r.'.$ext, false, 0777);
+                        $filereg->delete();
+                        $filesmall = new File(WWW_ROOT . $imgFile.'-resize-65x60-s.'.$ext, false, 0777);
+                        $filesmall->delete();
+                        
+                        $this->Session->delete('Property.photos.'.$id);
+                        
+                        $this->Session->setFlash(__('Tmp upload photo deleted'));
+                        if ($this->request->is('ajax')) {
+                            echo json_encode(array('message'=>'Photo successfully deleted.'));
+                        }else{
+                            $this->redirect(array('action' => 'index'));
+                        }
+		}else{
+                    if ($this->request->is('ajax')) {
+                        echo json_encode(array('message'=>'Error deleting the photo.'));
+                    }else{
+                        $this->Session->setFlash(__('Tmp upload photo was not deleted'));
+                        $this->redirect(array('action' => 'index'));
+                    }
+                }
+//                echo json_encode(array('message'=>'Photo successfully deleted.'));
+                if ($this->request->is('ajax')) {
+                    $this->layout = 'ajax';
+                    $this->autoRender = false;
+                }
 	}
 }

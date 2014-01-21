@@ -11,13 +11,21 @@
             <div class="form">
                 <p><em>Upload audio</em></p>
                 <div class="line-black"></div>
+                <?php if($sess_audio){?>
+                    <?php foreach($sess_audio as $key=>$audio){ ?>
+                        
+                        <div style="margin-bottom: 10px;" id="p_<?php echo $key; ?>">
+                            <object data="<?php echo $this->webroot.$audio; ?>"></object>
+                        </div>
+                    <?php } ?>
+                <?php } ?>
                 <div class="list" id="photoupload">
                     <div class="upload-wrapper"><?php echo $this->Form->input('audio',array('label' => false,'type'=>'file','div'=>false,'class'=>'property-photo')); ?></div>
                 </div>
                 <div class="clear"></div>
             </div>		
             <div class="buttons">
-                <a href="listing-rate.html"><span class="back"><input type="button" class="btnback" value="<< BACK" /></span></a>
+                <span class="back"><input type="button" class="btnback" value="<< BACK" onclick="window.location = '<?php echo APP_URL.'properties/upload_photos'; ?>'"/></span>
                 <span class="next"><input type="submit" class="btnnext" value="NEXT >>" /></span>
             </div>
         <?php echo $this->Form->end(); ?>

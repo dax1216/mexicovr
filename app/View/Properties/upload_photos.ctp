@@ -11,6 +11,23 @@
             <div class="form">
                 <p><em>Upload photos</em></p>
                 <div class="line-black"></div>
+                <?php if($sess_photos){?>
+                    <?php foreach($sess_photos as $key=>$photo){ ?>
+                        <?php 
+                                    $image = $photo;
+                                    $imgFile = '';
+                                    $ext = '';
+                                    if ($image != '') {
+                                        $imgFile = substr($image, 0, -4);
+                                        $ext = substr($image, -3);
+                                    }
+                                ?>
+                        <div style="margin-bottom: 10px;" id="p_<?php echo $key; ?>">
+                            <img src="<?php echo $this->webroot.$imgFile.'-resize-65x60-s.'.$ext; ?>"/>
+                            <input type="button" value="remove" data-photo="<?php echo $key; ?>" class="remove-photo"/>
+                        </div>
+                    <?php } ?>
+                <?php } ?>
                 <div class="list" id="photoupload">
                     <div class="upload-wrapper"><?php echo $this->Form->input('photo[0]',array('label' => false,'type'=>'file','div'=>false,'class'=>'property-photo','name'=>'data[photo][0]')); ?></div>
 <!--                    <input name="photo_0" type="file" /> -->
@@ -20,8 +37,12 @@
                 <div class="clear"></div>
             </div>		
             <div class="buttons">
-                <a href="listing-rate.html"><span class="back"><input type="button" class="btnback" value="<< BACK" /></span></a>
-                <span class="next"><input type="submit" class="btnnext" value="NEXT >>" /></span>
+                <?php if($preview){ ?>
+                    <span class="next"><input type="submit" class="btnnext" value="SUBMIT" /></span>
+                <?php }else {?>
+                    <span class="back"><input type="button" class="btnback" value="<< BACK" onclick="window.location = '<?php echo $sess_listing_type=='rent'?APP_URL.'properties/rates':APP_URL.'properties/rate'; ?>'"/></span>
+                    <span class="next"><input type="submit" class="btnnext" value="NEXT >>" /></span>
+                <?php } ?>
             </div>
         <?php echo $this->Form->end(); ?>
     </div>
@@ -40,5 +61,23 @@
             jQuery(this).remove();
         }
         e.preventDefault();
+    });
+    
+    jQuery('.remove-photo').click(function(){
+        var didConfirm = confirm("Are you sure?");
+        if (didConfirm == true) {
+            var pid = jQuery(this).attr('data-photo');
+            jQuery.ajax({
+                type: "POST",
+                url: '<?php echo APP_URL . 'tmp_upload_photos/delete/'; ?>'+pid,
+                success: function(d){
+                    console.info(d);
+                      jQuery('#p_'+pid).remove();
+//                    jQuery('#contact-wrapper').html(d.message);
+                },
+                dataType: 'json'
+
+            });
+        }
     })
 </script>

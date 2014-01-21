@@ -58,8 +58,8 @@ class TmpUploadPhoto extends AppModel {
                                 'tempDir' => TMP,
                                 'allowEmpty' => false,
 //                                'overwrite' => true,
-                                'uploadDir' => 'files/uploads/properties/photos/',
-                                'finalPath' => 'files/uploads/properties/photos/',
+                                'uploadDir' => 'files/uploads/properties/tmp_photos/',
+                                'finalPath' => 'files/uploads/properties/tmp_photos/',
                                 'transforms' => array(
                                         'image_small' => array(
                                                 'method' => 'resize',
@@ -68,7 +68,7 @@ class TmpUploadPhoto extends AppModel {
                                                 'self' => false,
                                                 'width' => 65,
                                                 'height' => 60,
-//                                                'nameCallback' => 'formatTransformName'
+                                                'nameCallback' => 'format_transform_name'
                                         ),
                                         'image_reg' => array(
                                                 'method' => 'resize',
@@ -77,7 +77,7 @@ class TmpUploadPhoto extends AppModel {
                                                 'self' => false,
                                                 'width' => 465,
                                                 'height' => 382,
-//                                                'nameCallback' => 'formatTransformName'
+                                                'nameCallback' => 'format_transform_name'
                                         ),
                                 )
                         )
@@ -95,4 +95,8 @@ class TmpUploadPhoto extends AppModel {
 //                        )
                 )
         );
+        
+        public function format_transform_name($name, $file){
+            return sprintf('%s', $name);
+        }
 }

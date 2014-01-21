@@ -11,23 +11,23 @@
 						<div class="left">
 							<label>Address 1</label>
 					
-                                                          <?php echo $this->Form->input('address1', array('tabindex'=>'1', 'label' => false, 'div' => false)); ?>
+                                                          <?php echo $this->Form->input('address1', array('tabindex'=>'1', 'label' => false, 'div' => false, 'value'=>isset($sess_address['address1'])?$sess_address['address1']:'')); ?>
                                                         
 							<label>City</label>
 							
-                                                          <?php echo $this->Form->input('city', array('tabindex'=>'3','class' => 'city','label' => false, 'div' => false)); ?>
+                                                          <?php echo $this->Form->input('city', array('tabindex'=>'3','class' => 'city','label' => false, 'div' => false, 'value'=>isset($sess_address['city'])?$sess_address['city']:'')); ?>
                                                         
 							<label>State / Province</label>
 							
-                                                          <?php echo $this->Form->input('state', array('class' => 'state','label' => false, 'div' => false)); ?>
+                                                          <?php echo $this->Form->input('state', array('class' => 'state','label' => false, 'div' => false, 'value'=>isset($sess_address['state'])?$sess_address['state']:'')); ?>
                                                    
-                                                          <?php echo $this->Form->input('province', array('class' => 'province','label' => false, 'div' => false)); ?>
+                                                          <?php echo $this->Form->input('province', array('class' => 'province','label' => false, 'div' => false, 'value'=>isset($sess_address['province'])?$sess_address['province']:'')); ?>
 						</div>
 						<div class="right">
 							<label>Address 2</label>
-							<?php echo $this->Form->input('address2', array('tabindex'=>'2','label' => false, 'div' => false)); ?>
+							<?php echo $this->Form->input('address2', array('tabindex'=>'2','label' => false, 'div' => false, 'value'=>isset($sess_address['address2'])?$sess_address['address2']:'')); ?>
 							<label>Zip</label>
-							<?php echo $this->Form->input('zip', array('tabindex'=>'4','label' => false, 'div' => false)); ?>
+							<?php echo $this->Form->input('zip', array('tabindex'=>'4','label' => false, 'div' => false, 'value'=>isset($sess_address['zip'])?$sess_address['zip']:'')); ?>
 						</div>
 						<div class="clear"></div>
 						<div class="map">
@@ -36,7 +36,7 @@
 						</div>
 						<div class="buttons">
 							
-							<span class="next"><input type="submit" class="btnnext" value="NEXT" /></span>
+							<span class="next"><input type="submit" class="btnnext" value="NEXT >>" /></span>
 						</div>
 						<div class="clear"></div>
                                                 
