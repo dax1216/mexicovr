@@ -2,8 +2,14 @@
 
 <div id="content" class="property ratings">
 
+<div id="dd1" class="wrapper-dropdown-1" tabindex="1" style="float: left">
+    <select>
+        <option value="sale">FOR SALE</option>
+        <option value="rent">FOR RENT</option>
+    </select>
+</div>
 
-
+<div class="clear"></div>
 <div class="title">
     <h1>Sort By:</h1>
     <div class="prices">PRICE:

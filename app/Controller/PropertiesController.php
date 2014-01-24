@@ -595,7 +595,7 @@ class PropertiesController extends AppController {
                     )
                 );
                 $this->send_mail($emailData);
-                echo json_encode(array('message' => 'Successfully contacted the owner.'));
+                echo json_encode(array('message' => 'Your message has been sent.'));
             } else {
                 echo json_encode(array('message' => 'Error encountered.'));
             }

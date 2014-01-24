@@ -26,14 +26,12 @@
         <div class="clear"></div>
         <label>Guest Review</label>
         <?php echo $this->Form->input('review', array('label' => false, 'div' => false, 'type' => 'textarea')); ?>
-        <label>Over-all Experience</label><img class="star" src="<?php echo $this->webroot; ?>images/stars.png" />
+        <label>Over-all Experience</label><div id="score-demo"></div>
         <span class="sub">
                 <input type="submit" class="btnSub" value="SUBMIT" />
         </span>
+        <?php echo $this->Form->input('rate', array('type'=>'hidden')); ?>
         <?php echo $this->Form->end(); ?>
-        <div class="demo">
-            <div id="score-demo"></div>
-          </div>
         
     </div><!-- form -->
 </div><!-- message -->

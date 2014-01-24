@@ -44,9 +44,10 @@ class ReviewsController extends AppController {
             $this->Review->create();
             $this->request->data['Review']['arrival'] = date("Y-m-d", strtotime($this->request->data['Review']['arrival']));
             $this->request->data['Review']['departure'] = date("Y-m-d", strtotime($this->request->data['Review']['departure']));
+            $this->request->data['Review']['is_active'] = 1;
             if ($this->Review->save($this->request->data)) {
                 if ($this->request->is('ajax')) {
-                    echo json_encode(array('message' => 'Successfully added your review.'));
+                    echo json_encode(array('message' => 'Thank you for your feedback.'));
                 } else {
                     $this->Session->setFlash(__('The review has been saved'));
                     $this->redirect(array('action' => 'index'));

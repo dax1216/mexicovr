@@ -178,7 +178,7 @@ $this->Js->get('.my_modal1_open')->event(
                                         $j("#dateto").datepicker({ picker: "<img class=\'picker\' align=\'middle\' src=\'' . $this->webroot . 'images/calendar.png\' alt=\'\'/>" });
                                         $j("#arrive").datepicker({ picker: "<img class=\'picker\' align=\'middle\' src=\'' . $this->webroot . 'images/calendar.png\' alt=\'\'/>" });
                                         $j("#depart").datepicker({ picker: "<img class=\'picker\' align=\'middle\' src=\'' . $this->webroot . 'images/calendar.png\' alt=\'\'/>" });
-                                        $j("#score-demo").raty({ score: 3, path: "'.$this->webroot.'js/raty/lib/img", score: function(){alert("test");}});
+                                        $j("#score-demo").raty({path: "'.$this->webroot.'js/raty/lib/img", width: 150, click: function(score, evt){$j("#ReviewRate").val(score);}});
                     '
                 )
         )
