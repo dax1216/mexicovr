@@ -6,11 +6,7 @@
 			<div class="left">
 				<h1 class="title">Premium</h1>
 					<div class="boxs">
-						<?php echo $this->Form->create('Advertisement', array('type' => 'file',
-																	 	  'action' => 'advertising_advertise'
-																		 )
-											  	  );
-						?>
+						<?php echo $this->Form->create('Advertisement', array('type' => 'file', 'action' => 'advertising_advertise')); ?>
 							<div class="lines"></div>
 							<div class="text">
 								<?php echo $this->Form->input('title', array('value' => 'title', 'label' => false)); ?>

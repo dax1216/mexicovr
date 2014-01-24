@@ -50,7 +50,7 @@ class User extends AppModel {
 			),
             'phone' => array(
                 'rule' => array('phone', null, 'us'),
-                'message' => 'Must be a valid Phone No.',
+                'message' => 'Must be a valid Phone No. i.e. 123-456-7890',
             ),
         ),
         /*'username' => array(

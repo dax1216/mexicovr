@@ -29,8 +29,6 @@ class AdvertisementsController extends AppController {
 //
 //        $advertisement = $this->Advertisement->find('first', array('order' => array('Advertisement.created' => 'desc')));
 //        $this->set('advertisement', $advertisement['Advertisement']);
-
-        
     }
 
     /**
@@ -133,16 +131,18 @@ class AdvertisementsController extends AppController {
         }
     }
 
-       public function first_step() {
-        if ($this->request->is('post')) {
-            $this->request->data['Advertisement']['is_active'] = 1;
+    public function first_step() {
+         if ($this->request->is('post')) {
+             $this->request->data['Advertisement']['is_active'] = 1;
             $this->Advertisement->create();
-            if ($this->Advertisement->save($this->request->data)) {
-                $this->redirect(array('action' => 'index'));
+            if ($this->Advertisement->save($this->request->data, true)) {
+                $this->Session->setFlash(__('The advertisement has been saved'));
+                $this->redirect(array('action' => 'preview/' . $this->Advertisement->getLastInsertID()));
             } else {
-                $this->redirect(array('action' => 'advertising_advertise'));
+                $this->Session->setFlash(__('The advertisement could not be saved. Please, try again.'));
             }
         }
+
     }
 
     public function advertising_payment() {
@@ -155,19 +155,18 @@ class AdvertisementsController extends AppController {
     }
 
     public function show() {
-                
+
         $activeAds = $this->Advertisement->find('all', array(
                     'conditions' => array('Advertisement.is_active' => '1'),
                     'limit' => 3,
                     'order' => array('Advertisement.counter ASC'),
                 ));
 
-            foreach ($activeAds as $adsData => $data) {
-                $countAds = $data['Advertisement']['counter'] + 1;
-                $data = array('id' => $data['Advertisement']['id'],'counter' => $countAds);
-                $this->Advertisement->save($data, false);
-        
-            }
+        foreach ($activeAds as $adsData => $data) {
+            $countAds = $data['Advertisement']['counter'] + 1;
+            $data = array('id' => $data['Advertisement']['id'], 'counter' => $countAds);
+            $this->Advertisement->save($data, false);
+        }
 
         if ($this->request->is('requested')) {
             return $activeAds;
