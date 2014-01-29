@@ -27,7 +27,7 @@
                 <div class="clear"></div>
             </div>		
             <div class="buttons">
-                <span class="back"><input type="button" class="btnback" value="<< BACK" onclick="window.location = '<?php echo APP_URL.'properties/upload_audio'; ?>'"/></span>
+                <span class="back"><input type="button" class="btnback" value="<< BACK" onclick="window.location = '<?php echo APP_URL.'properties/upload_audio/1'; ?>'"/></span>
                 <span class="next"><input type="submit" class="btnnext" value="NEXT >>" /></span>
             </div>
         <?php echo $this->Form->end(); ?>

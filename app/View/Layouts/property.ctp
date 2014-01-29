@@ -12,12 +12,12 @@
         echo $this->Html->meta('icon');
         echo $this->fetch('meta');
 
-        echo $this->Html->css(array('jscrollpane','dp','datepicker','normalize','style'));
-	echo $this->fetch('css');
+        echo $this->Html->css(array('jscrollpane', 'dp', 'datepicker', 'normalize', 'style'));
+        echo $this->fetch('css');
 
 
-        echo $this->Html->script(array('jquery.min', 'tabs','popup','modernizr.custom.79639','jquery.mousewheel','jquery.jscrollpane','dropdown','jquery.ui.core','jquery.ui.datepicker','jquery-ui.multidatespicker','prettify','lang-css'));
-		echo $this->fetch('script');
+        echo $this->Html->script(array('jquery.min', 'tabs', 'popup', 'modernizr.custom.79639', 'jquery.mousewheel', 'jquery.jscrollpane', 'dropdown', 'jquery.ui.core', 'jquery.ui.datepicker', 'jquery-ui.multidatespicker', 'prettify', 'lang-css'));
+        echo $this->fetch('script');
         ?>
 
         <!--[if IE 8]>
@@ -72,6 +72,19 @@
                     }
                 );
                 });
+                
+                jQuery('.scrolling').jScrollPane(
+                {
+                    showArrows: false,
+                    arrowScrollOnHover: true,
+                    verticalDragMinHeight: 48,
+                    verticalDragMaxHeight: 48,
+                    autoReinitialise: true,
+                    verticalGutter: 10,
+                    horizontalGutter: 10
+                }
+            );
+                jQuery(".rent ul li:last-child").addClass("last");
             });
         </script>
 

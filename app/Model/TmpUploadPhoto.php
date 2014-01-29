@@ -79,6 +79,15 @@ class TmpUploadPhoto extends AppModel {
                                                 'height' => 382,
                                                 'nameCallback' => 'format_transform_name'
                                         ),
+                                        'image_list' => array(
+                                                'method' => 'resize',
+                                                'append' => '-l',
+                                                'overwrite' => true,
+                                                'self' => false,
+                                                'width' => 200,
+                                                'height' => 167,
+                                                'nameCallback' => 'format_transform_name'
+                                        ),
                                 )
                         )
                 ),

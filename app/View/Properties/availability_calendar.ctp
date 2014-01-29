@@ -19,7 +19,7 @@
                     <span class="back"><input type="button" class="btnback" value="<< BACK" onclick="window.location = '<?php echo $sess_listing_type=='rent'?APP_URL.'properties/rates/1':APP_URL.'properties/rate/1'; ?>'"/></span>
                     <span class="next"><input type="submit" class="btnnext" value="SUBMIT" /></span>
                 <?php }else {?>
-                    <span class="back"><input type="button" class="btnback" value="<< BACK" onclick="window.location = '<?php echo APP_URL.'properties/video_url'; ?>'"/></span>
+                    <span class="back"><input type="button" class="btnback" value="<< BACK" onclick="window.location = '<?php echo APP_URL.'properties/video_url/1'; ?>'"/></span>
                     <span class="next"><input type="submit" class="btnnext" value="NEXT >>" /></span>
                 <?php } ?>
                 

@@ -79,7 +79,7 @@
     <body>
         <div id="ie8"></div>
         <?php echo $this->element('menu') ?>
-        <div id="bgWrap">
+        <div id="bgWrap" class="feats">
             <?php echo $content_for_layout ?>
 
             <div id="sidebar">

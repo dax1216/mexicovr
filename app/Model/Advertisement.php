@@ -26,40 +26,39 @@ class Advertisement extends AppModel {
                 'required' => true
             ),
         ),
-        'propertyAddress' => array('notempty' => array('rule' => array('notempty'),
+        'address' => array('notempty' => array('rule' => array('notempty'),
                 'message' => 'Please add Property Address',
                 'allowEmpty' => false,
                 'required' => true
             )
         ),
-        'description2' => array('notempty' => array('rule' => array('notempty'),
-                'message' => 'Please add 2nd Description',
-                'allowEmpty' => false,
-                'required' => false
-            ),
-        ),
-        'propertyContact' => array('notempty' => array('rule' => 'notempty',
+//        'description2' => array('notempty' => array('rule' => array('notempty'),
+//                'message' => 'Please add 2nd Description',
+//                'allowEmpty' => false,
+//                'required' => false
+//            ),
+//        ),
+        'contact_number' => array('notempty' => array('rule' => 'notempty',
                 'message' => 'Please add property contact details',
                 'allowEmpty' => false,
                 'required' => true
             ),
-            'alphaNumeric' => array('rule' => 'alphaNumeric',
-                'message' => 'Please enter numbers only',
-                'allowEmpty' => false,
-                'required' => true
-            )
-        ),
-        'propertyPrice' => array('notempty' => array('rule' => array('notempty'),
-                'message' => 'Please add 2nd Description',
-                'allowEmpty' => false,
-                'required' => true
+            'phone' =>array(
+                'rule' => array('phone', null, 'us'),
+                'message' => 'Must be a valid Phone No. i.e. 123-456-7890',
             ),
-            'alphaNumeric' => array('rule' => 'alphaNumeric',
-                'message' => 'Please enter numbers only',
-                'allowEmpty' => false,
-                'required' => true
-            )
         ),
+//        'price' => array('notempty' => array('rule' => array('notempty'),
+//                'message' => 'Please add 2nd Description',
+//                'allowEmpty' => false,
+//                'required' => true
+//            ),
+//            'alphaNumeric' => array('rule' => 'alphaNumeric',
+//                'message' => 'Please enter numbers only',
+//                'allowEmpty' => false,
+//                'required' => true
+//            )
+//        ),
         'is_active' => array('numeric' => array('rule' => array('numeric'),
                 'required' => true,
             ),

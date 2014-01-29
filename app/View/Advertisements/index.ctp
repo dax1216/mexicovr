@@ -1,30 +1,49 @@
-<div id="content">
+<div id="content" class="features">
     <div class="title">
         <h1>Advertising</h1>
         <div class="line"></div>
     </div>
-    <div class="box">
-        <div class="title">
-            <h1><?php echo $advertisement['title'] ?></h1>
+    <div class="left">
+        <div class="boxs">
+            <div class="title">
+                <h1>Lorem Ipsum</h1>
+            </div>
+            <img src="<?php echo $this->webroot; ?>images/image.png" alt="Lorem Ipsum" />
+            <div class="text">
+                <p><strong>Limf worf</strong> Lorem ipsum dolor sitam et, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laor eet dolore magna aliquam erat volutpati si enim ad minim veniam.</p>
+                <div class="lines"></div>
+                <h3>7878 lorem ipsum <br/> sed diem mimb</h3>
+                <div class="lines"></div>
+                <h2>1 800 555-5555</h2>
+            </div>
         </div>
-        <?php echo '<img src='.$this->webroot.$advertisement['image_small'].' alt="Lorem Ipsum" />'; ?>
-        <div class="text">
-            <?php echo '<p><strong>'.$advertisement['title'].'</strong> '.$advertisement['description1'].'</p>'; ?>
-            <div class="lines"></div>
-            <?php echo '<h3>'.$advertisement['propertyAddress'].' <br/> $'.$advertisement['propertyPrice'].'</h3>'; ?>
-            <div class="lines"></div>
-            <?php echo '<h2>'.$advertisement['propertyContact'].'</h2>'; ?>
+        <div class="button">
+            <h3>$ 299.99</h3>
+            <a href="<?php echo $this->webroot; ?>advertisements/advertising_advertise"><span class="sub"><input type="submit" value="ADVERTISE" class="btnAdv"/></span></a>
         </div>
     </div>
-    <div class="buttons">
-         <?php
-         	/***** 
-         	echo $this->Html->link('<< BACK', '/advertisements/advertising_advertise', array('class' => 'btnback'));
-			echo $this->Html->link('NEXT >>', '/advertisements/advertising_advertise', array('class' => 'btnnext'));
-			*****/
-			echo '<a href="'.$this->webroot.'advertisements/advertising_advertise"><span class="back"><input type="submit" class="btnback" value="<< BACK" /></span></a>
-        		  <a href="'.$this->webroot.'advertisements/advertising_payment/'.$advertisement['id'].'"><span class="next"><input type="submit" class="btnnext" value="NEXT >>" /></span></a>
-				 ';
-         ?>
+    <div class="right">
+        <div id="content">
+            <div class="title">
+                <h1>Features</h1>
+            </div>
+            <div class="white">
+                <div class="scroll">
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.mmodo consequat.</p>
+
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p> 
+
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</p>
+
+                    <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
+
+                    <p>Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. </p>
+
+                    <p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+                    <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

@@ -23,8 +23,72 @@ class PropertiesController extends AppController {
      * @return void
      */
     public function index() {
-        $this->Property->recursive = 0;
-        $this->set('properties', $this->paginate());
+        $this->loadModel('Review');
+        $properties = $this->Property->find('all', array(
+            'conditions'=>array('Property.is_active'=>1, 'Property.listing_type'=>'sale'),
+            'fields'=>array('Property.title','Property.rate','Property.id','Property.listing_type'),
+            ));
+        foreach($properties as $k=>$p){
+            $properties[$k]['photo'] = $this->PropertyPhoto->find('first',array('conditions'=>array('PropertyPhoto.property_id'=>$p['Property']['id']), 'fields'=>array('PropertyPhoto.photo')));
+            $rates = $this->PropertyRate->find('first',array('conditions'=>array('PropertyRate.property_id'=>$p['Property']['id']), 'fields'=>array('PropertyRate.night_rate','PropertyRate.week_rate','PropertyRate.price')));
+            $avgRating = $this->Review->find('all',array('conditions'=>array('Review.property_id'=>$p['Property']['id']), 'fields'=>array('AVG(Review.rate) as avg')));
+            $properties[$k]['rates'] = $rates;
+            $properties[$k]['price'] = $rates['PropertyRate']['price'];
+            $properties[$k]['star_rating'] = $avgRating[0][0]['avg']?$avgRating[0][0]['avg']:0;
+        }
+        $price = array();
+        foreach ($properties as $key => $row){
+            $price[$key] = $row['price'];
+        }
+        array_multisort($price, SORT_ASC, $properties);
+        $this->set('properties',$properties);
+        
+        
+    }
+    
+    public function disp_property_list(){
+//        $this->autoRender = false;
+        if ($this->request->is('post')) {
+            $this->loadModel('Review');
+            $type = isset($this->request->data['type'])&&$this->request->data['type']=='sale'?'sale':'rent';
+            $sort = isset($this->request->data['sort'])&&$this->request->data['sort']=='star_rating'?'star_rating':'price';
+            $order = isset($this->request->data['order'])&&$this->request->data['order']=='desc'?'desc':'asc';
+                       
+            $properties = $this->Property->find('all', array(
+                'conditions'=>array('Property.is_active'=>1, 'Property.listing_type'=>$type),
+                'fields'=>array('Property.title','Property.rate','Property.id','Property.listing_type'),
+                ));
+            foreach($properties as $k=>$p){
+                $properties[$k]['photo'] = $this->PropertyPhoto->find('first',array('conditions'=>array('PropertyPhoto.property_id'=>$p['Property']['id']), 'fields'=>array('PropertyPhoto.photo')));
+                $rates = $this->PropertyRate->find('first',array('conditions'=>array('PropertyRate.property_id'=>$p['Property']['id']), 'fields'=>array('PropertyRate.night_rate','PropertyRate.week_rate','PropertyRate.price')));
+                $avgRating = $this->Review->find('all',array('conditions'=>array('Review.property_id'=>$p['Property']['id']), 'fields'=>array('AVG(Review.rate) as avg')));
+                $properties[$k]['rates'] = $rates;
+                $properties[$k]['price'] = $type=='sale'?$rates['PropertyRate']['price']:$rates['PropertyRate']['night_rate'];
+                $properties[$k]['star_rating'] = $avgRating[0][0]['avg']?$avgRating[0][0]['avg']:0;
+            }
+            if($sort == 'price'){
+                $price = array();
+                foreach ($properties as $key => $row){
+                    $price[$key] = $row['price'];
+                }
+                if($order=='asc'){array_multisort($price, SORT_ASC, $properties);}else{array_multisort($price, SORT_DESC, $properties);}
+            }else{
+                $star = array();
+                foreach ($properties as $key => $row){
+                    $star[$key] = $row['star_rating'];
+                }
+                if($order=='desc'){array_multisort($star, SORT_DESC, $properties);}else{array_multisort($star, SORT_ASC, $properties);}
+            }
+            
+            
+            $this->set('properties',$properties);
+            
+            if ($this->request->is('ajax')) {            
+                
+                $this->layout = 'ajax';
+                $this->render('/Elements/property_list');
+            }
+        }
     }
 
     public function choose_your_listings($params = null) { //1st step
@@ -143,8 +207,7 @@ class PropertiesController extends AppController {
         $property_activity = $this->Session->read('Property.property_activity');
 
         if ($this->request->is('post')) {
-            $prate = array('rate' => $this->request->data['Property']['rate']
-            );
+            $prate = $this->request->data['Property']['rate'];
 
             $this->Session->write('Property.rate', $prate);
             if($preview){
@@ -181,7 +244,7 @@ class PropertiesController extends AppController {
                 } else {
                     if ($photo && ($validPhotos < $photoLimit - 1)) {
                         if ($this->TmpUploadPhoto->save(array('session_id' => $this->Session->id(), 'tag' => 'property_photo', 'photo' => $photo))) {
-                            $last = $this->TmpUploadPhoto->read('photo', $this->TmpUploadPhoto->getLastInsertID());
+                            $last = $this->TmpUploadPhoto->read(array('id', 'photo'), $this->TmpUploadPhoto->getLastInsertID());
                             $photoArray[$last['TmpUploadPhoto']['id']] = $last['TmpUploadPhoto']['photo'];
                             $validPhotos++;
                         }
@@ -205,7 +268,7 @@ class PropertiesController extends AppController {
         $this->set('preview', $preview);
     }
 
-    public function upload_audio() { //6th step
+    public function upload_audio($back=null) { //6th step
         $packageID = $this->Session->read('Property.package_id');
         $this->loadModel('Package');
         $packageData = $this->Package->read(array('is_audio_enabled', 'is_video_enabled'), $packageID);
@@ -232,12 +295,15 @@ class PropertiesController extends AppController {
                 }
             }
         } else {
+            if($back){
+                $this->redirect(array('action' => 'upload_photos'));
+            }
             $this->redirect(array('action' => 'video_url'));
         }
         $this->set('sess_audio', $sessAudio);
     }
 
-    public function video_url() { //7th step
+    public function video_url($back=null) { //7th step
         $packageID = $this->Session->read('Property.package_id');
         $this->loadModel('Package');
         $packageData = $this->Package->read(array('is_audio_enabled', 'is_video_enabled'), $packageID);
@@ -253,6 +319,9 @@ class PropertiesController extends AppController {
                 }
             }
         } else {
+            if($back){
+                $this->redirect(array('action' => 'upload_photos'));
+            }
             if ($property_listing == 'rent') {
                 $this->redirect(array('action' => 'availability_calendar'));
             } else {
@@ -302,7 +371,8 @@ class PropertiesController extends AppController {
                 'audio' => isset($propertySess['audio']) ? str_replace('/tmp_audios', '/audios', array_shift(array_values($propertySess['audio']))): '',
                 'package_id' => $propertySess['package_id'],
                 'additional_information' => isset($propertySess['additional_information']) ? $propertySess['additional_information'] : '',
-                'listing_type' => $propertySess['listing_type']
+                'listing_type' => $propertySess['listing_type'],
+                'is_active' => 1
             );
             $this->Property->create();
             if ($this->Property->save($property)) {
@@ -331,9 +401,11 @@ class PropertiesController extends AppController {
                     $this->TmpUploadAudio->deleteAll(array('TmpUploadAudio.session_id' => $sessionId));
                     
                     //delete audio file in tmp folder
-                    foreach($propertySess['audio'] as $a){
-                        $fileA = new File(WWW_ROOT . $a, false, 0777);
-                        $fileA->delete();
+                    if(isset($propertySess['audio'])){
+                        foreach($propertySess['audio'] as $a){
+                            $fileA = new File(WWW_ROOT . $a, false, 0777);
+                            $fileA->delete();
+                        }
                     }
                     
                     $this->Session->delete('Property');
@@ -343,6 +415,7 @@ class PropertiesController extends AppController {
                     $this->autoRender = false;
                 }
             } else {
+                var_dump($this->Property->validationErrors);
                 echo 'error1';
                 $this->autoRender = false;
             }
@@ -387,12 +460,14 @@ class PropertiesController extends AppController {
                     $file = new File(WWW_ROOT . $photo);
                     $filereg = new File(WWW_ROOT . $imgFile . '-resize-465x382-r.' . $ext, false, 0777);
                     $filesmall = new File(WWW_ROOT . $imgFile . '-resize-65x60-s.' . $ext, false, 0777);
+                    $filelist = new File(WWW_ROOT . $imgFile . '-resize-200x167-l.' . $ext, false, 0777);
 
                     if ($file->exists() && $filereg->exists() && $filesmall->exists()) {
                         $dir = new Folder(WWW_ROOT . "files\uploads\properties\photos", true);
                         $file->copy($dir->path . DS . $file->name);
                         $filereg->copy($dir->path . DS . $filereg->name);
                         $filesmall->copy($dir->path . DS . $filesmall->name);
+                        $filelist->copy($dir->path . DS . $filelist->name);
                     }
                     
                     //deleting associated transformed files
@@ -400,6 +475,7 @@ class PropertiesController extends AppController {
                     if ($this->TmpUploadPhoto->delete($key)) {            
                         $filereg->delete();
                         $filesmall->delete();
+                        $filelist->delete();
                     }
                     
                 }else{

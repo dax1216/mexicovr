@@ -947,14 +947,14 @@ p {
 
     width: 220px;
     min-height: 400px;
-    margin-top: -10px;
+    margin-top: 30px;
     margin-left: 30px;
 }
 .features .boxs p {
     padding: 10px;
 }
 .features .boxs h2 {
-    text-align: center;
+    text-align: center;	
     font-style: italic;
     text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.33);
 }
@@ -1008,10 +1008,10 @@ p {
     font-weight: bold;
     font-size: 12px;
 }
-.advertising .box, .premium .box {
+.advertising .box {
     margin: 0 auto;
 }
-.advertising .button, .premium .button {
+.advertising .button {
     margin: 0 auto;
     margin-top: 20px;
     width: 220px;
@@ -1019,7 +1019,7 @@ p {
 }
 .advertising .images {
     margin: 0 auto;
-    text-align: center;
+    text-align: center;	
     height: 150px;
     width: 215px;
     background: #002342;
@@ -1028,11 +1028,11 @@ p {
     width: 170px;
     margin-top: 55px;
 }
-.advertising .desc, .premium .desc {
+.advertising .desc {
     height: 85px;
     vertical-align: top;
 }
-.advertising .text, .premium .text {
+.advertising .text {
     text-align: center;
     margin-bottom: 20px;
 }
@@ -2494,9 +2494,11 @@ th.specalt {
     color: #b94a48;
     background-color: #f2dede;
     border-color: #eed3d7
-     border: 1px solid #fbeed5;
+        border: 1px solid #fbeed5;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
     padding: 8px;
 }
+
+.ajax_loader {background: url(../images/ajax-loader.gif) no-repeat center center transparent;width:100%;height:100%;}

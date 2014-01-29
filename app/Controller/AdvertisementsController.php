@@ -26,7 +26,7 @@ class AdvertisementsController extends AppController {
 //            $this->set('previousAd', $neighbors['prev']);
 //            $this->set('nextAd', $neighbors['next']);
 //        }
-//
+////
 //        $advertisement = $this->Advertisement->find('first', array('order' => array('Advertisement.created' => 'desc')));
 //        $this->set('advertisement', $advertisement['Advertisement']);
     }
@@ -119,14 +119,36 @@ class AdvertisementsController extends AppController {
         $this->set('advertisment', $advertisment[0]['Advertisement']);
     }
 
-    public function advertising_advertise() {
+    public function advertising_advertise($id=null) {
+        if($id){
+            $this->Advertisement->id = $id;
+            $advertisement = $this->Advertisement->read(null, $id);
+            if (!$this->Advertisement->exists()) {
+                throw new NotFoundException(__('Invalid advertisement'));
+            }
+            $this->set('advertisement', $advertisement);
+        }
+        
         if ($this->request->is('post')) {
             $this->request->data['Advertisement']['is_active'] = 1;
-            $this->Advertisement->create();
+            if(!$id){
+                $this->Advertisement->create();
+            }else{
+                if($this->request->data['Advertisement']['image_2']['tmp_name']!=''){
+                    $this->request->data['Advertisement']['image'] = $this->request->data['Advertisement']['image_2'];
+                }else{
+                    $this->Advertisement->Behaviors->unload('Uploader.Attachment');
+                    $this->Advertisement->Behaviors->unload('Uploader.FileValidation');
+                }
+            }
             if ($this->Advertisement->save($this->request->data)) {
-                $this->redirect(array('action' => 'index'));
-            } else {
-                $this->redirect(array('action' => 'advertising_advertise'));
+                $pId = $id?$id:$this->Advertisement->getLastInsertID();
+                $this->redirect(array('action' => 'preview/'.$pId));
+            }
+            else {
+                var_dump($this->Advertisement->validationErrors);
+                
+//                $this->redirect(array('action' => 'advertising_advertise'));
             }
         }
     }

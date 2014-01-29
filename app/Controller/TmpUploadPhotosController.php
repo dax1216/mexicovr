@@ -109,6 +109,8 @@ class TmpUploadPhotosController extends AppController {
                         $filereg->delete();
                         $filesmall = new File(WWW_ROOT . $imgFile.'-resize-65x60-s.'.$ext, false, 0777);
                         $filesmall->delete();
+                        $filelist = new File(WWW_ROOT . $imgFile.'-resize-200x167-l.'.$ext, false, 0777);
+                        $filelist->delete();
                         
                         $this->Session->delete('Property.photos.'.$id);
                         
