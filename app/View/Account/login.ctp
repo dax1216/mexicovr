@@ -10,6 +10,7 @@
                     <?php echo $this->Form->input('email_address', array('label' => false, 'div'=>false,'type'=>'email')); ?>
                     <label>Password</label>
                     <?php echo $this->Form->input('password', array('label' => false, 'div'=>false)); ?>
+                    <span class="register"><a href="<?php echo $this->webroot; ?>account/register">Register</a></span>
                     <span class="forgot"><a href="<?php echo $this->webroot; ?>account/forgot_password">Forgot your password?</a></span>
                     <div class="buttons">
                         <span class="next"><input type="submit" class="btnnext" value="LOGIN" /></span>

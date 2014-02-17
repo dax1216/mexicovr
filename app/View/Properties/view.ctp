@@ -86,7 +86,11 @@ echo $this->Html->scriptBlock(
                         }
                         ?>
                     </h3>
-                    <img src="<?php echo $this->webroot; ?>images/about1.jpg" />
+                    <ul class="icons">
+                        <?php if(isset($handicap_accessibility) && $handicap_accessibility){ ?><li><img src="<?php echo $this->webroot; ?>images/handicap.png"/></li> <?php }?>
+                        <?php if(isset($pet_friendly) && $pet_friendly){ ?><li><img src="<?php echo $this->webroot; ?>images/pet.png"/></li> <?php }?>
+                        <?php if(isset($payment_type) && $payment_type){ ?><li><img src="<?php echo $this->webroot; ?>images/card-m.png"/></li> <?php }?>
+                    </ul>
                     <p>
                         <?php echo $property['Property']['description']; ?>
                     </p>
@@ -157,8 +161,8 @@ echo $this->Html->scriptBlock(
 <div id="sidebar" class="side-product">
     <ul class="images">
         <li><img src="<?php echo $this->webroot; ?>images/img1.jpg" /></li>
-        <li><?php echo isset($property['Property']['video']) && $property['Property']['video'] ? '<a href="#" class="my_modal3_open"><img src="' . $this->webroot . 'images/img2.jpg" /></a>' : '<img src="' . $this->webroot . 'images/img2.jpg" />'; ?></li>
-        <li><?php echo isset($property['Property']['audio']) && $property['Property']['audio'] ? '<a href="#" class="my_modal4_open"><img src="' . $this->webroot . 'images/img3.jpg" /></a>' : '<img src="' . $this->webroot . 'images/img3.jpg" />'; ?></li>
+        <li><?php echo isset($property['Property']['video']) && $property['Property']['video'] ? '<a href="#" class="my_modal3_open"><img src="' . $this->webroot . 'images/img2.jpg" /></a>' : '<img src="' . $this->webroot . 'images/video-disabled.png" />'; ?></li>
+        <li><?php echo isset($property['Property']['audio']) && $property['Property']['audio'] ? '<a href="#" class="my_modal4_open"><img src="' . $this->webroot . 'images/img3.jpg" /></a>' : '<img src="' . $this->webroot . 'images/audio-disabled.png" />'; ?></li>
         <li><a href="#" class="my_modal1_open"><img src="<?php echo $this->webroot; ?>images/img4.jpg" /></a></li>
         <li><a href="#" class="my_modal2_open"><img src="<?php echo $this->webroot; ?>images/img5.jpg" /></a></li>
         <li><a href="#" class="my_modal_open"><img src="<?php echo $this->webroot; ?>images/img6.png" /></a></li>
@@ -169,16 +173,16 @@ echo $this->Html->scriptBlock(
 $this->Js->get('.my_modal1_open')->event(
         'click', $this->Js->request(
                 array('controller' => 'reviews', 'action' => 'display_review_element/' . $property['Property']['id']), array(
-                    'update' => '#my_modal1',
-                    'async' => true,
-                    'dataExpression' => true,
-                    'complete' =>
-                    '
+            'update' => '#my_modal1',
+            'async' => true,
+            'dataExpression' => true,
+            'complete' =>
+            '
                                         $j("#datefrom").datepicker({ picker: "<img class=\'picker\' align=\'middle\' src=\'' . $this->webroot . 'images/calendar.png\' alt=\'\'/>" });
                                         $j("#dateto").datepicker({ picker: "<img class=\'picker\' align=\'middle\' src=\'' . $this->webroot . 'images/calendar.png\' alt=\'\'/>" });
                                         $j("#arrive").datepicker({ picker: "<img class=\'picker\' align=\'middle\' src=\'' . $this->webroot . 'images/calendar.png\' alt=\'\'/>" });
                                         $j("#depart").datepicker({ picker: "<img class=\'picker\' align=\'middle\' src=\'' . $this->webroot . 'images/calendar.png\' alt=\'\'/>" });
-                                        $j("#score-demo").raty({path: "'.$this->webroot.'js/raty/lib/img", width: 150, click: function(score, evt){$j("#ReviewRate").val(score);}});
+                                        $j("#score-demo").raty({path: "' . $this->webroot . 'js/raty/lib/img", width: 150, click: function(score, evt){$j("#ReviewRate").val(score);}});
                     '
                 )
         )

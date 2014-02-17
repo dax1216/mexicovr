@@ -146,7 +146,7 @@ class AdvertisementsController extends AppController {
                 $this->redirect(array('action' => 'preview/'.$pId));
             }
             else {
-                var_dump($this->Advertisement->validationErrors);
+//                var_dump($this->Advertisement->validationErrors);
                 
 //                $this->redirect(array('action' => 'advertising_advertise'));
             }

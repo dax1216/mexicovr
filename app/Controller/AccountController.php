@@ -10,7 +10,7 @@ class AccountController extends AppController {
     public function beforeFilter() {
         //parent::beforeFilter();
 
-        $this->Auth->allow();
+        $this->Auth->allow(array('register','confirm_registration','activate','login'));
         $this->layout = "property";
     }
 
@@ -18,90 +18,85 @@ class AccountController extends AppController {
      * User registration
      */
     public function register() {
-        if ($this->request->is('post')) {
+        if($this->Auth->loggedIn()){
+            $this->redirect($this->Auth->loginRedirect);
+        }else{
+            if ($this->request->is('post')) {
 
-            $this->User->create();
+                $this->User->create();
 
-            $this->request->data['User']['role_id'] = Configure::read('site_config.role_user'); //temporary assignment
-            $this->request->data['User']['is_active'] = false; //temporary assignment
-            $this->request->data['User']['confirmation_key'] = md5(serialize($this->request->data));
-            $this->request->data['User']['terms_and_conditions'] = @DboSource::expression('NOW()');
-            $this->request->data['User']['role_id'] = 2;
-                    
-            if ($this->User->save($this->request->data)) {
-                //$this->Auth->login($this->request->data);
-                //$this->Email->send();
-                //$this->Session->setFlash('Registration successful. Please check your email and confirm your registration to activate your account.', 'default', array('class' =>'alert alert-success'));
-                //$this->Session->setFlash('Registration successful. Welcome!', 'default', array('class' => 'alert alert-success'));
-                $this->confirm_registration($this->encode_string($this->request->data['User']['email_address']), $this->request->data['User']['confirmation_key']);
-                $this->Session->setFlash('Registration successful. Please check your email and confirm your registration to activate your account.', 'default', array('class' =>'alert alert-success'));
-                $this->redirect(array('action'=>'login'));
-            } else {
-                $this->Session->setFlash('Error in registration process.', 'default', array('class' => 'alert alert-error'));
+                $this->request->data['User']['role_id'] = Configure::read('site_config.role_user'); //temporary assignment
+                $this->request->data['User']['is_active'] = false; //temporary assignment
+                $this->request->data['User']['confirmation_key'] = md5(serialize($this->request->data));
+                $this->request->data['User']['terms_and_conditions'] = @DboSource::expression('NOW()');
+                $this->request->data['User']['role_id'] = 2;
+
+                if ($this->User->save($this->request->data)) {
+                    $this->confirm_registration($this->encode_string($this->request->data['User']['email_address']), $this->request->data['User']['confirmation_key']);
+                    $this->Session->setFlash('Registration successful. Please check your email and confirm your registration to activate your account.', 'default', array('class' =>'alert alert-success'));
+                    $this->redirect(array('action'=>'login'));
+                } else {
+                    $this->Session->setFlash('Error in registration process.', 'default', array('class' => 'alert alert-error'));
+                }
             }
         }
     }
     
     public function confirm_registration($email, $confirmation_key) {
-        
-        $emailData = array(
-            'to'=>'daisy@localhost.com', //temporary email
-            'from'=>'noreply@mexicovr.com',
-            'subject'=>'Confirm Registration for MexicoVR',
-            'viewVars'=>array(
-                'emailContent'=>'Click on the link below to complete registration. \n<a href="' . APP_URL . 'account/activate/u:' . $email . '/key:' . $confirmation_key.'">'.APP_URL . 'account/activate/u:' . $email . '/key:' . $confirmation_key.'</a>',
-                'user'=>array('User'=>$this->request->data['User'])
-                
-                )
-            );
-        $this->send_mail($emailData);
-        
-//        $Email = new CakeEmail();
-//        $Email->emailFormat('html')
-//                ->to('daisy@localhost.com') //temporary email
-//                ->from('noreply@mexicovr.com')
-//                ->subject('Confirm Registration for MexicoVR')
-//                ->send('Click on the link below to complete registration. <br /><br /><a href="' . APP_URL . 'account/activate/u:' . $email . '/key:' . $confirmation_key.'">'.APP_URL . 'account/activate/u:' . $email . '/key:' . $confirmation_key.'</a>');
-//        
-//        $this->send_mail($emailData);
-        
-        //$this->set('username', $email);
-        //$this->set('confirmation_key', $confirmation_key);
+        if($this->Auth->loggedIn()){
+            $this->redirect($this->Auth->loginRedirect);
+        }else{
+            $emailData = array(
+                'to'=>'daisy@localhost.com', //temporary email
+                'from'=>'noreply@mexicovr.com',
+                'subject'=>'Confirm Registration for MexicoVR',
+                'viewVars'=>array(
+                    'emailContent'=>'Click on the link below to complete registration. \n<a href="' . APP_URL . 'account/activate/u:' . $email . '/key:' . $confirmation_key.'">'.APP_URL . 'account/activate/u:' . $email . '/key:' . $confirmation_key.'</a>',
+                    'user'=>array('User'=>$this->request->data['User'])
+
+                    )
+                );
+            $this->send_mail($emailData);
+        }
     }
 
     /**
      * User registration activation
      */
     public function activate() {
-        $this->autoRender = false;
-        $username = $this->decode_string($this->passedArgs['u']);
-        $key = $this->passedArgs['key'];
+        if($this->Auth->loggedIn()){
+            $this->redirect($this->Auth->loginRedirect);
+        }else{
+            $this->autoRender = false;
+            $username = $this->decode_string($this->passedArgs['u']);
+            $key = $this->passedArgs['key'];
 
-        $user = $this->User->find('first', array('conditions' => array("User.email_address" => $username, "User.confirmation_key" => $key), 'recursive' => -1));
+            $user = $this->User->find('first', array('conditions' => array("User.email_address" => $username, "User.confirmation_key" => $key), 'recursive' => -1));
 
-        if (empty($user)) {
-            $this->Session->setFlash('Invalid user and key entered.', 'default', array('class' => 'alert alert-error'));
-            $this->redirect(array('action'=>'login'));
-        } else {
-            if ($user['User']['is_email_confirmed'] == 1) {
-                $this->Session->setFlash('User already activated. Please login to continue.', 'default', array('class' => 'alert alert-success'));
-
-                //$this->redirect('/account/login');
+            if (empty($user)) {
+                $this->Session->setFlash('Invalid user and key entered.', 'default', array('class' => 'alert alert-error'));
+                $this->redirect(array('action'=>'login'));
             } else {
-//                echo $user['User']['user_id'];
-                $this->User->read(null, $user['User']['user_id']);
-                $this->User->set(array('is_email_confirmed'=>1, 'is_active'=>1));
-//                $this->User->id = $user['User']['user_id'];
-                if($this->User->save()){
-                    $this->Session->setFlash('You are now activated. Welcome!', 'default', array('class' => 'alert alert-success'));
-                }else{
-                    $this->Session->setFlash('Error activating account.', 'default', array('class' => 'alert alert-error'));
-                }
+                if ($user['User']['is_email_confirmed'] == 1) {
+                    $this->Session->setFlash('User already activated. Please login to continue.', 'default', array('class' => 'alert alert-success'));
 
-                //$this->Auth->login($user['User']);
-                 
+                    //$this->redirect('/account/login');
+                } else {
+    //                echo $user['User']['user_id'];
+                    $this->User->read(null, $user['User']['user_id']);
+                    $this->User->set(array('is_email_confirmed'=>1, 'is_active'=>1));
+    //                $this->User->id = $user['User']['user_id'];
+                    if($this->User->save()){
+                        $this->Session->setFlash('You are now activated. Welcome!', 'default', array('class' => 'alert alert-success'));
+                    }else{
+                        $this->Session->setFlash('Error activating account.', 'default', array('class' => 'alert alert-error'));
+                    }
+
+                    //$this->Auth->login($user['User']);
+
+                }
+                $this->redirect('/account/login');
             }
-            $this->redirect('/account/login');
         }
     }
 
@@ -135,13 +130,16 @@ class AccountController extends AppController {
     }
 
     public function login() {
-        if ($this->request->is('post')) {
-
-            if ($this->Auth->login()) {
-                $this->Session->setFlash('Successfully logged in!', 'default', array('class' => 'alert alert-success'));
-                $this->redirect($this->Auth->loginRedirect);
-            } else {
-                $this->Session->setFlash($this->Auth->authError, 'default', array('class' => 'alert alert-error'));
+        if($this->Auth->loggedIn()){
+            $this->redirect($this->Auth->loginRedirect);
+        }else{
+            if ($this->request->is('post')) {
+                if ($this->Auth->login()) {
+                    $this->Session->setFlash('Successfully logged in!', 'default', array('class' => 'alert alert-success'));
+                    $this->redirect($this->Auth->loginRedirect);
+                } else {
+                    $this->Session->setFlash($this->Auth->authError, 'default', array('class' => 'alert alert-error'));
+                }
             }
         }
     }
@@ -216,10 +214,7 @@ class AccountController extends AppController {
                 $user_email = $this->request->data['User']['email_address'];
 
 
-                $user = $this->User->find('first', array('conditions' => array('User.email_address' => $user_email,
-                        //'User.first_name' => $this->request->data['User']['first_name'],
-                        //'User.last_name' => $this->request->data['User']['last_name']
-                        ),
+                $user = $this->User->find('first', array('conditions' => array('User.email_address' => $user_email),
                     'recursive' => -1
                         ));
                 if (!empty($user)) {
@@ -237,39 +232,8 @@ class AccountController extends AppController {
                                 ->from('noreply@mexicovr.com')
                                 ->subject('MexicoVR Account Recovery')
                                 ->viewVars(array('user' => $user, 'temp_password' => $temp_password,'login_url'=>APP_URL . 'account/login'))
-                //                ->message()
                                 ->send();
                         }
-//                    $reply_to_address = Configure::read('WhaleDefaults.reply_to_address');
-//                    $reply_to_name = Configure::read('WhaleDefaults.reply_to_name');
-//
-//                    $email = new CakeEmail();
-//                    $email->from(array($reply_to_address => $reply_to_name));
-//                    $email->to($user['User']['email_address']);
-//                    $email->helpers(array('Html'));
-//
-//                    $email->subject('Site.com Account Recovery');
-//
-//                    if ($this->request->data['access_problem'] == 'forgot_password') {
-//                        $email->template('forgot_password')
-//                                ->emailFormat('both');
-//
-//                        $temp_password = $this->_generateRandomString(8);
-//
-//                        $this->User->id = $user['User']['user_id'];
-//
-//                        $this->User->set('password', $temp_password);
-//
-//                        $this->User->save();
-//                        $email->viewVars(array('user' => $user, 'temp_password' => $temp_password));
-//                    } else {
-//                        $email->template('forgot_username')
-//                                ->emailFormat('both');
-//
-//                        $email->viewVars(array('user' => $user));
-//                    }
-//
-//                    $email->send();
 
                     $this->Session->setFlash('Account recovery email sent.', 'default', array('class' => 'alert alert-success'));
                     $this->redirect('login');

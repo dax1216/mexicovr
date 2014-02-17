@@ -20,7 +20,7 @@ $cont = $this->params['controller'];
                                         </li>
 
 					<li class="<?php echo $act == 'member' ? ' current' : ''; ?>">
-                                            <a class="member" href="<?php echo $this->webroot; ?>account/member">MEMBER</a>
+                                            <a class="member" href="<?php echo $this->webroot; ?>account/login">MEMBER</a>
                                         </li>
 
 					<li class="<?php echo $act == 'about' ? ' current' : ''; ?>">

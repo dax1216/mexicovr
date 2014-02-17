@@ -1,12 +1,10 @@
 <div class="miscellaneousItems form">
-<?php echo $this->Form->create('MiscellaneousItem'); ?>
+<?php echo $this->Form->create('MiscellaneousItem', array('type' => 'file')); ?>
 	<fieldset>
 		<legend><?php echo __('Add Miscellaneous Item'); ?></legend>
 	<?php
 		echo $this->Form->input('name');
-		echo $this->Form->input('icon');
-		echo $this->Form->input('is_active');
-		echo $this->Form->input('Property');
+		echo $this->Form->input('icon', array('type'=>'file'));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

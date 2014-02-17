@@ -81,16 +81,16 @@ class Property extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'province' => array(
-			'notempty' => array(
-				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
+//		'province' => array(
+//			'notempty' => array(
+//				'rule' => array('notempty'),
+//				//'message' => 'Your custom message here',
+//				//'allowEmpty' => false,
+//				//'required' => false,
+//				//'last' => false, // Stop validation after this rule
+//				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+//			),
+//		),
                 'title' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
@@ -298,19 +298,19 @@ class Property extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-//		'Reservation' => array(
-//			'className' => 'Reservation',
-//			'foreignKey' => 'property_id',
-//			'dependent' => false,
-//			'conditions' => '',
-//			'fields' => '',
-//			'order' => '',
-//			'limit' => '',
-//			'offset' => '',
-//			'exclusive' => '',
-//			'finderQuery' => '',
-//			'counterQuery' => ''
-//		),
+		'Reservation' => array(
+			'className' => 'Reservation',
+			'foreignKey' => 'property_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
 		'Review' => array(
 			'className' => 'Review',
 			'foreignKey' => 'property_id',
@@ -325,5 +325,6 @@ class Property extends AppModel {
 			'counterQuery' => ''
 		)
 	);
-
+        
+        public $actsAs = array('Containable');
 }

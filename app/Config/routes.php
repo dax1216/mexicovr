@@ -29,6 +29,13 @@
 	Router::connect('/about', array('controller' => 'pages', 'action' => 'about', 'about'));
 	Router::connect('/privacy', array('controller' => 'pages', 'action' => 'privacy', 'privacy'));
 	Router::connect('/', array('controller' => 'home', 'action' => 'index', 'home'));
+        
+        Router::connect('/pages/add', array( 'controller' => 'pages', 'action' => 'add' ));
+        Router::connect('/pages/generate_excerpt', array( 'controller' => 'pages', 'action' => 'generate_excerpt' ));
+        Router::connect('/pages/add_city', array( 'controller' => 'pages', 'action' => 'add_city' ));
+        Router::connect('/pages/*',array('controller' => 'pages', 'action' => 'display'));
+        
+        Router::connect('/my_properties',array('controller' => 'users', 'action' => 'my_properties'));
 
 
 /**

@@ -4,7 +4,6 @@
 		<legend><?php echo __('Add Page'); ?></legend>
 	<?php
 		echo $this->Form->input('title');
-		echo $this->Form->input('slug');
 		echo $this->Form->input('content');
 	?>
 	</fieldset>

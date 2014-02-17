@@ -19,3 +19,36 @@
 			}
 		);
   	});
+        
+        var availableDestination = [
+            "San Jose del Cabo",
+            "La Paz",
+            "Ciudad Constitucion",
+            "Tijuana",
+            "Mexicali",
+            "Ciudad Juarez",
+            "Guaymas",
+            "Los Mochis",
+            "Culiacan",
+            "Los Mochis",
+            "Culiacan",
+            "Guadalajara",
+            "Toluca",
+            "Cuernavaca",
+            "Acapulco",
+            "Tuxtla Gutierrez",
+            "Chetumal",
+            "Merida",
+            "Campeche",
+            "Pueblo",
+            "Pachuca",
+            "Queretaro",
+            "Mexico City",
+            "Leon",
+            "San Luis Potosi",
+            "Ciudad Victoria",
+            "Monterrey",
+            "Torreon",
+            "Chihuahua",
+            "Ciudad Juarez"
+        ];

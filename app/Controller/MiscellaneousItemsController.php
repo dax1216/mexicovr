@@ -47,7 +47,6 @@ class MiscellaneousItemsController extends AppController {
 				$this->Session->setFlash(__('The miscellaneous item could not be saved. Please, try again.'));
 			}
 		}
-		$properties = $this->MiscellaneousItem->Property->find('list');
 		$this->set(compact('properties'));
 	}
 

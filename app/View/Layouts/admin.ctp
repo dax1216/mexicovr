@@ -12,12 +12,12 @@
         echo $this->Html->meta('icon');
         echo $this->fetch('meta');
 
-        echo $this->Html->css(array('jscrollpane','dp','datepicker','normalize','style'));
-	echo $this->fetch('css');
+        echo $this->Html->css(array('jscrollpane', 'dp', 'datepicker', 'normalize', 'style'));
+        echo $this->fetch('css');
 
 
-        echo $this->Html->script(array('jquery.min', 'tabs','popup','modernizr.custom.79639','jquery.mousewheel','jquery.jscrollpane','dropdown','jquery.ui.core','jquery.ui.datepicker','jquery-ui.multidatespicker','prettify','lang-css'));
-	echo $this->Html->script('ckeditor/ckeditor');
+        echo $this->Html->script(array('jquery.min', 'tabs', 'popup', 'modernizr.custom.79639', 'jquery.mousewheel', 'jquery.jscrollpane', 'dropdown', 'jquery.ui.core', 'jquery.ui.datepicker', 'jquery-ui.multidatespicker', 'prettify', 'lang-css'));
+        echo $this->Html->script('ckeditor/ckeditor');
         echo $this->fetch('script');
         ?>
 
@@ -82,8 +82,9 @@
 
     <body>
         <div id="ie8"></div>
-        <?php echo $this->element('admin_menu') ?>
+        <?php echo $this->element('admin_menu'); ?>
         <div id="bgWrap">
+
             <?php echo $content_for_layout ?>
 
             <div class="clear"></div>

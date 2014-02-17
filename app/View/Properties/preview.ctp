@@ -156,8 +156,8 @@ frameborder="0" allowFullScreen></iframe>
 <div id="sidebar" class="side-product">
     <ul class="images">
         <li><img src="<?php echo $this->webroot; ?>images/img1.jpg" /></li>
-        <li><?php echo isset($property['video'])?'<a href="#" class="my_modal3_open"><img src="'.$this->webroot.'images/img2.jpg" /></a>':'<img src="'.$this->webroot.'images/img2.jpg" />';?></li>
-        <li><?php echo isset($property['audio'])?'<a href="#" class="my_modal4_open"><img src="'.$this->webroot.'images/img3.jpg" /></a>':'<img src="'.$this->webroot.'images/img3.jpg" />';?></li>
+        <li><?php echo isset($property['video'])?'<a href="#" class="my_modal3_open"><img src="'.$this->webroot.'images/img2.jpg" /></a>':'<img src="'.$this->webroot.'images/video-disabled.png" />';?></li>
+        <li><?php echo isset($property['audio'])?'<a href="#" class="my_modal4_open"><img src="'.$this->webroot.'images/img3.jpg" /></a>':'<img src="'.$this->webroot.'images/audio-disabled.png" />';?></li>
         <li><a href="#" ><img src="<?php echo $this->webroot; ?>images/img4.jpg" /></a></li>
         <li><a href="#" ><img src="<?php echo $this->webroot; ?>images/img5.jpg" /></a></li>
         <li><a href="#" class="my_modal_open"><img src="<?php echo $this->webroot; ?>images/img6.png" /></a></li>

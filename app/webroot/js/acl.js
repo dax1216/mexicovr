@@ -1,10 +1,12 @@
+var appPath = '/mexicovr';
+
 $(document).ready(function () {        
     initAcoTree();    
 });
 
 $(document).on('click', 'span.action-item', function () {        
     $.ajax({
-        url: '/permissions/show_aro',
+        url: appPath+'/permissions/show_aro',
         data: 'aco=' + $(this).parent().attr('id'),
         type: 'post',
         success: function (response) {
@@ -14,15 +16,15 @@ $(document).on('click', 'span.action-item', function () {
 });
 
 function updatePermission(obj, role_id, aco) {
-    var perm_url = '/permissions/delete';
-    var update_img = '/img/deny.png';    
+    var perm_url = appPath+'/permissions/delete';
+    var update_img = appPath+'/img/deny.png';    
     
-    if($(obj).children('img').attr('src') == '/img/deny.png') {
-        perm_url = '/permissions/add';
-        update_img = '/img/approve.png';
+    if($(obj).children('img').attr('src') == appPath+'/img/deny.png') {
+        perm_url = appPath+'/permissions/add';
+        update_img = appPath+'/img/approve.png';
     }
 
-    $(obj).children('img').attr('src', '/img/ajax-loader.gif');
+    $(obj).children('img').attr('src', appPath+'/img/ajax-loader.gif');
 
     $.ajax({
         url: perm_url,
@@ -36,7 +38,7 @@ function updatePermission(obj, role_id, aco) {
 
 function initAcoTree() {
     $("#acos").treeview({
-        url: "/permissions/show_aco_tree",
+        url: appPath+"/permissions/show_aco_tree",
         // add some additional, dynamic data and request with POST
         ajax: {
             data: {

@@ -1,12 +1,12 @@
 <div class="paymentTypes form">
-<?php echo $this->Form->create('PaymentType'); ?>
+<?php echo $this->Form->create('PaymentType', array('type' => 'file')); ?>
 	<fieldset>
 		<legend><?php echo __('Add Payment Type'); ?></legend>
 	<?php
 		echo $this->Form->input('name');
-		echo $this->Form->input('icon');
-		echo $this->Form->input('is_active');
-		echo $this->Form->input('Property');
+		echo $this->Form->input('icon', array('type'=>'file'));
+//		echo $this->Form->input('is_active');
+//		echo $this->Form->input('Property');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

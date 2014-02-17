@@ -48,7 +48,7 @@ class AppController extends Controller {
                 'Actions' => array('actionPath' => 'controllers')
             ),
             'authError' => 'Invalid username and/or password entered.',
-            'loginRedirect' => array('controller' => 'home', 'action' => 'index'),
+            'loginRedirect' => array('controller' => 'properties', 'action' => 'choose_your_listings'),
             'logoutRedirect' => array('controller' => 'account', 'action' => 'login'),
         ),
         'DebugKit.Toolbar' => array('panels' => array('history' => false)),

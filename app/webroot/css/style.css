@@ -72,7 +72,7 @@ select,
 textarea {
     font-family: 'HelveticaNeueLTStd55Roman';
 }
-input[type="text"] {
+input[type="text"], input[type="password"], input[type="email"], input[type="tel"] {
     behavior: url(http://cfo.mydevwebsites.com/wp-content/themes/thecfosquad/js/PIE.htc);
     -webkit-box-shadow: inset 5px 30px 15px -35px rgba(0,0,0,0.75);
     -moz-box-shadow: inset 5px 30px 15px -35px  rgba(0,0,0,0.75);
@@ -88,12 +88,13 @@ input[type="text"] {
 }
 input[type="button"] {
     padding: 5px;
-    color: #757575;
+    color: #FFF;
     text-align: center;
     behavior: url(http://cfo.mydevwebsites.com/wp-content/themes/thecfosquad/js/PIE.htc);
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+    text-shadow: 1px 1px 0 #000000;
 }
 :root input[type="textbox"] {
     filter: none\9;
@@ -207,7 +208,7 @@ input[type="submit"]:hover {
 
 }
 body {
-    background: url('../images/bg.png') top center no-repeat #01294d;
+    background: url('../images/bg.png') top center no-repeat #000;
     line-height: 1.5;
     background-size: 100%;
     margin: 0;
@@ -231,6 +232,9 @@ img {
 #headerWrap, #bgWrap {
     width: 960px;
     margin: 0 auto;
+}
+#bgWrap {
+    min-height: 600px;
 }
 #headerWrap #header {
     margin-top: 30px;
@@ -294,13 +298,18 @@ img {
 #container {
     width: 960px;
 }
+.dateholder .date-bg .ui-datepicker-trigger {
+    position: relative;
+    top: 5px;
+}
 /**
 *	Map
 **/
 .searchmap {
-    padding-top: 30px;
+    padding-top: 40px;
     width: 700px;
     float: left;
+    height: 500px;
 }
 /**
 *	Search property
@@ -325,7 +334,7 @@ div.search-property {
     font-size: 12px;
     float: left;
     margin-top: 120px;
-    margin-left: 5px;
+/*    margin-left: 5px;*/
 }
 div.search-property .lines {
     margin: 15px auto;
@@ -554,9 +563,9 @@ input.destination {
     padding: 15px;
     top: 0px;
     float: left;
-    margin-left: 310px;
-    top: 320px;
-    position: absolute;
+    left: 0px;
+    top: -300px;
+    position: relative;
 }
 .callout p {
     line-height: 16px;
@@ -634,10 +643,12 @@ p {
     -moz-border-radius: 15px;
     border-radius: 15px;
 
-    width: 905px;
+    width: 750px;
     min-height: 730px;
     margin-top: 40px;
     float: left;
+    margin-left: 10px;
+    
 }
 #admin-content .title {
     padding: 20px 30px 10px;
@@ -671,6 +682,44 @@ p {
     font-size: 14px;
     font-style: normal;
 }
+#admin-sidebar {
+    behavior: url(http://cfo.mydevwebsites.com/wp-content/themes/thecfosquad/js/PIE.htc);
+    background-color: rgba(50, 80, 238, 0.10);
+    -webkit-box-shadow: -1px 1px 5px 3px rgba(255,255,255,0.35);
+    -moz-box-shadow: -1px 1px 5px 3px rgba(255,255,255,0.35);
+    box-shadow: -1px 1px 5px 3px rgba(255,255,255,0.35);
+
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+
+    width: 200px;
+    min-height: 300px;
+    margin-top: 40px;
+    float: left;
+}
+#admin-sidebar .area {
+    padding: 24px 10px 4px;
+    text-align: center;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.33);
+}
+#admin-sidebar .area h1 {
+    font-style: italic;
+}
+#admin-sidebar .area h1 span {
+    font-size: 14px;
+    font-style: normal;
+}
+#admin-sidebar ul {
+    list-style: none;
+    margin: 0 10px;
+}
+#admin-sidebar ul li a {
+    color: #fff;
+    font-size: 12px;
+    text-decoration: underline;
+}
+
 .line {
     background: url(../images/line.png) no-repeat;
     width: 630px;
@@ -882,7 +931,7 @@ p {
 
 /* Advertising Page */
 
-#content .box {
+#content .box, #sidebar .box {
     behavior: url(http://cfo.mydevwebsites.com/wp-content/themes/thecfosquad/js/PIE.htc);
     -webkit-box-shadow: -1px 1px 5px 3px rgba(108,208,233,1);
     -moz-box-shadow: -1px 1px 5px 3px rgba(108,208,233,1);
@@ -899,28 +948,28 @@ p {
     margin: 0 auto;
     margin-top: 30px;
 }
-#content .box .title {
+#content .box .title, #sidebar .box .title {
     padding: 15px;
     text-align: center;
     text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.33);
 }
-#content .box p {
+#content .box p, #sidebar .box p {
     padding: 10px;
 }
-#content .box h2 {
+#content .box h2, #sidebar .box h2 {
     text-align: center;
     font-style: italic;
     text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.33);
 }
-#content .box h3 {
+#content .box h3, #sidebar .box h3 {
     text-align: center;
     text-transform: uppercase;
     font-style: italic;
 }
-#content .box .back {
+#content .box .back, #sidebar .box .back {
     float: left;
 }
-#content .box .next {
+#content .box .next, #sidebar .box .next {
     float: right;
 }
 #content .buttons {
@@ -930,9 +979,7 @@ p {
     margin-bottom: 140px;
     width: 250px;
 }
-.feats #content, .feats #sidebar {
-    min-height: 680px;
-}
+
 .features .boxs {
     behavior: url(http://cfo.mydevwebsites.com/wp-content/themes/thecfosquad/js/PIE.htc);
     -webkit-box-shadow: -1px 1px 5px 3px rgba(108,208,233,1);
@@ -1121,7 +1168,9 @@ p {
     width: 50px;
 }
 #bgWrap .members .form .forgot {
-    margin-left: 10px;
+    margin-left: 125px;
+    margin-top: 5px;
+    display: block;
 }
 #bgWrap .members .form .buttons {
     width: 110px;
@@ -1138,6 +1187,12 @@ p {
 }
 #bgWrap .members input {
     width: 245px;
+}
+#bgWrap .members input[type="checkbox"] {
+    width: 30px;
+}
+#bgWrap .members .checkbox {
+    margin-top: 35px;
 }
 #bgWrap .forgot .form .left {
     width: 500px;
@@ -1231,6 +1286,9 @@ p {
 }
 #bgWrap .address .form .buttons {
     width: 250px;
+}
+#bgWrap .tabs #about .right {
+    width: 160px;
 }
 #contact .form .bg-total {
     display: inline-block;
@@ -1490,6 +1548,7 @@ font-weight: normal;
 }
 #bgWrap .listing .form textarea {
     width: 380px;
+    padding: 5px;
     float: right;
     margin: 15px 0;
 }
@@ -1521,6 +1580,21 @@ font-weight: normal;
     margin-left: 50px;
     width: 620px;
     height: 340px;
+}
+#bgWrap .listing .payments .activity {
+    height: 160px;
+}
+#bgWrap .listing .misc .activity {
+    height: 70px;
+}
+#bgWrap .listing .payments .activity .squaredFour img,
+#bgWrap .listing .misc .activity .squaredFour img {
+    margin-left: 40px;
+}
+#bgWrap .listing .payments .activity .squaredFour .text,
+#bgWrap .listing .misc .activity .squaredFour .text {
+    font-style: italic;
+    left: 10px;
 }
 #bgWrap .listing .activity li .squaredFour input {
     display: none;
@@ -1632,7 +1706,7 @@ font-weight: normal;
 #bgWrap .ratings .rent .title {
     background: rgba(4, 68, 110, 0.9);
     position: absolute;
-    padding: 10px;
+    padding: 5px 10px;
     width: 188px;
     top: 5px;
     left: 6px;
@@ -1713,7 +1787,7 @@ font-weight: normal;
     margin-left: -5px;
 }
 #bgWrap .ratings .prices {
-    width: 240px;
+    width: 260px;
     float: left;
 }
 #bgWrap .ratings .star {
@@ -1727,8 +1801,13 @@ font-weight: normal;
     width: 100px;
     margin: 0;
 }
-#bgWrap .seasons .form .wrapper-dropdown-1:before {
+#bgWrap .seasons .form .wrapper-dropdown-1:before,
+#bgWrap .seasons .form .wrapper-dropdown-1:after {
     border: none;
+}
+#bgWrap .seasons .form .wrapper-dropdown-1 select {
+    width: 90px;
+    height: 20px;
 }
 #bgWrap .seasons .form .season {
     list-style: none;
@@ -1772,8 +1851,8 @@ font-weight: normal;
 .squaredFour label {
     cursor: pointer;
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     top: 0;
     border-radius: 4px;
     margin-top: 5px;
@@ -1804,7 +1883,7 @@ font-weight: normal;
     height: 5px;
     background: transparent;
     top: 6px;
-    left: 6px;
+    left: 5px;
     border: 3px solid #333;
     border-top: none;
     border-right: none;
@@ -2150,7 +2229,11 @@ input[type=checkbox] {
     margin-bottom: 10px;
     color: #fff;
 }
-#contact .form input[type="text"],#contact .form input[type="email"],#contact .form input[type="password"], #contact .form textarea, #contact #dd, #contact #dd1, #contact #dd2, #contact #dd3, #contact #dd4  {
+#contact .form .radiobutton label,
+#contact .form .checkbox label {
+    display: inline-block;
+}
+#contact .form input[type="text"],#contact .form input[type="email"],#contact .form input[type="password"],#contact .form input#UserPhone, #contact .form textarea, #contact #dd, #contact #dd1, #contact #dd2, #contact #dd3, #contact #dd4  {
     behavior: url(http://cfo.mydevwebsites.com/wp-content/themes/thecfosquad/js/PIE.htc);
     -webkit-box-shadow: -2px 0 4px 2px rgba(108,208,233,1);
     -moz-box-shadow: -2px 0 4px 2px rgba(108,208,233,1);
@@ -2488,6 +2571,50 @@ th.specalt {
     color: #797268;
 }
 
+
+#bgWrap .listing .right .input {
+    float: left;
+    width: 205px;
+}
+#bgWrap .listing .right .input #PropertyBedrooms, 
+#bgWrap .listing .right .input #PropertyBathrooms {
+    margin-left: 20px;
+    padding-left: 3px;
+    width: 40px;
+    height: 20px;
+}
+#bgWrap .listing .right .input select option {
+    text-align: center;
+}
+#bgWrap .listing .rate-listing {
+    position: relative;
+}
+#bgWrap .listing .rate-listing .cloud {
+    background: url(../images/cloud.png) no-repeat;
+    padding: 5px 5px 0 15px; 
+    position: absolute;
+    color: #295268;
+    width: 164px;
+    height: 40px;
+    left: 260px;
+    top: 10px;
+}
+#bgWrap .listing .rate-listing .star-hover {
+    background: url(../images/clouds.png) no-repeat;
+    padding: 0 10px 0 25px;
+    position: absolute;
+    font-size: 11px;
+    z-index: 9999;
+    height: 212px;
+    width: 325px;
+    left: 140px;
+    top: 85px;
+}
+#bgWrap .listing .rate-listing .star-hover h1 {
+    margin-bottom: 0px;
+}
+
+
 /***************Error and Flash Message*******************/
 
 .error-message, #flashMessage{
@@ -2502,3 +2629,55 @@ th.specalt {
 }
 
 .ajax_loader {background: url(../images/ajax-loader.gif) no-repeat center center transparent;width:100%;height:100%;}
+
+.property-index{
+    text-align: center; 
+    margin-top: 100px;
+}
+
+.property-index a{
+    display: inline-block;
+    width: 200px;
+    height: 114px;
+}
+
+.property-index a.search-rentprop {
+    background: url(../images/rentaproperty_default_big.png) 0 0 no-repeat;
+}
+.property-index a.search-rentprop:hover {
+    background: url(../images/rentaproperty_current_big.png) 0 0 no-repeat;
+}
+.property-index a.search-buyprop {
+    background: url(../images/buyaproperty_default_big.png) 0 0 no-repeat;
+}
+.property-index a.search-buyprop:hover {
+    background: url(../images/buyaproperty_current_big.png) 0 0 no-repeat;
+}
+.rent .price h3{
+    margin:0;
+}
+.page-content{
+    behavior: url(http://cfo.mydevwebsites.com/wp-content/themes/thecfosquad/js/PIE.htc);
+
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+
+    background: #fff;
+    clear: left;
+    font-size: 10pt;
+    padding: 10px 10px 8px;
+    margin: 10px;
+}
+#about .left .scroll ul.icons{
+    margin: 5px 0 0 20px;
+}
+#about .left .scroll ul.icons li img{
+    margin-left:10px;
+}
+#bgWrap .members .form .register {
+    margin-left: 200px;
+    margin-top: 10px;
+    display: block;
+}
+

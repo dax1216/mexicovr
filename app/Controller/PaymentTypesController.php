@@ -47,7 +47,6 @@ class PaymentTypesController extends AppController {
 				$this->Session->setFlash(__('The payment type could not be saved. Please, try again.'));
 			}
 		}
-		$properties = $this->PaymentType->Property->find('list');
 		$this->set(compact('properties'));
 	}
 

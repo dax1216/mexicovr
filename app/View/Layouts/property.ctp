@@ -83,11 +83,114 @@
                     verticalGutter: 10,
                     horizontalGutter: 10
                 }
-            );
+            );                                  
                 jQuery(".rent ul li:last-child").addClass("last");
             });
         </script>
+        <style type="text/css">
+            #map-canvas { height: 300px; width: 500px; position: relative; }
+        </style>
+        <script type="text/javascript"
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvsh3YABUjYAInOT1Hqut-BeCQXroLK_s&sensor=false">
+        </script>
+        <style>
 
+            .controls {
+                margin-top: 16px;
+                border: 1px solid transparent;
+                border-radius: 2px 0 0 2px;
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                height: 32px;
+                outline: none;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            }
+
+            #pac-input {
+                background-color: #fff;
+                padding: 0 11px 0 13px;
+                width: 400px;
+                font-family: Roboto;
+                font-size: 15px;
+                font-weight: 300;
+                text-overflow: ellipsis;
+                /*                display: none;*/
+            }
+
+            #pac-input:focus {
+                border-color: #4d90fe;
+                margin-left: -1px;
+                padding-left: 14px;  /* Regular padding-left + 1. */
+                width: 401px;
+            }
+
+            .pac-container {
+                font-family: Roboto;
+            }
+
+            #type-selector {
+                color: #fff;
+                background-color: #4d90fe;
+                padding: 5px 11px 0px 11px;
+            }
+
+            #type-selector label {
+                font-family: Roboto;
+                font-size: 13px;
+                font-weight: 300;
+            }
+
+
+        </style>
+        <title>Places search box</title>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+        <script>
+          
+            var geocoder;
+            var map;
+            function initialize() {
+                geocoder = new google.maps.Geocoder();
+                var latlng = new google.maps.LatLng(19.4328, -99.1333);
+                var mapOptions = {
+                    zoom: 8,
+                    center: latlng
+                }
+                map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            }
+
+            function codeAddress() {
+                var address;
+                container = document.getElementById('PropertyAddressForm');
+
+                // Find its child `input` elements
+                inputs = container.getElementsByTagName('input');
+                for (index = 0; index < inputs.length; ++index) {
+                    if(inputs[index].type ==='text'){
+                        if(inputs[index].id == 'PropertyAddress1'){
+                            address = inputs[index].value;
+                        }else{
+                            address = inputs[index].value!=''?address+' '+inputs[index].value:address;
+                        }
+                    }
+                }
+                address = address!=''?address+' '+'Mexico':'Mexico';
+                //var address = document.getElementById('address').value;
+                geocoder.geocode( { 'address': address}, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        map.setCenter(results[0].geometry.location);
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location
+                        });
+                    } else {
+                        alert('Google map cannot locate the address entered.' + status);
+                    }
+                });
+            }
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+
+        </script>
     </head>
 
 
