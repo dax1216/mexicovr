@@ -13,7 +13,7 @@ class PropertiesController extends AppController {
     public $uses = array('User', 'Activity', 'Property', 'PropertyActivity', 'PropertyMiscellaneousItem', 'PropertyPaymentType', 'PropertyPhoto', 'PropertyRate', 'Reservation', 'PropertyReview');
 
     public function beforeFilter() {
-        $this->Auth->allow();
+        $this->Auth->allow(array('index','rent_a_property','buy_a_property','search','disp_property_list','view','contact_owner','display_contact_element'));
         $this->layout = "property";
     }
 
@@ -60,11 +60,13 @@ class PropertiesController extends AppController {
     public function rent_a_property() {
 
         $this->set('properties', $this->get_properties("rent"));
+        $this->set('property_type', 'rent');
         $this->render('properties');
     }
 
     public function buy_a_property() {
         $this->set('properties', $this->get_properties("sale"));
+        $this->set('property_type', 'sale');
         $this->render('properties');
     }
 
@@ -79,6 +81,9 @@ class PropertiesController extends AppController {
                 'Property.city LIKE' => "%$dest%",
                 'Property.state LIKE' => "%$dest%"
             );
+        }
+        if (isset($this->request->query['bedrooms'])) {
+            $params['Property.bedrooms'] = $this->request->query['bedrooms'];
         }
         $properties = $this->Property->find('all', array(
             'conditions' => $params,
@@ -111,13 +116,15 @@ class PropertiesController extends AppController {
         if ($this->request->is('get')) {
             $contain = array();
             $params = array('Property.is_active' => 1);
+            if(!array_filter($this->request->query)){
+                $render = 'index';
+            }
             if (isset($this->request->query['mxvrno']) && $this->request->query['mxvrno']) {
 
                 $params['Property.id'] = $this->request->query['mxvrno'];
             } else {
                 if ((isset($this->request->query['datefrom']) && isset($this->request->query['dateto']) &&
-                        $this->request->query['datefrom'] && $this->request->query['dateto']) ||
-                        (isset($this->request->query['bedrooms']) && $this->request->query['bedrooms'])) {
+                        $this->request->query['datefrom'] && $this->request->query['dateto'])) {
                     if (isset($this->request->query['bedrooms']) && $this->request->query['bedrooms']) {
                         $params['Property.bedrooms'] = $this->request->query['bedrooms'];
                     }
@@ -142,10 +149,13 @@ class PropertiesController extends AppController {
                         );
                     }
                 } else {
+                    if(isset($this->request->query['bedrooms']) && $this->request->query['bedrooms']){
+                        $this->set('bedrooms', $this->request->query['bedrooms']);
+                    }
                     if (isset($this->request->query['destination']) && $this->request->query['destination']) {
                         $this->set('destination', $this->request->query['destination']);
-                        $render = 'index';
                     }
+                    $render = 'index';
                 }
             }
 
@@ -184,6 +194,7 @@ class PropertiesController extends AppController {
             }
 
             array_multisort($price, SORT_ASC, $filteredProperties);
+            $this->set('property_type', isset($filteredProperties[0]['Property']['listing_type'])?$filteredProperties[0]['Property']['listing_type']:'rent');
             $this->set('properties', $filteredProperties);
             $this->render($render);
         }
@@ -207,6 +218,11 @@ class PropertiesController extends AppController {
                 $properties[$k]['rates'] = $rates;
                 $properties[$k]['price'] = $type == 'sale' ? $rates['PropertyRate']['price'] : $rates['PropertyRate']['night_rate'];
                 $properties[$k]['star_rating'] = $avgRating[0][0]['avg'] ? $avgRating[0][0]['avg'] : 0;
+                $this->loadModel('PropertyPaymentType');
+            $properties[$k]['payment_type'] = $this->PropertyPaymentType->find('count', array('conditions' => array('PropertyPaymentType.property_id' => $p['Property']['id'])));
+            $this->loadModel('PropertyMiscellaneousItem');
+            $properties[$k]['handicap_accessibility'] = $this->PropertyMiscellaneousItem->find('count', array('conditions' => array('PropertyMiscellaneousItem.property_id' => $p['Property']['id'], 'PropertyMiscellaneousItem.miscellaneous_item_id' => 1)));
+            $properties[$k]['pet_friendly'] = $this->PropertyMiscellaneousItem->find('count', array('conditions' => array('PropertyMiscellaneousItem.property_id' => $p['Property']['id'], 'PropertyMiscellaneousItem.miscellaneous_item_id' => 2)));
             }
             if ($sort == 'price') {
                 $price = array();
@@ -229,6 +245,7 @@ class PropertiesController extends AppController {
                     array_multisort($star, SORT_ASC, $properties);
                 }
             }
+            $this->set('property_type', $type);
 
             $this->set('properties', $properties);
 
@@ -759,23 +776,23 @@ class PropertiesController extends AppController {
         return false;
     }
 
-    public function rent($params = null) {
-        
-    }
+//    public function rent($params = null) {
+//        
+//    }
+//
+//    public function sell($params = null) {
+//        $this->set('type', $params);
+//    }
 
-    public function sell($params = null) {
-        $this->set('type', $params);
-    }
-
-    public function price() {
-        $this->Property->recursive = 0;
-        $this->set('properties', $this->paginate());
-    }
-
-    public function destroy() {
-        $this->Session->destroy('property_address');
-        $this->Session->destroy('property_desc');
-    }
+//    public function price() {
+//        $this->Property->recursive = 0;
+//        $this->set('properties', $this->paginate());
+//    }
+//
+//    public function destroy() {
+//        $this->Session->destroy('property_address');
+//        $this->Session->destroy('property_desc');
+//    }
 
     /**
      * view method

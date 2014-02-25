@@ -43,7 +43,7 @@
             loader = new ajaxLoader('.property.ratings',{bgColor: '#000',  opacity: '0.3', top: '190px'});
             jQuery.ajax({
                 type: "POST",
-                data: {type: $this.data('val'), order: jQuery('#sort-price-span').data('val')},
+                data: {type: $this.data('val'), order: jQuery('#sort-price-span').data('val'), type: jQuery('#property_type').val()},
                 url: '<?php echo APP_URL . 'properties/disp_property_list'; ?>',
                 success: function(d){
                     jQuery('#sort-type-span').data('val', $this.data('val'));
@@ -62,7 +62,7 @@
         $this = jQuery(this);
         jQuery.ajax({
             type: "POST",
-            data: {type:jQuery('#sort-type-span').data('val'), sort: $this.parents('ul').data('sort'), order: $this.data('val')},
+            data: {type:jQuery('#sort-type-span').data('val'), sort: $this.parents('ul').data('sort'), order: $this.data('val'), type: jQuery('#property_type').val()},
             url: '<?php echo APP_URL . 'properties/disp_property_list'; ?>',
             success: function(d){
                 var sp = $this.parents('ul').siblings( "span" );

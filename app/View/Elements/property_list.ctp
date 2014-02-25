@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 ?>
+<input type="hidden" value="<?php echo $property_type; ?>" name="property_type" id="property_type"/>
 <?php if(sizeof($properties)){ ?>
     <?php foreach ($properties as $k => $p) { ?>
         <?php if ($k + 1 % 3 == 1) { ?>

@@ -7,7 +7,7 @@ class PermissionsController extends AppController {
 
     public function beforeFilter() {
         //parent::beforeFilter();
-        $this->Auth->allow();
+//        $this->Auth->allow();
         $this->layout = "default-bootstrap";
     }
 

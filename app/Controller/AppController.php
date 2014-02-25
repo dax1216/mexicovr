@@ -57,12 +57,17 @@ class AppController extends Controller {
     public $helpers = array('Session', 'Form', 'Html', 'Number', 'Time', 'Geography', 'Js');
 
     public function beforeFilter() {
-        $this->Auth->allow();
+//        $this->Auth->allow();
 
-        if (!$this->Access->check($this->params['controller'] . '/' . $this->params['action'])) {
-            $this->Session->setFlash('Access denied.', 'default', array('class' => 'alert alert-error'));
+//        if (!$this->Access->check($this->params['controller'] . '/' . $this->params['action'])) {
+//            $this->Session->setFlash('Access denied.', 'default', array('class' => 'alert alert-error'));
 //            $this->redirect('/');
-        }
+//        }
+    }
+    
+    public function appError($error) {
+        // custom logic goes here.
+        $this->redirect('/');
     }
 
     protected function decode_string($string) {

@@ -8,9 +8,10 @@ class AccountController extends AppController {
     public $components = array('Recaptcha.Recaptcha', 'Email');
 
     public function beforeFilter() {
-        //parent::beforeFilter();
+        parent::beforeFilter();
 
-        $this->Auth->allow(array('register','confirm_registration','activate','login'));
+        $this->Auth->allow(array('register','activate','login','forgot_password'));
+//        $this->Auth->allow();
         $this->layout = "property";
     }
 
@@ -42,7 +43,7 @@ class AccountController extends AppController {
         }
     }
     
-    public function confirm_registration($email, $confirmation_key) {
+    private function confirm_registration($email, $confirmation_key) {
         if($this->Auth->loggedIn()){
             $this->redirect($this->Auth->loginRedirect);
         }else{
@@ -68,35 +69,32 @@ class AccountController extends AppController {
             $this->redirect($this->Auth->loginRedirect);
         }else{
             $this->autoRender = false;
-            $username = $this->decode_string($this->passedArgs['u']);
-            $key = $this->passedArgs['key'];
-
-            $user = $this->User->find('first', array('conditions' => array("User.email_address" => $username, "User.confirmation_key" => $key), 'recursive' => -1));
-
-            if (empty($user)) {
+            
+            if(!isset($this->passedArgs['u']) || !isset($this->passedArgs['u'])){
                 $this->Session->setFlash('Invalid user and key entered.', 'default', array('class' => 'alert alert-error'));
-                $this->redirect(array('action'=>'login'));
-            } else {
-                if ($user['User']['is_email_confirmed'] == 1) {
-                    $this->Session->setFlash('User already activated. Please login to continue.', 'default', array('class' => 'alert alert-success'));
+            }else{
+                $username = $this->decode_string($this->passedArgs['u']);
+                $key = $this->passedArgs['key'];
 
-                    //$this->redirect('/account/login');
+                $user = $this->User->find('first', array('conditions' => array("User.email_address" => $username, "User.confirmation_key" => $key), 'recursive' => -1));
+
+                if (empty($user)) {
+                    $this->Session->setFlash('Invalid user and key entered.', 'default', array('class' => 'alert alert-error'));
                 } else {
-    //                echo $user['User']['user_id'];
-                    $this->User->read(null, $user['User']['user_id']);
-                    $this->User->set(array('is_email_confirmed'=>1, 'is_active'=>1));
-    //                $this->User->id = $user['User']['user_id'];
-                    if($this->User->save()){
-                        $this->Session->setFlash('You are now activated. Welcome!', 'default', array('class' => 'alert alert-success'));
-                    }else{
-                        $this->Session->setFlash('Error activating account.', 'default', array('class' => 'alert alert-error'));
+                    if ($user['User']['is_email_confirmed'] == 1) {
+                        $this->Session->setFlash('User already activated. Please login to continue.', 'default', array('class' => 'alert alert-success'));
+                    } else {
+                        $this->User->read(null, $user['User']['user_id']);
+                        $this->User->set(array('is_email_confirmed'=>1, 'is_active'=>1));
+                        if($this->User->save()){
+                            $this->Session->setFlash('You are now activated. Welcome!', 'default', array('class' => 'alert alert-success'));
+                        }else{
+                            $this->Session->setFlash('Error activating account.', 'default', array('class' => 'alert alert-error'));
+                        }
                     }
-
-                    //$this->Auth->login($user['User']);
-
                 }
-                $this->redirect('/account/login');
             }
+            $this->redirect(array('action'=>'login'));
         }
     }
 

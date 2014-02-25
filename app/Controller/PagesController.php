@@ -15,9 +15,9 @@ class PagesController extends AppController {
      * @return void
      */
     public function beforeFilter() {
-        //parent::beforeFilter();
+        parent::beforeFilter();
 
-        $this->Auth->allow();
+        $this->Auth->allow(array('privacy','display','about'));
         $this->layout = "admin";
     }
 
