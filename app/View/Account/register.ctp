@@ -8,14 +8,15 @@
             <?php echo $this->Form->create(array('url' => '/account/register', 'autocomplete' => 'off', 'class' => 'form-signup')); ?>
             <div class="left">
                 <label>First Name</label>
-                <?php echo $this->Form->input('first_name', array('label' => false, 'div' => false)); ?>
+                <?php echo $this->Form->input('first_name', array('label' => false, 'div' => false, 'tabindex'=>1)); ?>
                 <label>Email Address</label>
-                <?php echo $this->Form->input('email_address', array('label' => false, 'div' => false, 'type' => 'email')); ?>
+                <?php echo $this->Form->input('email_address', array('label' => false, 'div' => false, 'type' => 'email', 'tabindex'=>3)); ?>
                 <label>Password</label>
-                <?php echo $this->Form->input('password', array('label' => false, 'div' => false)); ?>
+                <?php echo $this->Form->input('password', array('label' => false, 'div' => false, 'tabindex'=>5)); ?>
                 <div class="radiobutton">
                     <?php $thisVal = isset($this->data['User']['account_type']) ? $this->data['User']['account_type'] : "renter"; ?>
                     <?php echo $this->Form->input('account_type', array(
+                        'tabindex'=>7,
                         'type'=>'radio',
                         'value'=> $thisVal,
                         'options' => array('renter'=>'RENTER', 'seller'=>'SELLER'),
@@ -24,23 +25,23 @@
                 </div>
                 <div class="clear"></div>
                 <div class="checkbox">
-                    <p><a href="#" class="my_modal_open terms">Click here to Review the Terms and Conditions</a></p>
-                    <?php echo $this->Form->input('tos', array('type' => 'checkbox', 'label' => 'I accept the Terms and Conditions.', 'div' => false, 'hiddenField' => false, 'value' => '0')); ?>
+                    <p><a href="#" class="my_modal_open terms" tabindex=9 >Click here to Review the Terms and Conditions</a></p>
+                    <?php echo $this->Form->input('tos', array('type' => 'checkbox', 'label' => 'I accept the Terms and Conditions.', 'div' => false, 'hiddenField' => false, 'value' => '0', 'tabindex'=>10)); ?>
 
                 </div>
             </div>
             <div class="right">
                 <label>Last Name</label>
-                <?php echo $this->Form->input('last_name', array('label' => false, 'div' => false)); ?>
+                <?php echo $this->Form->input('last_name', array('label' => false, 'div' => false, 'tabindex'=>2)); ?>
                 <label>Phone No.</label>
-                <?php echo $this->Form->input('phone', array('label' => false, 'div' => false)); ?>
+                <?php echo $this->Form->input('phone', array('label' => false, 'div' => false, 'tabindex'=>4)); ?>
                 <label>Confirm Password</label>
-                <?php echo $this->Form->input('password_confirm', array('label' => false, 'div' => false, 'type' => 'password')); ?>
+                <?php echo $this->Form->input('password_confirm', array('label' => false, 'div' => false, 'type' => 'password', 'tabindex'=>6)); ?>
             </div>
             
 
             <div class="buttons">
-                <span class="next"><input type="submit" class="btnnext" value="NEXT" /></span>
+                <span class="next"><input type="submit" class="btnnext" value="NEXT" tabindex="11"/></span>
             </div>
             <div class="clear"></div>
             <?php echo $this->Form->end(); ?>

@@ -13,7 +13,7 @@ class PropertiesController extends AppController {
     public $uses = array('User', 'Activity', 'Property', 'PropertyActivity', 'PropertyMiscellaneousItem', 'PropertyPaymentType', 'PropertyPhoto', 'PropertyRate', 'Reservation', 'PropertyReview');
 
     public function beforeFilter() {
-        $this->Auth->allow(array('index','rent_a_property','buy_a_property','search','disp_property_list','view','contact_owner','display_contact_element'));
+        $this->Auth->allow(array('index', 'rent_a_property', 'buy_a_property', 'search', 'disp_property_list', 'view', 'contact_owner', 'display_contact_element'));
         $this->layout = "property";
     }
 
@@ -45,6 +45,11 @@ class PropertiesController extends AppController {
             $properties[$k]['photo'] = $this->PropertyPhoto->find('first', array('conditions' => array('PropertyPhoto.property_id' => $p['Property']['id']), 'fields' => array('PropertyPhoto.photo')));
             $rates = $this->PropertyRate->find('first', array('conditions' => array('PropertyRate.property_id' => $p['Property']['id']), 'fields' => array('PropertyRate.night_rate', 'PropertyRate.week_rate', 'PropertyRate.price')));
             $avgRating = $this->Review->find('all', array('conditions' => array('Review.property_id' => $p['Property']['id']), 'fields' => array('AVG(Review.rate) as avg')));
+            $this->loadModel('PropertyPaymentType');
+            $properties[$k]['payment_type'] = $this->PropertyPaymentType->find('count', array('conditions' => array('PropertyPaymentType.property_id' => $p['Property']['id'])));
+            $this->loadModel('PropertyMiscellaneousItem');
+            $properties[$k]['handicap_accessibility'] = $this->PropertyMiscellaneousItem->find('count', array('conditions' => array('PropertyMiscellaneousItem.property_id' => $p['Property']['id'], 'PropertyMiscellaneousItem.miscellaneous_item_id' => 1)));
+            $properties[$k]['pet_friendly'] = $this->PropertyMiscellaneousItem->find('count', array('conditions' => array('PropertyMiscellaneousItem.property_id' => $p['Property']['id'], 'PropertyMiscellaneousItem.miscellaneous_item_id' => 2)));
             $properties[$k]['rates'] = $rates;
             $properties[$k]['price'] = $rates['PropertyRate']['price'];
             $properties[$k]['star_rating'] = $avgRating[0][0]['avg'] ? $avgRating[0][0]['avg'] : 0;
@@ -54,6 +59,7 @@ class PropertiesController extends AppController {
             $price[$key] = $row['price'];
         }
         array_multisort($price, SORT_ASC, $properties);
+        $this->set('property_type', isset($properties[0]['Property']['listing_type']) ? $properties[0]['Property']['listing_type'] : 'rent');
         $this->set('properties', $properties);
     }
 
@@ -115,21 +121,14 @@ class PropertiesController extends AppController {
         $render = 'properties';
         if ($this->request->is('get')) {
             $contain = array();
-            $params = array('Property.is_active' => 1);
-            if(!array_filter($this->request->query)){
-                $render = 'index';
-            }
-            if (isset($this->request->query['mxvrno']) && $this->request->query['mxvrno']) {
+            $params = array('Property.is_active' => 1, 'Property.listing_type' => isset($this->request->query['type']) && $this->request->query['type'] == 'sale' ? 'sale' : 'rent');
 
+            if (isset($this->request->query['mxvrno']) && $this->request->query['mxvrno']) {
                 $params['Property.id'] = $this->request->query['mxvrno'];
             } else {
-                if ((isset($this->request->query['datefrom']) && isset($this->request->query['dateto']) &&
-                        $this->request->query['datefrom'] && $this->request->query['dateto'])) {
-                    if (isset($this->request->query['bedrooms']) && $this->request->query['bedrooms']) {
-                        $params['Property.bedrooms'] = $this->request->query['bedrooms'];
-                    }
-                    if (isset($this->request->query['datefrom']) && isset($this->request->query['dateto']) && $this->request->query['datefrom'] && $this->request->query['dateto']) {
-                        $params['Property.listing_type'] = 'rent';
+                if (!isset($this->request->query['type']) || (isset($this->request->query['type']) && $this->request->query['type'] == 'rent')) {
+                    if ((isset($this->request->query['datefrom']) && isset($this->request->query['dateto']) &&
+                            $this->request->query['datefrom'] && $this->request->query['dateto'])) {
                         $contain = array(
                             'Reservation' => array(
                                 'conditions' => array(
@@ -139,23 +138,18 @@ class PropertiesController extends AppController {
                             )
                         );
                     }
-                    if (isset($this->request->query['destination']) && $this->request->query['destination']) {
-                        $dest = $this->request->query['destination'];
-                        $params['OR'] = array(
-                            'Property.address1 LIKE' => "%$dest%",
-                            'Property.address2 LIKE' => "%$dest%",
-                            'Property.city LIKE' => "%$dest%",
-                            'Property.state LIKE' => "%$dest%"
-                        );
-                    }
-                } else {
-                    if(isset($this->request->query['bedrooms']) && $this->request->query['bedrooms']){
-                        $this->set('bedrooms', $this->request->query['bedrooms']);
-                    }
-                    if (isset($this->request->query['destination']) && $this->request->query['destination']) {
-                        $this->set('destination', $this->request->query['destination']);
-                    }
-                    $render = 'index';
+                }
+                if (isset($this->request->query['bedrooms']) && $this->request->query['bedrooms']) {
+                    $params['Property.bedrooms'] = $this->request->query['bedrooms'];
+                }
+                if (isset($this->request->query['destination']) && $this->request->query['destination']) {
+                    $dest = $this->request->query['destination'];
+                    $params['OR'] = array(
+                        'Property.address1 LIKE' => "%$dest%",
+                        'Property.address2 LIKE' => "%$dest%",
+                        'Property.city LIKE' => "%$dest%",
+                        'Property.state LIKE' => "%$dest%"
+                    );
                 }
             }
 
@@ -194,7 +188,7 @@ class PropertiesController extends AppController {
             }
 
             array_multisort($price, SORT_ASC, $filteredProperties);
-            $this->set('property_type', isset($filteredProperties[0]['Property']['listing_type'])?$filteredProperties[0]['Property']['listing_type']:'rent');
+            $this->set('property_type', isset($filteredProperties[0]['Property']['listing_type']) ? $filteredProperties[0]['Property']['listing_type'] : 'rent');
             $this->set('properties', $filteredProperties);
             $this->render($render);
         }
@@ -219,10 +213,10 @@ class PropertiesController extends AppController {
                 $properties[$k]['price'] = $type == 'sale' ? $rates['PropertyRate']['price'] : $rates['PropertyRate']['night_rate'];
                 $properties[$k]['star_rating'] = $avgRating[0][0]['avg'] ? $avgRating[0][0]['avg'] : 0;
                 $this->loadModel('PropertyPaymentType');
-            $properties[$k]['payment_type'] = $this->PropertyPaymentType->find('count', array('conditions' => array('PropertyPaymentType.property_id' => $p['Property']['id'])));
-            $this->loadModel('PropertyMiscellaneousItem');
-            $properties[$k]['handicap_accessibility'] = $this->PropertyMiscellaneousItem->find('count', array('conditions' => array('PropertyMiscellaneousItem.property_id' => $p['Property']['id'], 'PropertyMiscellaneousItem.miscellaneous_item_id' => 1)));
-            $properties[$k]['pet_friendly'] = $this->PropertyMiscellaneousItem->find('count', array('conditions' => array('PropertyMiscellaneousItem.property_id' => $p['Property']['id'], 'PropertyMiscellaneousItem.miscellaneous_item_id' => 2)));
+                $properties[$k]['payment_type'] = $this->PropertyPaymentType->find('count', array('conditions' => array('PropertyPaymentType.property_id' => $p['Property']['id'])));
+                $this->loadModel('PropertyMiscellaneousItem');
+                $properties[$k]['handicap_accessibility'] = $this->PropertyMiscellaneousItem->find('count', array('conditions' => array('PropertyMiscellaneousItem.property_id' => $p['Property']['id'], 'PropertyMiscellaneousItem.miscellaneous_item_id' => 1)));
+                $properties[$k]['pet_friendly'] = $this->PropertyMiscellaneousItem->find('count', array('conditions' => array('PropertyMiscellaneousItem.property_id' => $p['Property']['id'], 'PropertyMiscellaneousItem.miscellaneous_item_id' => 2)));
             }
             if ($sort == 'price') {
                 $price = array();
@@ -783,7 +777,6 @@ class PropertiesController extends AppController {
 //    public function sell($params = null) {
 //        $this->set('type', $params);
 //    }
-
 //    public function price() {
 //        $this->Property->recursive = 0;
 //        $this->set('properties', $this->paginate());
@@ -811,7 +804,7 @@ class PropertiesController extends AppController {
         $this->set('property_activities', $this->Activity->find('all', array('fields' => array('Activity.name', 'Activity.icon'), 'conditions' => array('Activity.id' => $this->PropertyActivity->find('list', array('conditions' => array('PropertyActivity.property_id' => $id), 'fields' => array('PropertyActivity.activity_id')))))));
         $this->set('property', $this->Property->read(null, $id));
         $this->loadModel('PropertyPaymentType');
-        $this->set('payment_type',$this->PropertyPaymentType->find('count', array('conditions' => array('PropertyPaymentType.property_id' => $id))));
+        $this->set('payment_type', $this->PropertyPaymentType->find('count', array('conditions' => array('PropertyPaymentType.property_id' => $id))));
         $this->loadModel('PropertyMiscellaneousItem');
         $this->set('handicap_accessibility', $this->PropertyMiscellaneousItem->find('count', array('conditions' => array('PropertyMiscellaneousItem.property_id' => $id, 'PropertyMiscellaneousItem.miscellaneous_item_id' => 1))));
         $this->set('pet_friendly', $this->PropertyMiscellaneousItem->find('count', array('conditions' => array('PropertyMiscellaneousItem.property_id' => $id, 'PropertyMiscellaneousItem.miscellaneous_item_id' => 2))));

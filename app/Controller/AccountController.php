@@ -102,10 +102,10 @@ class AccountController extends AppController {
      * User profile page
      */
     public function index() {
-        if (!$this->Access->check($this->params['controller'] . '/' . $this->params['action'])) {
-            $this->Session->setFlash('Access denied.', 'default', array('class' => 'alert alert-error'));
-            $this->redirect('/');
-        }
+//        if (!$this->Access->check($this->params['controller'] . '/' . $this->params['action'])) {
+//            $this->Session->setFlash('Access denied.', 'default', array('class' => 'alert alert-error'));
+//            $this->redirect('/');
+//        }
 
         $this->User->id = $user_id = $this->Auth->user('user_id');
 
@@ -183,7 +183,7 @@ class AccountController extends AppController {
 
             $this->User->save();
 
-            $this->Session->setFlash(__('The user password successfully updated'), 'default', array('class' => 'alert alert-success'));
+            $this->Session->setFlash(__('Password successfully updated'), 'default', array('class' => 'alert alert-success'));
 
             $this->redirect('/account/index#change-password');
         } else {

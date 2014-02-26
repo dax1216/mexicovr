@@ -334,7 +334,7 @@ div.search-property {
     font-size: 12px;
     float: left;
     margin-top: 120px;
-/*    margin-left: 5px;*/
+    /*    margin-left: 5px;*/
 }
 div.search-property .lines {
     margin: 15px auto;
@@ -648,7 +648,7 @@ p {
     margin-top: 40px;
     float: left;
     margin-left: 10px;
-    
+
 }
 #admin-content .title {
     padding: 20px 30px 10px;
@@ -2679,5 +2679,37 @@ th.specalt {
     margin-left: 200px;
     margin-top: 10px;
     display: block;
+}
+
+#bgWrap .account .form #edit-profile .left .text{
+    margin-top:0;
+}
+#bgWrap .account .form #edit-profile .line, #bgWrap .account .form .line{
+    margin-left:-50px;
+}
+#bgWrap .account .form #edit-profile .submit, #bgWrap .account .form .submit{
+    margin: 20px 0 40px 0;
+}
+#flashMessage.alert-success{
+    clear: both;
+    color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    background: #3B8230;
+    background-repeat: repeat-x;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#76BF6B), to(#3B8230));
+    background-image: -webkit-linear-gradient(top, #76BF6B, #3B8230);
+    background-image: -moz-linear-gradient(top, #76BF6B, #3B8230);
+    background-image: -ms-linear-gradient(top, #76BF6B, #3B8230);
+    background-image: -o-linear-gradient(top, #76BF6B, #3B8230);
+    background-image: linear-gradient(top, #76BF6B, #3B8230);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+
+a.search-rentprop.active {
+    background: url(../images/rentaproperty_current.png) 0 0 no-repeat;
+}
+
+a.search-buyprop.active {
+    background: url(../images/buyaproperty_current.png) 0 0 no-repeat;
 }
 

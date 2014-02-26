@@ -7,8 +7,9 @@
 
 <div class="search-property">
     <?php echo $this->Form->create('Property', array('controller'=>'properties','action' => 'search', 'type'=>'get')); ?>
-        <a href="<?php echo $this->webroot ?>properties/rent_a_property" class="search-rentprop rent-current"></a>
-        <a href="<?php echo $this->webroot ?>properties/buy_a_property" class="search-buyprop"></a>
+        <?php echo $this->Form->input('type', array('type'=>'hidden','value'=>'rent')); ?>
+        <a href="#" class="search-type search-rentprop rent-current active" data-val="rent"></a>
+        <a href="#" class="search-type search-buyprop" data-val="sale"></a>
         <?php echo $this->Form->input('destination', array('class'=>'destination', 'label' => false, 'div' => false, 'placeholder'=>'DESTINATION', 'id'=>'destination')); ?>
         <div class="lines"></div>
         <div id="dd" class="wrapper-dropdown-1" tabindex="1">
@@ -22,14 +23,14 @@
             </ul>
             <?php echo $this->Form->input('bedrooms', array('type'=>'hidden')); ?>
         </div>
-        <span class="dateholder">
+        <div class="dateholder">
             <span class="date-bg">
                 <?php echo $this->Form->input('datefrom', array('class'=>'datefrom', 'label' => false, 'div' => false, 'placeholder'=>'FROM', 'id'=>'datefrom')); ?>
             </span>
             <span class="date-bg">
                 <?php echo $this->Form->input('dateto', array('class'=>'dateto', 'label' => false, 'div' => false, 'placeholder'=>'TO', 'id'=>'dateto')); ?>
             </span>
-        </span>
+        </div>
         <div class="or">OR</div>
         <?php echo $this->Form->input('mxvrno', array('class'=>'mxvrno', 'label' => false, 'div' => false, 'placeholder'=>'ENTER MXVR #', 'id'=>'mxvrno')); ?>
         <div class="lines"></div>
@@ -113,4 +114,25 @@
             $('input[name="bedrooms"]').val($(this).data('val'));
         })
     })
+    $('.search-type').click(function(e){
+        var $this = $(this);
+        $('.search-type').each(function(){
+            $(this).removeClass('active');
+        })
+        var dH = $('div.dateholder');
+        var dL = dH.is(":visible");
+        if($this.data('val') == 'sale'){
+            if(dL){
+                dH.hide();
+            }
+        }else{
+            if(!dL){
+                dH.show();
+            }
+        }
+        $this.addClass('active');
+        $('#PropertyType').val($this.data('val'));
+        e.preventDefault();
+    })
+    
 </script>
