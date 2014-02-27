@@ -3,18 +3,16 @@
 <div id="content" class="property ratings">
     <div class="title">
         <h1>Sort By:</h1>
-        <div class="type">
-            <span class="sort-label">Type:</span> 
-            <div id="dd1" class="wrapper-dropdown-1" tabindex="1">
-                <span id="sort-type-span" data-val="asc">FOR RENT</span>
+        <div class="prices" style="width:80%;">TYPE: 
+            <div id="dd5" class="wrapper-dropdown-1" tabindex="1" style="z-index: 99991;">
+                <span id="sort-type-span" data-val="asc">SELECT</span>
                 <ul class="dropdown" tabindex="1" id="sort-type" data-sort="type">
                     <li><a href="#" data-val="rent">FOR RENT</a></li>
                     <li><a href="#" data-val="sale">FOR SALE</a></li>
                 </ul>
             </div>
         </div>
-        <div class="prices">
-            <span class="sort-label">PRICE:</span> 
+        <div class="prices">PRICE: 
             <div id="dd1" class="wrapper-dropdown-1" tabindex="1">
                 <span id="sort-price-span" data-val="asc">SELECT</span>
                 <ul class="dropdown" tabindex="1" id="sort-price" data-sort="price">
@@ -23,8 +21,7 @@
                 </ul>
             </div>
         </div>
-        <div class="star">
-			<span class="sort-label">STAR RATING:</span> 
+        <div class="star">STAR RATING: 
             <div id="dd2" class="wrapper-dropdown-1" tabindex="1">
                 <span id="sort-rating-span" data-val="asc">SELECT</span>
                 <ul class="dropdown" tabindex="1" id="sort-rating" data-sort="star_rating">
@@ -46,29 +43,43 @@
 <?php foreach ($properties as $p) { ?>
             jQuery(".star-rating").each(function(){jQuery(this).raty({score: jQuery(this).attr('data-rating'), readOnly: true, space:false, size: 10, width: 65, starOff: "<?php echo $this->webroot; ?>images/smallstar-off.png", starOn: "<?php echo $this->webroot; ?>images/smallstar-on.png", starHalf: "<?php echo $this->webroot; ?>images/smallstar-half.png"});})
 <?php } ?>
-    })
+    });
     jQuery('#sort-type li a').click(function(){
             $this = jQuery(this);
-            loader = new ajaxLoader('body',{bgColor: '#000',  opacity: '0.3'});
+            jQuery('.property.ratings').css('position', 'relative');
+            loader = new ajaxLoader('.property.ratings',{bgColor: '#000',  opacity: '0.3', top: '190px'});
             jQuery.ajax({
                 type: "POST",
-                data: {type: $this.data('val'), order: jQuery('#sort-price-span').data('val')},
+                data: {type: $this.data('val'), order: jQuery('#sort-price-span').data('val'), type: $this.data('val')},
                 url: '<?php echo APP_URL . 'properties/disp_property_list'; ?>',
                 success: function(d){
                     jQuery('#sort-type-span').data('val', $this.data('val'));
                     jQuery('.scrolling').html(d);
                     jQuery(".star-rating").each(function(){jQuery(this).raty({score: jQuery(this).attr('data-rating'), readOnly: true, space:false, size: 10, width: 65, starOff: "<?php echo $this->webroot; ?>images/smallstar-off.png", starOn: "<?php echo $this->webroot; ?>images/smallstar-on.png", starHalf: "<?php echo $this->webroot; ?>images/smallstar-half.png"});})
+                    
+                    var dH = jQuery('div.star');
+                    var dL = dH.is(":visible");
+                    if($this.data('val') == 'sale'){
+                        if(dL){
+                            dH.hide();
+                        }
+                    }else{
+                        if(!dL){
+                            dH.show();
+                        }
+                    }
                     loader.remove();
                 }
         })
         
     });
     jQuery('#sort-price li a, #sort-rating li a').click(function(){
-        loader = new ajaxLoader('body',{bgColor: '#000',  opacity: '0.3'});
+        jQuery('.property.ratings').css('position', 'relative');
+        loader = new ajaxLoader('.property.ratings',{bgColor: '#000',  opacity: '0.3'});
         $this = jQuery(this);
         jQuery.ajax({
             type: "POST",
-            data: {type:jQuery('#sort-type-span').data('val'), sort: $this.parents('ul').data('sort'), order: $this.data('val')},
+            data: {type:jQuery('#sort-type-span').data('val'), sort: $this.parents('ul').data('sort'), order: $this.data('val'), type: jQuery('#property_type').val()},
             url: '<?php echo APP_URL . 'properties/disp_property_list'; ?>',
             success: function(d){
                 var sp = $this.parents('ul').siblings( "span" );

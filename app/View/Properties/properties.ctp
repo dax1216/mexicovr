@@ -1,28 +1,36 @@
 <?php echo $this->Html->script(array('raty/lib/jquery.raty.min')); ?>
 <?php echo $this->Html->script(array('ajax-loader')); ?>
 <div id="content" class="property ratings">
-    <div class="title">
-        <h1>Sort By:</h1>
-        <div class="prices">PRICE: 
-            <div id="dd1" class="wrapper-dropdown-1" tabindex="1">
-                <span id="sort-price-span" data-val="asc">SELECT</span>
-                <ul class="dropdown" tabindex="1" id="sort-price" data-sort="price">
-                    <li><a href="#" data-val="asc">LOWEST TO HIGHEST</a></li>
-                    <li><a href="#" data-val="desc">HIGHEST TO LOWEST</a></li>
-                </ul>
+    <?php if ($this->params['action'] != 'my_list') { ?>
+        <div class="title">
+            <h1>Sort By:</h1>
+            <div class="prices">PRICE: 
+                <div id="dd1" class="wrapper-dropdown-1" tabindex="1">
+                    <span id="sort-price-span" data-val="asc">SELECT</span>
+                    <ul class="dropdown" tabindex="1" id="sort-price" data-sort="price">
+                        <li><a href="#" data-val="asc">LOWEST TO HIGHEST</a></li>
+                        <li><a href="#" data-val="desc">HIGHEST TO LOWEST</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-        <div class="star">STAR RATING: 
-            <div id="dd2" class="wrapper-dropdown-1" tabindex="1">
-                <span id="sort-rating-span" data-val="asc">SELECT</span>
-                <ul class="dropdown" tabindex="1" id="sort-rating" data-sort="star_rating">
-                    <li><a href="#" data-val="asc">LOWEST TO HIGHEST</a></li>
-                    <li><a href="#" data-val="desc">HIGHEST TO LOWEST</a></li>
-                </ul>
+            <?php if($property_type == "rent"){ ?>
+            <div class="star">STAR RATING: 
+                <div id="dd2" class="wrapper-dropdown-1" tabindex="1">
+                    <span id="sort-rating-span" data-val="asc">SELECT</span>
+                    <ul class="dropdown" tabindex="1" id="sort-rating" data-sort="star_rating">
+                        <li><a href="#" data-val="asc">LOWEST TO HIGHEST</a></li>
+                        <li><a href="#" data-val="desc">HIGHEST TO LOWEST</a></li>
+                    </ul>
+                </div>
             </div>
+            <?php } ?>
         </div>
-    </div>
-    <div class="clear"></div>
+        <div class="clear"></div>
+    <?php }else{ ?>
+        <?php //echo $this->Session->flash()?'<div style="margin-top: 10px;">'.$this->Session->flash().'</div>':''; ?>
+        <div style="margin-top:10px;"><?php echo $this->Session->flash(); ?></div>
+    <?php }
+    ?>
     <div class="scrolling">
         <?php echo $this->element('property_list', array('properties' => $properties)) ?>
     </div>

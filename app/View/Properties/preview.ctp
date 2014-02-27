@@ -79,7 +79,11 @@
                         }
                         ?>
                     </h3>
-                    <img src="<?php echo $this->webroot; ?>images/about1.jpg" />
+                    <ul class="icons">
+                        <?php if(isset($handicap_accessibility) && $handicap_accessibility){ ?><li><img src="<?php echo $this->webroot; ?>images/handicap.png"/></li> <?php }?>
+                        <?php if(isset($pet_friendly) && $pet_friendly){ ?><li><img src="<?php echo $this->webroot; ?>images/pet.png"/></li> <?php }?>
+                        <?php if(isset($payment_type) && $payment_type){ ?><li><img src="<?php echo $this->webroot; ?>images/card-m.png"/></li> <?php }?>
+                    </ul>
                     <p>
                         <?php echo $property['property_desc']['description']; ?>
                     </p>

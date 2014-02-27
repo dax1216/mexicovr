@@ -28,10 +28,10 @@
             <div class="clear"></div>
             <div class="left">
                 <label>State</label>
-                <?php echo $this->Form->input('state', array('label' => false, 'div' => false, 'value'=>isset($sess_address['state'])?$sess_address['state']:'')); ?>
+                <?php echo $this->Form->input('state', array('tabindex'=>'5','label' => false, 'div' => false, 'value'=>isset($sess_address['state'])?$sess_address['state']:'')); ?>
             </div>
             <div class="right">
-                <div style="margin-top:50px;"><a href="#" id="show-on-map" style="text-decoration:underline;">Show on google map</a></div>
+                <div style="margin-top:50px;"><a href="#" id="show-on-map" style="text-decoration:underline;" tabindex="6",>Show on google map</a></div>
             </div>
             <div class="clear"></div>
             <div class="map">
@@ -40,7 +40,7 @@
                 <div id="map-canvas"></div>
             </div>
             <div class="buttons">
-                <span class="next"><input type="submit" class="btnnext" value="NEXT >>" /></span>
+                <span class="next"><input type="submit" class="btnnext" value="NEXT >>" tabindex="7"/></span>
             </div>
             <div class="clear"></div>
             <?php echo $this->Form->end(); ?>

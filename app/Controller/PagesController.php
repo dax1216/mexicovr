@@ -17,7 +17,7 @@ class PagesController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
 
-        $this->Auth->allow(array('privacy','display','about'));
+        $this->Auth->allow(array('privacy','display','about','generate_excerpt'));
         $this->layout = "admin";
     }
 

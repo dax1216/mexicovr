@@ -30,15 +30,10 @@ class PropertiesController extends AppController {
                 'fields' => array('Property.title', 'Property.rate', 'Property.id', 'Property.listing_type'),
                     ));
         } else {
-            $properties = array_merge(
-                    $this->Property->find('all', array(
-                        'conditions' => array('Property.is_active' => 1, 'Property.listing_type' => 'sale'),
-                        'fields' => array('Property.title', 'Property.rate', 'Property.id', 'Property.listing_type'),
-                    )), $this->Property->find('all', array(
-                        'conditions' => array('Property.is_active' => 1, 'Property.listing_type' => 'rent'),
-                        'fields' => array('Property.title', 'Property.rate', 'Property.id', 'Property.listing_type'),
-                    ))
-            );
+            $properties = $this->Property->find('all', array(
+                'conditions' => array('Property.is_active' => 1, 'Property.listing_type' => 'rent'),
+                'fields' => array('Property.title', 'Property.rate', 'Property.id', 'Property.listing_type'),
+                    ));
         }
 
         foreach ($properties as $k => $p) {
@@ -78,7 +73,7 @@ class PropertiesController extends AppController {
 
     private function get_properties($type = "rent") {
         $this->loadModel('Review');
-        $params = array('Property.is_active' => 1, 'Property.listing_type' => $type);
+        $params = array('Property.is_active' => 1, 'Property.is_deleted' => 0, 'Property.listing_type' => $type);
         if (isset($this->request->query['destination'])) {
             $dest = $this->request->query['destination'];
             $params['OR'] = array(
@@ -121,7 +116,7 @@ class PropertiesController extends AppController {
         $render = 'properties';
         if ($this->request->is('get')) {
             $contain = array();
-            $params = array('Property.is_active' => 1, 'Property.listing_type' => isset($this->request->query['type']) && $this->request->query['type'] == 'sale' ? 'sale' : 'rent');
+            $params = array('Property.is_active' => 1, 'Property.is_deleted' => 0, 'Property.listing_type' => isset($this->request->query['type']) && $this->request->query['type'] == 'sale' ? 'sale' : 'rent');
 
             if (isset($this->request->query['mxvrno']) && $this->request->query['mxvrno']) {
                 $params['Property.id'] = $this->request->query['mxvrno'];
@@ -202,7 +197,7 @@ class PropertiesController extends AppController {
             $order = isset($this->request->data['order']) && $this->request->data['order'] == 'desc' ? 'desc' : 'asc';
 
             $properties = $this->Property->find('all', array(
-                'conditions' => array('Property.is_active' => 1, 'Property.listing_type' => $type),
+                'conditions' => array('Property.is_active' => 1, 'Property.is_deleted' => 0, 'Property.listing_type' => $type),
                 'fields' => array('Property.title', 'Property.rate', 'Property.id', 'Property.listing_type'),
                     ));
             foreach ($properties as $k => $p) {
@@ -769,24 +764,7 @@ class PropertiesController extends AppController {
         }
         return false;
     }
-
-//    public function rent($params = null) {
-//        
-//    }
-//
-//    public function sell($params = null) {
-//        $this->set('type', $params);
-//    }
-//    public function price() {
-//        $this->Property->recursive = 0;
-//        $this->set('properties', $this->paginate());
-//    }
-//
-//    public function destroy() {
-//        $this->Session->destroy('property_address');
-//        $this->Session->destroy('property_desc');
-//    }
-
+    
     /**
      * view method
      *
@@ -829,56 +807,6 @@ class PropertiesController extends AppController {
         $this->set(compact('cities'));
     }
 
-    /**
-     * edit method
-     *
-     * @throws NotFoundException
-     * @param string $id
-     * @return void
-     */
-    public function edit($id = null) {
-        $this->Property->id = $id;
-        if (!$this->Property->exists()) {
-            throw new NotFoundException(__('Invalid property'));
-        }
-        if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->Property->save($this->request->data)) {
-                $this->Session->setFlash(__('The property has been saved'));
-                $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash(__('The property could not be saved. Please, try again.'));
-            }
-        } else {
-            $this->request->data = $this->Property->read(null, $id);
-        }
-        $cities = $this->Property->City->find('list');
-        $this->set(compact('cities'));
-    }
-
-    /**
-     * delete method
-     *
-     * @throws MethodNotAllowedException
-     * @throws NotFoundException
-     * @param string $id
-     * @return void
-     */
-    public function delete($id = null) {
-        if (!$this->request->is('post')) {
-            throw new MethodNotAllowedException();
-        }
-        $this->Property->id = $id;
-        if (!$this->Property->exists()) {
-            throw new NotFoundException(__('Invalid property'));
-        }
-        if ($this->Property->delete()) {
-            $this->Session->setFlash(__('Property deleted'));
-            $this->redirect(array('action' => 'index'));
-        }
-        $this->Session->setFlash(__('Property was not deleted'));
-        $this->redirect(array('action' => 'index'));
-    }
-
     public function contact_owner() {
 
         if ($this->request->is('post')) {
@@ -910,4 +838,119 @@ class PropertiesController extends AppController {
         $this->render('/Elements/contact');
     }
 
+    public function my_list() {
+        $uId = $this->Auth->user('user_id');
+        $type = $this->Auth->user('account_type') != 'seller' ? 'rent' : 'sale';
+        $properties = $this->Property->find('all', array(
+            'conditions' => array('Property.is_active' => 1, 'Property.is_deleted' => 0, 'Property.listing_type' => $type, 'Property.user_id' => $uId),
+            'fields' => array('Property.title', 'Property.rate', 'Property.id', 'Property.listing_type'),
+                ));
+        $this->loadModel('Review');
+        foreach ($properties as $k => $p) {
+            $properties[$k]['photo'] = $this->PropertyPhoto->find('first', array('conditions' => array('PropertyPhoto.property_id' => $p['Property']['id']), 'fields' => array('PropertyPhoto.photo')));
+            $rates = $this->PropertyRate->find('first', array('conditions' => array('PropertyRate.property_id' => $p['Property']['id']), 'fields' => array('PropertyRate.night_rate', 'PropertyRate.week_rate', 'PropertyRate.price')));
+            $avgRating = $this->Review->find('all', array('conditions' => array('Review.property_id' => $p['Property']['id']), 'fields' => array('AVG(Review.rate) as avg')));
+            $properties[$k]['rates'] = $rates;
+            $properties[$k]['price'] = $type == 'sale' ? $rates['PropertyRate']['price'] : $rates['PropertyRate']['night_rate'];
+            $properties[$k]['star_rating'] = $avgRating[0][0]['avg'] ? $avgRating[0][0]['avg'] : 0;
+            $this->loadModel('PropertyPaymentType');
+            $properties[$k]['payment_type'] = $this->PropertyPaymentType->find('count', array('conditions' => array('PropertyPaymentType.property_id' => $p['Property']['id'])));
+            $this->loadModel('PropertyMiscellaneousItem');
+            $properties[$k]['handicap_accessibility'] = $this->PropertyMiscellaneousItem->find('count', array('conditions' => array('PropertyMiscellaneousItem.property_id' => $p['Property']['id'], 'PropertyMiscellaneousItem.miscellaneous_item_id' => 1)));
+            $properties[$k]['pet_friendly'] = $this->PropertyMiscellaneousItem->find('count', array('conditions' => array('PropertyMiscellaneousItem.property_id' => $p['Property']['id'], 'PropertyMiscellaneousItem.miscellaneous_item_id' => 2)));
+        }
+        if ($this->request->is('post')) {
+                $sort = isset($this->request->data['sort']) && $this->request->data['sort'] == 'star_rating' ? 'star_rating' : 'price';
+                $order = isset($this->request->data['order']) && $this->request->data['order'] == 'desc' ? 'desc' : 'asc';
+            if ($sort == 'price') {
+                $price = array();
+                foreach ($properties as $key => $row) {
+                    $price[$key] = $row['price'];
+                }
+                if ($order == 'asc') {
+                    array_multisort($price, SORT_ASC, $properties);
+                } else {
+                    array_multisort($price, SORT_DESC, $properties);
+                }
+            } else {
+                $star = array();
+                foreach ($properties as $key => $row) {
+                    $star[$key] = $row['star_rating'];
+                }
+                if ($order == 'desc') {
+                    array_multisort($star, SORT_DESC, $properties);
+                } else {
+                    array_multisort($star, SORT_ASC, $properties);
+                }
+            }
+        
+        }
+        $this->set('property_type', $type);
+
+        $this->set('properties', $properties);
+        $this->render('properties');
+        if ($this->request->is('ajax')) {
+            $this->layout = 'ajax';
+            $this->render('/Elements/property_list');
+        }
+    }
+    
+    
+    /**
+     * delete method
+     *
+     * @throws MethodNotAllowedException
+     * @throws NotFoundException
+     * @param string $id
+     * @return void
+     */
+    public function delete($id = null) {
+        if (!$this->request->is('post')) {
+            throw new MethodNotAllowedException();
+        }
+        $this->Property->id = $id;
+        if (!$this->Property->exists() && !is_user_property_exist($id,$this->Auth->user('user_id'))) {
+            $this->Session->setFlash(__('Failed deleting the property. Property not found.'));
+        }else{
+            $this->Property->set('is_deleted', '1');
+            if ($this->Property->save()) {
+                $this->Session->setFlash('Property deleted.', 'default', array('class' => 'alert alert-success'));
+            }
+        }
+//        $this->Session->setFlash(__('Property was not deleted.'));
+        $this->redirect(array('action' => 'my_list'));
+    }
+
+    
+    /**
+     * edit method
+     *
+     * @throws NotFoundException
+     * @param string $id
+     * @return void
+     */
+    public function edit($id = null) {
+        $this->Property->id = $id;
+        if (!$this->Property->exists() && !is_user_property_exist($id,$this->Auth->user('user_id'))) {
+            $this->Session->setFlash(__('Cannot edit property. Property not found.'));
+            $this->redirect(array('action' => 'my_list'));
+        }
+//        if ($this->request->is('post') || $this->request->is('put')) {
+//            if ($this->Property->save($this->request->data)) {
+//                $this->Session->setFlash(__('The property has been saved'));
+//                $this->redirect(array('action' => 'index'));
+//            } else {
+//                $this->Session->setFlash(__('The property could not be saved. Please, try again.'));
+//            }
+//        } else {
+//            $this->request->data = $this->Property->read(null, $id);
+//        }
+        $this->layout = "property_preview";
+        $this->set('activities', $this->Activity->find('all', array(
+            'conditions' => array('Activity.id' => $this->PropertyActivity->find('list',array('conditions'=>array('PropertyActivity.property_id'=>$id), 'fields'=>array('PropertyActivity.activity_id')))))));
+        $prop = $this->Property->find('first',array('conditions'=>array('Property.id'=>$id)));
+//        var_dump($prop['Property']);
+        $this->set('property', array('property_desc'=>$prop['Property']));
+        $this->render('preview');
+    }
 }

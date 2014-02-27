@@ -9,14 +9,14 @@
             <div class="line-black"></div>
             <label>Description of the Villa:<br/>(No limit of characters)</label>
 
-            <?php echo $this->Form->textarea('description', array('value' => isset($sess_desc['description']) ? $sess_desc['description'] : '')); ?>
+            <?php echo $this->Form->textarea('description', array('tabindex' => '2', 'value' => isset($sess_desc['description']) ? $sess_desc['description'] : '')); ?>
 
             <div class="right">
 
 
 
                 <?php
-                echo $this->Form->input('bedrooms', array(
+                echo $this->Form->input('bedrooms', array('tabindex' => '3',
                     'options' => array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5),
                     'label' => 'Number of Bedrooms: ',
                     'value' => isset($sess_desc['bedrooms']) ? $sess_desc['bedrooms'] : ''
@@ -24,7 +24,7 @@
                 ?>
 
                 <?php
-                echo $this->Form->input('bathrooms', array(
+                echo $this->Form->input('bathrooms', array('tabindex' => '4',
                     'options' => array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5),
                     'label' => 'Number of Bathrooms: ',
                     'value' => isset($sess_desc['bathrooms']) ? $sess_desc['bathrooms'] : ''
@@ -72,7 +72,7 @@
             <h1 class="title">Rate your listing <img src="<?php echo $this->webroot; ?>images/icons.png" id="info-icon"/></h1>
             <div class="cloud">This is a Hover!</div>
             <div class="stars title">
-                <div id="score-demo"></div>
+                <div id="score-demo" tabindex = "5"></div>
                 <?php echo $this->Form->input('rate', array('type'=>'hidden')); ?>
 <!--                <img src="<?php echo $this->webroot; ?>images/stars1.png"/>-->
                 <div class="star-hover" style="display: none;">
@@ -99,10 +99,11 @@
             <ul class="activity">
                 <?php
                 $idt = 0;
+                $tI = 6;
                 foreach ($activities as $activity):
                     ?>
                     <li>
-                        <div class="squaredFour">
+                        <div class="squaredFour" tabindex="<?php echo $tI; ?>">
                             <img src="<?php echo $this->webroot; ?><?php echo h($activity['Activity']['icon']); ?>" />
                             <?php
                             $name = $activity['Activity']['name'];
@@ -121,6 +122,7 @@
                     </li>
                     <?php
                     $idt++;
+                    $tI++;
                 endforeach;
                 ?>
 
@@ -138,7 +140,7 @@
                 <?php $idPayment = isset($activities) ? sizeof($activities) : 0; ?>
                 <?php foreach ($payment_types as $payment_type) { ?>
                     <li>
-                        <div class="squaredFour">
+                        <div class="squaredFour" tabindex="<?php echo $tI; ?>">
                             <?php
                             $name = $payment_type['PaymentType']['name'];
                             $id = "squaredFour" . $idPayment;
@@ -156,6 +158,7 @@
                         </div>
                     </li>
                         <?php $idPayment++;
+                        $tI++;
                     } ?>
             </ul>
         </div>
@@ -168,7 +171,7 @@
                     <?php $idMisc = (isset($activities) ? sizeof($activities) : 0) + (isset($payment_types) ? sizeof($payment_types) : 0); ?>
                     <?php foreach ($miscellaneous_items as $miscellaneous_item) { ?>
                     <li>
-                        <div class="squaredFour">
+                        <div class="squaredFour" tabindex="<?php echo $tI; ?>">
                             <?php
                             $name = $miscellaneous_item['MiscellaneousItem']['name'];
                             $id = "squaredFour" . $idMisc;
@@ -185,7 +188,8 @@
                             <span class="text"><?php echo h($miscellaneous_item['MiscellaneousItem']['name']); ?></span>
                         </div>
                     </li>     
-                    <?php $idMisc++; ?>
+                    <?php $idMisc++; 
+                    $tI++; ?>
                     <?php } ?>
             </ul>
         </div>
@@ -195,7 +199,7 @@
             <?php if (!$preview) { ?>
                 <span class="back"> <input type="button" class="btnback" value="<< BACK" onclick="window.location = '<?php echo APP_URL . 'properties/address/' . $sess_param_listing_type; ?>'"/> </span>
         <?php } ?>
-            <span class="next"><input type="submit" class="btnnext" value="NEXT >>" /></span>
+                <span class="next"><input type="submit" class="btnnext" value="NEXT >>" tabindex="<?php echo $tI; ?>"/></span>
         </div>
 <?php echo $this->Form->end(); ?>
     </div>

@@ -133,7 +133,7 @@ class AccountController extends AppController {
         }else{
             if ($this->request->is('post')) {
                 if ($this->Auth->login()) {
-                    $this->Session->setFlash('Successfully logged in!', 'default', array('class' => 'alert alert-success'));
+//                    $this->Session->setFlash('Successfully logged in!', 'default', array('class' => 'alert alert-success'));
                     $this->redirect($this->Auth->loginRedirect);
                 } else {
                     $this->Session->setFlash($this->Auth->authError, 'default', array('class' => 'alert alert-error'));

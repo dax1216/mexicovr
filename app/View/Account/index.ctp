@@ -26,7 +26,7 @@
                         echo $this->Form->input('email_address', array('label' => 'Email Address', 'tabindex'=>3));
                         ?>
                     </div>
-                    <div class="left">
+                    <div class="right">
                         <?php 
                         echo $this->Form->input('last_name', array('label' => 'Last Name', 'tabindex'=>2));
                         echo $this->Form->input('email_address_confirm', array('type' => 'hidden'));

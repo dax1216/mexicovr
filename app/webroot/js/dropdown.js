@@ -61,5 +61,11 @@ jQuery(function() {
 		// all dropdowns
 		jQuery('.wrapper-dropdown-1').removeClass('active');
 	});
+        var dd = new DropDown( jQuery('#dd5') );
+	jQuery.noConflict();
+	jQuery(document).click(function() {
+		// all dropdowns
+		jQuery('.wrapper-dropdown-1').removeClass('active');
+	});
 
 });

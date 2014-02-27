@@ -2713,3 +2713,13 @@ a.search-buyprop.active {
     background: url(../images/buyaproperty_current.png) 0 0 no-repeat;
 }
 
+ul.prop-user-action li{
+    display: inline;
+    float: left;
+    width: auto !important;
+    padding: 10px 10px;
+}
+ul.prop-user-action li a{
+    color: #fff;
+    text-decoration: underline;
+}
